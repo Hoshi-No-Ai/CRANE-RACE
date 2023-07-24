@@ -336,11 +336,11 @@ void C_ROBOT::RobotLocation()
     stPot.fpPosX = stPot.fpPosX + fpPosXOffset;
     stPot.fpPosY = stPot.fpPosY + fpPosYOffset;
 
-//    temp_x = -stPot.fpPosY;
-//    temp_y = stPot.fpPosX;
+    //    temp_x = -stPot.fpPosY;
+    //    temp_y = stPot.fpPosX;
 
-//    stPot.fpPosX = temp_x;
-//    stPot.fpPosY = temp_y;
+    //    stPot.fpPosX = temp_x;
+    //    stPot.fpPosY = temp_y;
 
     //	Fpx.in = stPot.fpPosX;
     //	Fpy.in = stPot.fpPosY;
@@ -391,6 +391,90 @@ void C_ROBOT::Cal_RobotVelt(void)
     stVelt.fpVx = Fvx.m_out;
     stVelt.fpVy = Fvy.m_out;
     stVelt.fpW = Fw.m_out;
+}
+
+void C_ROBOT::Aruco_relocation(aruco &aruco_rec, int pos_num, bool if_q_rec)
+{
+    float delta_x = aruco_rec.x;
+    float delta_y = aruco_rec.y;
+    float delta_q = aruco_rec.thetaz;
+
+    float pos_x_ref, pos_y_ref, pos_q_ref;
+
+    float robot_x, robot_y, robot_q;
+
+    switch (pos_num)
+    {
+    case POS_1:
+        pos_x_ref = POS_1_X_RECLOC;
+        pos_y_ref = POS_1_Y_RECLOC;
+        pos_q_ref = POS_1_Q_RECLOC;
+        break;
+    case POS_2:
+        pos_x_ref = POS_2_X_RECLOC;
+        pos_y_ref = POS_2_Y_RECLOC;
+        pos_q_ref = POS_2_Q_RECLOC;
+        break;
+    case POS_3:
+        pos_x_ref = POS_3_X_RECLOC;
+        pos_y_ref = POS_3_Y_RECLOC;
+        pos_q_ref = POS_3_Q_RECLOC;
+        break;
+    case POS_4:
+        pos_x_ref = POS_4_X_RECLOC;
+        pos_y_ref = POS_4_Y_RECLOC;
+        pos_q_ref = POS_4_Q_RECLOC;
+        break;
+    case POS_5:
+        pos_x_ref = POS_5_X_RECLOC;
+        pos_y_ref = POS_5_Y_RECLOC;
+        pos_q_ref = POS_5_Q_RECLOC;
+        break;
+    case POS_6:
+        pos_x_ref = POS_6_X_RECLOC;
+        pos_y_ref = POS_6_Y_RECLOC;
+        pos_q_ref = POS_6_Q_RECLOC;
+        break;
+    case POS_END:
+        pos_x_ref = POS_END_X_RECLOC;
+        pos_y_ref = POS_END_Y_RECLOC;
+        pos_q_ref = POS_END_Q_RECLOC;
+        break;
+    default:
+        break;
+    }
+
+    // 视觉返回x,y和机器人坐标系反向
+    robot_x = pos_x_ref + delta_x;
+    robot_y = pos_y_ref + delta_y;
+    robot_q = pos_q_ref - delta_q; // 待测试，逆时针应该-
+
+    fp32 fpQ_now;
+    float temp_x_aruco, temp_y_aruco;
+    
+
+    if ((int)aruco_rec.if_detect) // 非耦合时可用
+    {
+        if (if_q_rec)
+        {
+            stPot.fpPosQ1=robot_q;
+            stPot.fpPosQ = stPot.fpPosQ1 + fpQOffset;
+        }
+
+        temp_x_aruco = stDt35_now.robot_x;
+        temp_y_aruco = stDt35_now.robot_y;
+        fpQ_now = ConvertAngle(stPot.fpPosQ * RADIAN); // 弧度
+
+        cFollowoerWheel.stPot.fpPosX = temp_x_aruco + (-sinf(-FW_rob_Alpha) + sinf(-FW_rob_Alpha - fpQ_now)) *
+                                                          cFollowoerWheel.m_VectorFWCen_RobCen.fpLength;
+        cFollowoerWheel.stPot.fpPosX1 = temp_x_aruco + (-sinf(-FW_rob_Alpha) + sinf(-FW_rob_Alpha - fpQ_now)) *
+                                                           cFollowoerWheel.m_VectorFWCen_RobCen.fpLength;
+
+        cFollowoerWheel.stPot.fpPosY = temp_y_aruco - (cosf(-FW_rob_Alpha) - cosf(-FW_rob_Alpha - fpQ_now)) *
+                                                          cFollowoerWheel.m_VectorFWCen_RobCen.fpLength;
+        cFollowoerWheel.stPot.fpPosY1 = temp_y_aruco - (cosf(-FW_rob_Alpha) - cosf(-FW_rob_Alpha - fpQ_now)) *
+                                                           cFollowoerWheel.m_VectorFWCen_RobCen.fpLength;
+    }
 }
 
 float temp_x_dt35, temp_y_dt35;

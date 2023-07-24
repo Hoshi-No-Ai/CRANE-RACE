@@ -27,7 +27,7 @@
 #define UART3_RX_DATA_LEN 8
 #define UART3_TX_DATA_LEN 8
 
-#define COM_LENGTH 6
+#define COM_LENGTH 7
 
 // #define UART6_RX_DATA_LEN 	16
 // #define UART6_TX_DATA_LEN   46
@@ -55,6 +55,7 @@ struct aruco{
 	fp32 thetax;
 	fp32 thetay;
 	fp32 thetaz;
+    fp32 if_detect;
 };
 
 // class uart_protocol

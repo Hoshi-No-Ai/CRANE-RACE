@@ -9,53 +9,68 @@ double temp;
 
 fp32 k_gyro = -0.0125;
 double test_v;
-void Comm1Rx_IRQ(void) {
+void Comm1Rx_IRQ(void)
+{
     int RATE;
     static int count;
-    if (UA1RxMailbox[0] == 0xDD) {
+    if (UA1RxMailbox[0] == 0xDD)
+    {
         RATE = (UA1RxMailbox[2] << 24) | (UA1RxMailbox[1] << 8) | (UA1RxMailbox[3] << 16);
         RATE = RATE / 256;
         GyroData = ((double)RATE) *
-                   2.980232238769531e-003;  // GyroData = ((double )RATE)  * 2.5 / 8388608;陀螺仪解算
+                   2.980232238769531e-003; // GyroData = ((double )RATE)  * 2.5 / 8388608;陀螺仪解算
         gyroGz = GyroData - f_g_error;
         GyroLPF.input = gyroGz;
         Butterworth50HzLPF(&GyroLPF);
-        if (calculate_flag) {
-            if ((gyroGz > value_door) || (gyroGz < ((-1) * value_door))) {
+        if (calculate_flag)
+        {
+            if ((gyroGz > value_door) || (gyroGz < ((-1) * value_door)))
+            {
                 GyroTab[GyroCount] = Gyro_TableLookUp(gyroGz);
-            } else {
+            }
+            else
+            {
                 GyroTab[GyroCount] = 0;
             }
             Angel_v = GyroTab[GyroCount];
             GyroCount++;
-            if (GyroCount == 0x03) {
+            if (GyroCount == 0x03)
+            {
                 CalFlag = 0x01;
                 GyroCount = 0x01;
             }
 
-            if (CalFlag == 0x01) {
+            if (CalFlag == 0x01)
+            {
                 Angel_d = 6.6666 * (GyroTab[0] + 4 * GyroTab[1] + GyroTab[2]) / 6.0 * 1e-2;
-                if (abs(Angel_d) > 200) {
+                if (abs(Angel_d) > 200)
+                {
                     Angel_d = 0;
                 }
                 GyroTab[0] = GyroTab[2];
                 RobAngel += Angel_d;
                 CalFlag = 0x00;
             }
-            if ((gyroGz > value_door) || (gyroGz < ((-1) * value_door))) {
+            if ((gyroGz > value_door) || (gyroGz < ((-1) * value_door)))
+            {
                 test_v = gyroGz * k_gyro;
                 temp = 3.3333 * test_v * 1e-2;
-                if (abs(temp) > 200) {
+                if (abs(temp) > 200)
+                {
                     temp = 0;
                 }
                 TestAngle2 += temp;
             }
-        } else {
-            if (flag_tuoluo) {
+        }
+        else
+        {
+            if (flag_tuoluo)
+            {
                 f_g_error += GyroData;
                 count++;
             }
-            if (count >= 3000) {
+            if (count >= 3000)
+            {
                 f_g_error = f_g_error / 3000;
                 calculate_flag = 1;
                 count = 0;
@@ -64,23 +79,23 @@ void Comm1Rx_IRQ(void) {
     }
 }
 
-//SB维特
+// SB维特
 uart1_rx_protocol_t uart1_efr = {0x55, 0x52, 0x55, 0x53, UART1_RX_DATA_LEN1, UART1_RX_DATA_LEN2, {0}, {0}, 0x01, 0xAA};
 
 uint8_t ucData1;
 uint8_t uart1_data_buf1[UART1_RX_DATA_LEN1];
 uint8_t uart1_data_buf2[UART1_RX_DATA_LEN2];
-//void Comm1Rx_IRQ(void)
+// void Comm1Rx_IRQ(void)
 //{
-//    static unsigned char Comm1_Rx_Status = RX_FREE; // 初始状态
-//    static unsigned char ucPit = 0;                 // 数据字节计数
-//    unsigned char i = 0;                            // 计数变量，遍历整个DMA数组
+//     static unsigned char Comm1_Rx_Status = RX_FREE; // 初始状态
+//     static unsigned char ucPit = 0;                 // 数据字节计数
+//     unsigned char i = 0;                            // 计数变量，遍历整个DMA数组
 
 //   for (i = 0; i < UART1_RX_DATA_LEN1 + 2 + UART1_RX_DATA_LEN2 + 2;
 //        ++i) // 遍历数组，数组大小i改变根据USART1_RXMB_LEN大小变化
 //   {
 //       ucData1 = UA1RxMailbox[i]; // 取出一个字节
-//				// ucData1 = USART_ReceiveData(USART1); 
+//				// ucData1 = USART_ReceiveData(USART1);
 //        /*********************************状态机解析数据包************************************/
 //        switch (Comm1_Rx_Status)
 //        {
@@ -341,20 +356,20 @@ void Comm6Rx_IRQ(void) // 串口2电流DMA接收函数
     case RX_START_2:
         if (ucData6 == uart6_efr.ID)
         {
-						Comm6_Rx_Status = RX_DATAS_1;
+            Comm6_Rx_Status = RX_DATAS_1;
         }
         else
         {
             Comm6_Rx_Status = RX_FREE;
         }
         break;
-				
-		case RX_DATAS_1:
-			if (ucData6 == uart6_efr.datanum)
-			{
-					Comm6_Rx_Status = RX_DATAS;
-			}
-			break;
+
+    case RX_DATAS_1:
+        if (ucData6 == uart6_efr.datanum)
+        {
+            Comm6_Rx_Status = RX_DATAS;
+        }
+        break;
 
     case RX_DATAS:
         if (ucData6 != uart6_efr.tail1)
@@ -439,7 +454,7 @@ uart2_tx_protocol_t uart2_eft = {0x55,
 u8 data_len_float = COM_LENGTH;
 uart2_rx_protocol_t uart2_efr = {0x55, 0x00, 0x04, data_len_float, UART2_RX_DATA_LEN, {0}, 0x00, 0xAA};
 
-//uart2_rx_protocol_t uart2_efr_1 = {0x55, 0x00, 0x11, data_len_float, UART2_RX_DATA_LEN, {0}, 0x00, 0xAA};
+// uart2_rx_protocol_t uart2_efr_1 = {0x55, 0x00, 0x11, data_len_float, UART2_RX_DATA_LEN, {0}, 0x00, 0xAA};
 
 aruco aruco_fdb;
 
@@ -535,12 +550,12 @@ void Comm2Rx_IRQ(void) // 串口6 DMA接收函数
                 }
             }
             break;
-						
+
         case RX_TAIL_1:
             if (ucData2 == uart2_efr.tail2) // 如果接到了0xAA，数据有效
             {
                 memcpy(uart2_efr.num, uart2_data_buf, UART2_RX_DATA_LEN);
-								memcpy(&aruco_fdb,uart2_efr.num,24);
+                memcpy(&aruco_fdb, uart2_efr.num, 4*7);
             }
             Comm2_Rx_Status = RX_FREE;
             break;

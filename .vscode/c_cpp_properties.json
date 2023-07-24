@@ -1,0 +1,29 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "forcedInclude": [
+                "D:/Program Files/Keil_v5/ARM/ARMCC/include/stdint.h"
+            ],
+            "includePath": [
+                "${workspaceFolder}/**",
+                "D:/Program Files/Keil_v5/Packs/ARM/CMSIS/5.7.0/CMSIS"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE",
+                "USE_STDPERIPH_DRIVER",
+                "STM32F40_41xxx",
+                "__FPU_USED=1"
+            ],
+            "windowsSdkVersion": "10.0.19041.0",
+            "compilerPath": "cl.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-msvc-x64"
+            // "intelliSenseMode": "gcc-x86"
+        }
+    ],
+    "version": 4
+}

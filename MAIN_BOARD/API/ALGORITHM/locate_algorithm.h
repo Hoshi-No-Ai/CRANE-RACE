@@ -37,6 +37,35 @@
 #define FW_Rob_Len 118.18f  // 随动轮中心与机器人中心的距离
 #define FW_rob_Alpha -PI/2 // 随动轮坐标与机器人坐标的夹角（单位：弧度）
 
+/* 视觉重定位参数 */
+#define POS_1_X_RECLOC 0.0f
+#define POS_1_Y_RECLOC 0.0f
+#define POS_1_Q_RECLOC 0.0f
+
+#define POS_2_X_RECLOC 0.0f
+#define POS_2_Y_RECLOC 0.0f
+#define POS_2_Q_RECLOC 0.0f
+
+#define POS_3_X_RECLOC 0.0f
+#define POS_3_Y_RECLOC 0.0f
+#define POS_3_Q_RECLOC 0.0f
+
+#define POS_4_X_RECLOC 0.0f
+#define POS_4_Y_RECLOC 0.0f
+#define POS_4_Q_RECLOC 0.0f
+
+#define POS_5_X_RECLOC 0.0f
+#define POS_5_Y_RECLOC 0.0f
+#define POS_5_Q_RECLOC 0.0f
+
+#define POS_6_X_RECLOC 0.0f
+#define POS_6_Y_RECLOC 0.0f
+#define POS_6_Q_RECLOC 0.0f
+
+#define POS_END_X_RECLOC 0.0f
+#define POS_END_Y_RECLOC 0.0f
+#define POS_END_Q_RECLOC 0.0f
+
 /*
 DT35系数
                 |y+
@@ -93,6 +122,16 @@ x+——————————————————————————dt35_x
 #define LIMIT_DIS_Y 40.0f
 #define LIMIT_Y1 50.0f
 #define LIMIT_Y2 50.0f
+
+enum pos_state_e {
+    POS_1,
+    POS_2,
+    POS_3,
+    POS_4,
+    POS_5,
+    POS_6,
+    POS_END
+};
 
 extern fp32 fpStartX;
 extern fp32 fpStartY;
@@ -188,6 +227,7 @@ public:
     void Cal_Robot_Degree(void);
     void RobotLocation(void);
     void Cal_RobotVelt(void);
+    void Aruco_relocation(aruco &aruco_rec, int pos_num, bool if_q_rec);
     void DT35_relocation_new(void);
     void DT35_Q_relocation(void);
 };
