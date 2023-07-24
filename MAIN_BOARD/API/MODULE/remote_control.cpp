@@ -117,7 +117,7 @@ void C_JsKey::ReadWlanJsValue(void) {
                 } /*检测是否被按下*/
             }
 
-            if (usJsState == 0x73)  // 红灯模式
+            if (usJsState == 0x80)  // 红灯模式
             {
                 usJsLeft = Wlan_JOYSTICK_LEFT;
                 usJsRight = Wlan_JOYSTICK_RIGTH;
@@ -192,13 +192,13 @@ void C_JsKey::ReadWlanJsValue(void) {
 
             if (usJsState == 0x73)  // 红灯模式
             {
-                usJsLeft_X = Wlan_JOYSTICK_LEFT_X;
-                usJsLeft_Y = Wlan_JOYSTICK_LEFT_Y;
-                usJsRight = Wlan_JOYSTICK_RIGTH;
+                    usJsLeft_X = Wlan_JOYSTICK_LEFT_X;
+                    usJsLeft_Y = Wlan_JOYSTICK_LEFT_Y;
+                    usJsRight = Wlan_JOYSTICK_RIGTH;
             } else if (usJsState == 0x41) {
-                usJsLeft_X = 0;
-                usJsLeft_Y = 0;
-                usJsRight = 0;
+                usJsLeft_X = 128;
+                usJsLeft_Y = 130;
+                usJsRight = 128;
             }
         }
 

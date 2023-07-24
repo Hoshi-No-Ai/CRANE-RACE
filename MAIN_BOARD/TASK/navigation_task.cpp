@@ -32,10 +32,10 @@ void navigation(void) {
                 Omni_chassis[i].m_run_motor.feed_forward_current = WITHOUT_FORWARD;
             }
 
-            if (manual_enable)
-            {
+            // if (manual_enable)
+            // {
                 JsKey.CalSpeed(nav);
-            }       
+            // }       
             
             nav.Omni_chassis_SpeedDistribute();
 
@@ -47,10 +47,10 @@ void navigation(void) {
                 Omni_chassis[i].m_run_motor.feed_forward_current = WITHOUT_FORWARD;
             }
 
-            if (manual_enable)
-            {
+            // if (manual_enable)
+            // {
                 JsKey.CalSpeed(nav);
-            }  
+            // }  
 
             nav.Omni_chassis_SpeedDistribute();
 

@@ -19,13 +19,13 @@
 #define Wlan_JOYSTICK_STATE 		tmp_buf[0]
 
 #define Wlan_PSKEY 	            tmp_buf_11
-#define	 JS_MID_POS_X 131//摇杆中间值     
-#define  JS_MID_POS_Y 125
+#define	 JS_MID_POS_X 128//摇杆中间值     
+#define  JS_MID_POS_Y 130
 
 //#define NRF_ENABLE //使用NRF时解注释
 
 class C_JsKey {
-   public:
+	public:
     uint16_t usJsKey;
     uint8_t aucKeyPress[16];        //为1时，表示按键按下有效
     uint32_t auiPressDuration[16];  //按下持续时间与该值比较，判断是否为连击

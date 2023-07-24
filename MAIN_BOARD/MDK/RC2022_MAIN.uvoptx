@@ -119,6 +119,10 @@
       <TargetDriverDllRegistry>
         <SetRegEntry>
           <Number>0</Number>
+          <Key>DLGUARM</Key>
+        </SetRegEntry>
+        <SetRegEntry>
+          <Number>0</Number>
           <Key>ARMRTXEVENTFLAGS</Key>
           <Name>-L70 -Z18 -C0 -M0 -T1</Name>
         </SetRegEntry>
@@ -303,7 +307,7 @@
         <Ww>
           <count>31</count>
           <WinNumber>1</WinNumber>
-          <ItemText>JsKey</ItemText>
+          <ItemText>JsKey,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>
@@ -386,6 +390,26 @@
           <count>15</count>
           <WinNumber>2</WinNumber>
           <ItemText>\\RC2022_MAIN\../API/MODULE/usart_protocol.cpp\uart6_efr.num[34]</ItemText>
+        </Ww>
+        <Ww>
+          <count>16</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>tmp_buf,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>17</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>fpQ</ItemText>
+        </Ww>
+        <Ww>
+          <count>18</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Convert_Array[0]</ItemText>
+        </Ww>
+        <Ww>
+          <count>19</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Convert_Array</ItemText>
         </Ww>
       </WatchWindow2>
       <Tracepoint>

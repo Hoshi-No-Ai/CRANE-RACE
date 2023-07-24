@@ -6,7 +6,6 @@
 
 typedef struct
 {
-
 	float sucker_slide;
 	float sucker_lift;
 

@@ -256,6 +256,8 @@ extern rx_protocol_t uart6_efr;
 // extern uart6_tx_protocol_t uart6_eft;
 // extern uart6_rx_protocol_t uart6_efr;
 
+extern aruco aruco_fdb;
+
 void USART3_DMA_Tx(void);
 void Comm3Rx_IRQ(void);
 void USART6_DMA_Tx(wifi_rx_id_e device);

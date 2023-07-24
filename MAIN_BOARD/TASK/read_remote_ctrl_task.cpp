@@ -94,7 +94,7 @@ void Key_Deal(void)
 
     if(PRESS_KEY_0_1)
     {
-        manual_enable=!manual_enable;
+        // manual_enable=!manual_enable;
     }
     else if(PRESS_KEY_0_2)
     {
@@ -258,6 +258,11 @@ void Key_Deal(void)
     }
     else if (PRESS_KEY_3_1)
     {
+        if (keyboard_mode==DEBUG)
+        {
+            cRobot.Aruco_relocation(aruco_fdb,POS_1,1);
+        }
+        
     }
     else if (PRESS_KEY_3_2)
     {

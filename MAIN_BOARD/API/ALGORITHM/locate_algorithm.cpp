@@ -277,7 +277,7 @@ void C_ROBOT::RobotLocation()
     /*******************获取角度*********************/
     Cal_Robot_Degree();                        // 给stPot.fpPosQ1赋值,单位0.1度
     stPot.fpPosQ = stPot.fpPosQ1 + fpQOffset;  // 单位0.1度
-    fpQ = ConvertAngle(stPot.fpPosQ * RADIAN); // 单位:弧度
+    fpQ = ConvertAngle(stPot.fpPosQ * RADIAN_10); // 单位:弧度
 
     /**************获取随动轮方向位移****************/
     cFollowoerWheel.m_CoderACur = cFollowoerWheel.degreeA;
@@ -463,7 +463,7 @@ void C_ROBOT::Aruco_relocation(aruco &aruco_rec, int pos_num, bool if_q_rec)
 
         temp_x_aruco = stDt35_now.robot_x;
         temp_y_aruco = stDt35_now.robot_y;
-        fpQ_now = ConvertAngle(stPot.fpPosQ * RADIAN); // 弧度
+        fpQ_now = ConvertAngle(stPot.fpPosQ * RADIAN_10); // 弧度
 
         cFollowoerWheel.stPot.fpPosX = temp_x_aruco + (-sinf(-FW_rob_Alpha) + sinf(-FW_rob_Alpha - fpQ_now)) *
                                                           cFollowoerWheel.m_VectorFWCen_RobCen.fpLength;
@@ -490,8 +490,8 @@ void C_ROBOT::DT35_relocation_new(void)
     static fp32 fpQ_now, fpQ_save;
     stDt35_now.robot_q = stPot.fpPosQ;
     // x:4du
-    fpQ_save = ConvertAngle(stDt35_save.robot_q * RADIAN); // 弧度
-    fpQ_now = ConvertAngle(stDt35_now.robot_q * RADIAN);   // 弧度
+    fpQ_save = ConvertAngle(stDt35_save.robot_q * RADIAN_10); // 弧度
+    fpQ_now = ConvertAngle(stDt35_now.robot_q * RADIAN_10);   // 弧度
 
     // dt35到墙的距离，
     stDt35_save.dt35_fix_x1 = fabs(K_DT35_X1 * stDt35_save.dt35_x1 + B_DT35_X1);

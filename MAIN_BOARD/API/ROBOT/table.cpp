@@ -25,7 +25,6 @@ void cTable::slide_to_aim(void)
 
 void cTable::lift_to_aim(void)
 {
-
 	td_lift.m_aim = DES.table_lift;
 	td_lift.TD_Function();
 

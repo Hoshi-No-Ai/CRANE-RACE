@@ -17,7 +17,7 @@ void C_NAV::Omni_chassis_SpeedDistribute(void) {
     if (state == NAV_MANUAL) {
         fpQ = 0;
     } else {
-        fpQ = ConvertAngle(cRobot.stPot.fpPosQ * RADIAN);
+        fpQ = ConvertAngle(cRobot.stPot.fpPosQ * RADIAN_10);
     }
 
     C_VECTOR::Concert_coorindnate(expect_robot_global_velt, expect_robot_local_Velt, fpQ);
@@ -53,7 +53,7 @@ void C_NAV::Omni_chassis_Cal_Feedforward(void) {
     C_VECTOR Omni_velt, Omni_pre_velt;
 
     fp32 fpQ;
-    fpQ = ConvertAngle(cRobot.stPot.fpPosQ * RADIAN);
+    fpQ = ConvertAngle(cRobot.stPot.fpPosQ * RADIAN_10);
     C_VECTOR::Concert_coorindnate(expect_robot_global_velt, expect_robot_local_Velt, fpQ);
 
     for (int i = 0; i < 4; i++) {
