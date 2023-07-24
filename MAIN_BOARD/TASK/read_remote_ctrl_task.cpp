@@ -1,6 +1,7 @@
 #include "read_remote_ctrl_task.h"
 
 using _navigation_::calibration_current;
+using _remote_ctrl_::manual_enable;
 
 keyboard_mode_e keyboard_mode = DEBUG;
 
@@ -77,7 +78,7 @@ void Js_Deal(void)
     else if (PRESS_LEFT)
     {
         keyboard_mode = ACTION;
-        nav.auto_path.m_velt_acc.Velt_Acc_Set(500, 500, 500);
+          
     }
     else if (PRESS_RIGHT)
     {
@@ -91,7 +92,15 @@ void Key_Deal(void)
     JsKey.ReadWlanKeyValue();
     JsKey.ReadWlanJsValue();
 
-    if (PRESS_KEY_1_1)
+    if(PRESS_KEY_0_1)
+    {
+        manual_enable=!manual_enable;
+    }
+    else if(PRESS_KEY_0_2)
+    {
+
+    }
+    else if (PRESS_KEY_1_1)
     {
         if (keyboard_mode == DEBUG)
         {
@@ -203,6 +212,9 @@ void Key_Deal(void)
         }
         else if (keyboard_mode == PATH)
         {
+            nav.auto_path.m_point_end.point_set(0, 0, 0);
+            nav.auto_path.m_velt_acc.Velt_Acc_Set(500,500,500);
+            SET_NAV_PATH_AUTO(1);
         }
         else if (keyboard_mode == CALIBRATION)
         {

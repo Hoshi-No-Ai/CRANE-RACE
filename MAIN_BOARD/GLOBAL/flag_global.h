@@ -17,7 +17,9 @@ extern uint8_t wifi_rx_flag;
 //   extern uint16_t g_usSwitchPre;//保存上一时刻开关值
 }  // namespace _api_module_
 
-namespace _remote_ctrl_ {}
+namespace _remote_ctrl_ {
+    extern bool manual_enable;
+}
 
 namespace _navigation_ {
 extern float flag_record;  // 静态路径初始化标志位

@@ -336,11 +336,11 @@ void C_ROBOT::RobotLocation()
     stPot.fpPosX = stPot.fpPosX + fpPosXOffset;
     stPot.fpPosY = stPot.fpPosY + fpPosYOffset;
 
-    temp_x = stPot.fpPosY;
-    temp_y = -stPot.fpPosX;
+//    temp_x = -stPot.fpPosY;
+//    temp_y = stPot.fpPosX;
 
-    stPot.fpPosX = temp_x;
-    stPot.fpPosY = temp_y;
+//    stPot.fpPosX = temp_x;
+//    stPot.fpPosY = temp_y;
 
     //	Fpx.in = stPot.fpPosX;
     //	Fpy.in = stPot.fpPosY;

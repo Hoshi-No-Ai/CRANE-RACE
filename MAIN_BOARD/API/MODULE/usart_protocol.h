@@ -10,8 +10,6 @@
 #include "string.h"
 #include "uart.h"
 
-
-#define SEE_TOWER 0x11
 #define DT35_NUM 0x04
 
 #define MAX_RX_DATA_LEN 114
@@ -29,7 +27,7 @@
 #define UART3_RX_DATA_LEN 8
 #define UART3_TX_DATA_LEN 8
 
-#define COM_LENGTH 14
+#define COM_LENGTH 6
 
 // #define UART6_RX_DATA_LEN 	16
 // #define UART6_TX_DATA_LEN   46
@@ -50,12 +48,13 @@ enum rx_protocol_e {
     RX_TOWER_DATAS,
 };
 
-struct tower {
-    fp32 x;
-    fp32 z;
-    fp32 y;
-    fp32 q;
-    fp32 if_find;
+struct aruco{
+	fp32 x;
+	fp32 y;
+	fp32 z;
+	fp32 thetax;
+	fp32 thetay;
+	fp32 thetaz;
 };
 
 // class uart_protocol
@@ -241,13 +240,10 @@ struct rx_protocol_t {
     uint8_t tail2;  // 帧尾2
 };                  // 接收信息报文结构体
 
-extern tower TOWER[2];
-
 extern uart1_rx_protocol_t uart1_efr;
 
 extern uart2_tx_protocol_t uart2_eft;
 extern uart2_rx_protocol_t uart2_efr;
-extern uart2_rx_protocol_t uart2_efr_1;
 
 extern uart3_tx_protocol_t uart3_eft;
 extern uart3_rx_protocol_t uart3_efr;

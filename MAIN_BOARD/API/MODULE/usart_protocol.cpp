@@ -437,11 +437,11 @@ uart2_tx_protocol_t uart2_eft = {0x55,
                                  0xAA};
 
 u8 data_len_float = COM_LENGTH;
-uart2_rx_protocol_t uart2_efr = {0x55, 0x00, 0x09, data_len_float, UART2_RX_DATA_LEN, {0}, 0x00, 0xAA};
+uart2_rx_protocol_t uart2_efr = {0x55, 0x00, 0x04, data_len_float, UART2_RX_DATA_LEN, {0}, 0x00, 0xAA};
 
-uart2_rx_protocol_t uart2_efr_1 = {0x55, 0x00, 0x11, data_len_float, UART2_RX_DATA_LEN, {0}, 0x00, 0xAA};
+//uart2_rx_protocol_t uart2_efr_1 = {0x55, 0x00, 0x11, data_len_float, UART2_RX_DATA_LEN, {0}, 0x00, 0xAA};
 
-tower TOWER[2];
+aruco aruco_fdb;
 
 u8 usart2_cnt;
 uint8_t ucData2;
@@ -501,10 +501,6 @@ void Comm2Rx_IRQ(void) // 串口6 DMA接收函数
             {
                 Comm2_Rx_Status = RX_START_3;
             }
-            else if (ucData2 == uart2_efr_1.ID)
-            {
-                Comm2_Rx_Status = RX_TOWER_START_3;
-            }
             else
             {
                 Comm2_Rx_Status = RX_FREE;
@@ -539,47 +535,12 @@ void Comm2Rx_IRQ(void) // 串口6 DMA接收函数
                 }
             }
             break;
-        case RX_TOWER_START_3:
-            if (ucData2 == uart2_efr_1.data_len_float)
-            {
-                Comm2_Rx_Status = RX_TOWER_DATAS;
-            }
-            else
-            {
-                Comm2_Rx_Status = RX_FREE;
-            }
-            break;
-        case RX_TOWER_DATAS:
-            if (ucPit < uart2_efr_1.datanum) // 如果没够数，存
-            {
-                *(uart2_data_buf + ucPit) = ucData2;
-                ucPit++;
-            }
-            else // 够数了判断0x00
-            {
-                ucPit = 0;
-                if (ucData2 == uart2_efr_1.tail1)
-                {
-                    Comm2_Rx_Status = RX_TAIL_3;
-                }
-                else
-                {
-                    Comm2_Rx_Status = RX_FREE;
-                }
-            }
-            break;
+						
         case RX_TAIL_1:
             if (ucData2 == uart2_efr.tail2) // 如果接到了0xAA，数据有效
             {
                 memcpy(uart2_efr.num, uart2_data_buf, UART2_RX_DATA_LEN);
-            }
-            Comm2_Rx_Status = RX_FREE;
-            break;
-        case RX_TAIL_3:
-            if (ucData2 == uart2_efr_1.tail2) // 如果接到了0xAA，数据有效
-            {
-                memcpy(&TOWER[0], uart2_data_buf, 5 * 4);
-                memcpy(&TOWER[1], uart2_data_buf + 5 * 4, 5 * 4);
+								memcpy(&aruco_fdb,uart2_efr.num,24);
             }
             Comm2_Rx_Status = RX_FREE;
             break;

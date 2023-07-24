@@ -13,5 +13,7 @@ uint8_t _api_module_::wifi_rx_flag = 0;
 // uint16_t _api_module_::g_usSwitch=0;     //开关有关全局变量
 // uint16_t _api_module_::g_usSwitchPre = 0;//保存上一时刻开关值
 
+bool _remote_ctrl_::manual_enable = 0;
+
 float _navigation_::flag_record = 0;
 float _navigation_::calibration_current = 0;

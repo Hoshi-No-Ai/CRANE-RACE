@@ -2,6 +2,7 @@
 
 using _api_module_::flag_tuoluo;
 using _navigation_::calibration_current;
+using _remote_ctrl_::manual_enable;
 
 static bool path_with_pos_pid = 1;
 
@@ -31,8 +32,11 @@ void navigation(void) {
                 Omni_chassis[i].m_run_motor.feed_forward_current = WITHOUT_FORWARD;
             }
 
-            JsKey.CalSpeed(nav);
-
+            if (manual_enable)
+            {
+                JsKey.CalSpeed(nav);
+            }       
+            
             nav.Omni_chassis_SpeedDistribute();
 
             break;
@@ -43,7 +47,10 @@ void navigation(void) {
                 Omni_chassis[i].m_run_motor.feed_forward_current = WITHOUT_FORWARD;
             }
 
-            JsKey.CalSpeed(nav);
+            if (manual_enable)
+            {
+                JsKey.CalSpeed(nav);
+            }  
 
             nav.Omni_chassis_SpeedDistribute();
 
@@ -66,9 +73,9 @@ void navigation(void) {
             // 规划来自路径
 
             nav.auto_path.Path_Choose();
-            nav.auto_path.pos_pid.x.fpKp = 6.0f;
-            nav.auto_path.pos_pid.y.fpKp = 6.0f;
-            nav.auto_path.pos_pid.w.fpKp = 7.0f;
+            nav.auto_path.pos_pid.x.fpKp = 5.0f;
+            nav.auto_path.pos_pid.y.fpKp = 5.0f;
+            nav.auto_path.pos_pid.w.fpKp = 5.0f;
 
             nav.auto_path.basic_velt.fpW *= RADIAN;
             nav.auto_path.pos_pid.w.fpFB *= RADIAN;

@@ -100,8 +100,6 @@ s16 pwm3 = 0;
 s16 pwm4 = 0;
 extern cSucker sucker;
 extern cTable table;
-extern cSucker sucker;
-extern cTable table;
 u16 pwm_value_3_3=0;//S1 TIM
 int _servo_degree ;
 void motor_control_task(void *p) {
