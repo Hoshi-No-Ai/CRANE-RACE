@@ -28,13 +28,13 @@ void cTable::lift_to_aim(void)
 	td_lift.m_aim = DES.table_lift;
 	td_lift.TD_Function();
 
-	lift_motor1.pos_pid.fpDes = ClipFloat(td_lift.m_x1, -2000, -100);
+	lift_motor1.pos_pid.fpDes = ClipFloat(td_lift.m_x1, -2000, -10);
 	lift_motor1.pos_pid.CalComprehensivePID();
 	lift_motor1.velt_pid.fpDes = lift_motor1.pos_pid.fpU;
 	lift_motor1.velt_pid.CalComprehensivePID();
 	lift_motor1.pid_current = lift_motor1.velt_pid.fpU;
 
-	lift_motor2.pos_pid.fpDes = ClipFloat(td_lift.m_x1, -2000, -100);
+	lift_motor2.pos_pid.fpDes = ClipFloat(td_lift.m_x1, -2000, -10);
 	lift_motor2.pos_pid.CalComprehensivePID();
 	lift_motor2.velt_pid.fpDes = lift_motor2.pos_pid.fpU;
 	lift_motor2.velt_pid.CalComprehensivePID();

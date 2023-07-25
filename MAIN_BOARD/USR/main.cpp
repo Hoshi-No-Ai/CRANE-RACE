@@ -1,6 +1,7 @@
 #include "main.h"
 #include "sucker.h"
 #include "table.h"
+#include "action_task.h"
 using _api_module_::calculate_flag;
 using _api_module_::f_g_error;
 #define servo_degree(x)     ((2000)/180*x+500)
@@ -16,6 +17,7 @@ DECLARE_HITCRT_OS_TASK();  // 声明任务
 
 u8 udp_demo_sendbuf[ARM_DEBUG_SIZE * 4 + 4] = "Explorer STM32F407 NETCONN UDP demo send data\r\n";
 u8 udp_flag;  // UDP数据发送标志
+
 
 int main(void) {
     OS_ERR err;
@@ -207,6 +209,7 @@ void action_task(void *p) {
 
     while (1) {
 			sucker.drive_sucker();
+			 handle_box();
         OSTimeDly_ms(1);
     }
 }

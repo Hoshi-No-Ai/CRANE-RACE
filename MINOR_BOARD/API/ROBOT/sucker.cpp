@@ -23,7 +23,7 @@ void cSucker::lift_to_aim(void)
 {
 	td_lift.aim = DES_qzj.sucker_lift;
 	td_lift.TD_Function();
-	lift_motor.pos_pid.fpDes = ClipFloat(td_lift.x1,0,1000);
+	lift_motor.pos_pid.fpDes = ClipFloat(td_lift.x1,0,1200);
 	lift_motor.pos_pid.CalComprehensivePID();
 	lift_motor.velt_pid.fpDes = lift_motor.pos_pid.fpU;
 	lift_motor.velt_pid.CalComprehensivePID();

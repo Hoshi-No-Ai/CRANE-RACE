@@ -22,7 +22,7 @@ typedef enum
 }rx_protocol_e;
 
 #define UART1_RX_DATA_LEN 	12
-#define UART6_RX_DATA_LEN 	8
+#define UART6_RX_DATA_LEN 	16
 #define UART1_TX_DATA_LEN   10
 #define UART6_TX_DATA_LEN   8
 

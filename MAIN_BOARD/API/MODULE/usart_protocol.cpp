@@ -1,5 +1,5 @@
 #include "usart_protocol.h"
-
+#include "sucker.h"
 using _api_module_::calculate_flag;
 using _api_module_::f_g_error;
 using _api_module_::flag_tuoluo;
@@ -208,6 +208,7 @@ void USART3_DMA_Tx(void) // 串口2 DMA发送函数
 uint8_t ucData3;
 /*串口2相关的缓存区*/
 uint8_t uart3_data_buf[UART3_RX_DATA_LEN];
+extern cSucker sucker;
 
 void Comm3Rx_IRQ(void) // 串口2电流DMA接收函数
 {
@@ -262,6 +263,10 @@ void Comm3Rx_IRQ(void) // 串口2电流DMA接收函数
                 if (ucData3 == uart3_efr.tail1)
                 {
                     Comm3_Rx_Status = RX_TAIL_1;
+										memcpy(&sucker.slide_motor.pos_pid.fpFB,uart3_efr.num,4);
+									memcpy(&sucker.lift_motor.pos_pid.fpFB,&uart3_efr.num[4],4);
+									
+										
                 }
                 else
                 {
