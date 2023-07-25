@@ -64,7 +64,7 @@ void navigation(void) {
 
             nav.auto_path.pos_pid.x.fpFB = cRobot.stPot.fpPosX;
             nav.auto_path.pos_pid.y.fpFB = cRobot.stPot.fpPosY;
-            nav.auto_path.pos_pid.w.fpFB = cRobot.stPot.fpPosQ;
+            nav.auto_path.pos_pid.w.fpFB = 0.1f * cRobot.stPot.fpPosQ;
 
             nav.auto_path.velt_pid.x.fpFB = cRobot.stVelt.fpVx;
             nav.auto_path.velt_pid.y.fpFB = cRobot.stVelt.fpVy;
@@ -72,7 +72,11 @@ void navigation(void) {
 
             // 规划来自路径
 
-            nav.auto_path.Path_Choose();
+            if(!nav.auto_path.Path_Choose())
+						{
+							nav.auto_path.flag_path_end=0;
+							nav.state=NAV_STOP;
+						}
             nav.auto_path.pos_pid.x.fpKp = 5.0f;
             nav.auto_path.pos_pid.y.fpKp = 5.0f;
             nav.auto_path.pos_pid.w.fpKp = 5.0f;
@@ -98,7 +102,7 @@ void navigation(void) {
             }
 
             nav.Omni_chassis_SpeedDistribute();
-            nav.Omni_chassis_Cal_Feedforward();
+//            nav.Omni_chassis_Cal_Feedforward();
 
             break;
 

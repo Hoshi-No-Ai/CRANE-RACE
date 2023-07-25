@@ -66,7 +66,7 @@ void C_JsKey::CalSpeed(C_NAV &p_nav) {
 
     p_nav.expect_robot_global_velt.fpVx = -FJy.m_out;
     p_nav.expect_robot_global_velt.fpVy = FJx.m_out;
-    p_nav.expect_robot_global_velt.fpW = FJw.m_out / 700.0f;  // ¡À?????????10
+    p_nav.expect_robot_global_velt.fpW = -FJw.m_out / 700.0f;  // ¡À?????????10
 }
 
 /******************************************************************

@@ -14,7 +14,7 @@
     nav.auto_path.m_number = Name; \
     nav.state = NAV_AUTO_PATH;     \
     nav.auto_path.run_time = 0;    \
-    flag_record = 1;
+    flag_record = 1
 
 enum nav_state_e {
     NAV_INIT,

@@ -38,33 +38,33 @@
 #define FW_rob_Alpha 0.0f // 随动轮坐标与机器人坐标的夹角（单位：弧度）
 
 /* 视觉重定位参数 */
-#define POS_1_X_RECLOC 0.0f
-#define POS_1_Y_RECLOC 0.0f
-#define POS_1_Q_RECLOC 0.0f
+#define POS_1_X_RECLOC -578.84f
+#define POS_1_Y_RECLOC 789.40f
+#define POS_1_Q_RECLOC -89.58f
 
-#define POS_2_X_RECLOC 0.0f
-#define POS_2_Y_RECLOC 0.0f
-#define POS_2_Q_RECLOC 0.0f
+#define POS_2_X_RECLOC -466.69f
+#define POS_2_Y_RECLOC 1146.99f
+#define POS_2_Q_RECLOC -125.41f
 
-#define POS_3_X_RECLOC 0.0f
-#define POS_3_Y_RECLOC 0.0f
-#define POS_3_Q_RECLOC 0.0f
+#define POS_3_X_RECLOC -167.61f
+#define POS_3_Y_RECLOC 1562.55f
+#define POS_3_Q_RECLOC -159.09f
 
-#define POS_4_X_RECLOC 0.0f
-#define POS_4_Y_RECLOC 0.0f
-#define POS_4_Q_RECLOC 0.0f
+#define POS_4_X_RECLOC 203.35f
+#define POS_4_Y_RECLOC 1367.31f
+#define POS_4_Q_RECLOC -196.56f
 
-#define POS_5_X_RECLOC 0.0f
-#define POS_5_Y_RECLOC 0.0f
-#define POS_5_Q_RECLOC 0.0f
+#define POS_5_X_RECLOC 489.78f
+#define POS_5_Y_RECLOC 1152.22f
+#define POS_5_Q_RECLOC -234.34f
 
-#define POS_6_X_RECLOC 0.0f
-#define POS_6_Y_RECLOC 0.0f
-#define POS_6_Q_RECLOC 0.0f
+#define POS_6_X_RECLOC 596.72f
+#define POS_6_Y_RECLOC 795.55f
+#define POS_6_Q_RECLOC -268.33f
 
-#define POS_END_X_RECLOC 0.0f
-#define POS_END_Y_RECLOC 0.0f
-#define POS_END_Q_RECLOC 0.0f
+#define POS_END_X_RECLOC 590.26f
+#define POS_END_Y_RECLOC -1673.39f
+#define POS_END_Q_RECLOC -359.36f
 
 /*
 DT35系数

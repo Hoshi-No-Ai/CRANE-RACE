@@ -15,9 +15,9 @@ static void wifi_rxdata_update(void) {
     uart6_tx_buf[16].float_num = cRobot.cFollowoerWheel.m_CoderBCur;
 //    uart6_tx_buf[17].float_num = cRobot.cGyro.fpQ;
 
-    uart6_tx_buf[18].float_num = cRobot.stDt35_now.dt35_x1;
-    uart6_tx_buf[19].float_num = cRobot.stDt35_now.dt35_x2;
-    uart6_tx_buf[20].float_num = cRobot.stDt35_now.dt35_y1;
+    uart6_tx_buf[18].float_num = nav.auto_path.pos_pid.x.fpDes;
+    uart6_tx_buf[19].float_num = nav.auto_path.pos_pid.y.fpDes;
+    uart6_tx_buf[20].float_num = nav.auto_path.pos_pid.w.fpDes;
     uart6_tx_buf[21].float_num = cRobot.stDt35_now.dt35_y2;
 }
 

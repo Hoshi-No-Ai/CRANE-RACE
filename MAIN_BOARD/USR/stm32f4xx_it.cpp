@@ -296,7 +296,6 @@ void CAN2_RX0_IRQHandler(void)
         }
         else
         {
-
             table.lift_motor2.velt_pid.fpFB = (fp32)1.0f * table.lift_motor2.encoder.Get_Speed(&RxMessage2) /
                                               table.lift_motor2.encoder.siGearRatio;
             table.lift_motor2.pos_pid.fpFB =

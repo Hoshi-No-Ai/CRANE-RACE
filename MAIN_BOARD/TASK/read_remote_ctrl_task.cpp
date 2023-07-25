@@ -102,7 +102,7 @@ void Key_Deal(void)
     }
     else if (PRESS_KEY_1_1)
     {
-        if (keyboard_mode == DEBUG)
+        if (keyboard_mode == DEBUG||keyboard_mode == PATH||keyboard_mode == ACTION)
         {
             nav.auto_path.run_time = 0;
             cRobot.cFollowoerWheel.stPot.fpPosX = 0;
@@ -126,7 +126,7 @@ void Key_Deal(void)
     }
     else if (PRESS_KEY_1_2)
     {
-        if (keyboard_mode == DEBUG)
+        if (keyboard_mode == DEBUG||keyboard_mode == PATH||keyboard_mode == ACTION)
         {
             nav.state=NAV_MANUAL;
         }
@@ -140,7 +140,7 @@ void Key_Deal(void)
     }
     else if (PRESS_KEY_1_3)
     {
-        if (keyboard_mode == DEBUG)
+        if (keyboard_mode == DEBUG||keyboard_mode == PATH||keyboard_mode == ACTION)
         {
             nav.state=NAV_NEW_MANUAL;
         }
@@ -168,16 +168,10 @@ void Key_Deal(void)
     }
     else if (PRESS_KEY_1_5)
     {
-        if (keyboard_mode == ACTION)
-        {
-        }
-        else if (keyboard_mode == DEBUG)
+        if (keyboard_mode == DEBUG||keyboard_mode == PATH||keyboard_mode == ACTION)
         {
             JsKey.M_SPEED+=200;
             JsKey.M_SPEED=ClipFloat(JsKey.M_SPEED,200,3000);
-        }
-        else if (keyboard_mode == PATH)
-        {
         }
         else if (keyboard_mode == CALIBRATION)
         {
@@ -189,7 +183,7 @@ void Key_Deal(void)
     }
     else if (PRESS_KEY_1_6)
     {
-        if (keyboard_mode == DEBUG)
+        if (keyboard_mode == DEBUG||keyboard_mode == PATH||keyboard_mode == ACTION)
         {
             JsKey.M_SPEED-=200;
             JsKey.M_SPEED=ClipFloat(JsKey.M_SPEED,200,3000);
@@ -201,9 +195,6 @@ void Key_Deal(void)
                 calibration_current = 24000;
             }
         }
-        else if (keyboard_mode == PATHPLANNING)
-        {
-        }
     }
     else if (PRESS_KEY_2_1)
     {
@@ -213,7 +204,7 @@ void Key_Deal(void)
         else if (keyboard_mode == PATH)
         {
             nav.auto_path.m_point_end.point_set(0, 0, 0);
-            nav.auto_path.m_velt_acc.Velt_Acc_Set(500,500,500);
+            nav.auto_path.m_velt_acc.Velt_Acc_Set(500,60,500,500);
             SET_NAV_PATH_AUTO(1);
         }
         else if (keyboard_mode == CALIBRATION)
@@ -262,7 +253,6 @@ void Key_Deal(void)
         {
             cRobot.Aruco_relocation(aruco_fdb,POS_1,1);
         }
-        
     }
     else if (PRESS_KEY_3_2)
     {
