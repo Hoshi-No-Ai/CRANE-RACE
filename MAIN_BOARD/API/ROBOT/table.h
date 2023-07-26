@@ -65,7 +65,7 @@ public:
 
 		td_slide.m_h = ctrl_TS;
 		td_slide.m_T = ctrl_TS;
-		td_slide.m_r = 50;
+		td_slide.m_r = 25;
 
 		td_lift.m_h = ctrl_TS;
 		td_lift.m_T = ctrl_TS;
