@@ -16,6 +16,8 @@
 *.dbg*
 *.uvguix.*
 .mxproject
+*.hex
+*.axf
 
 RTE/
 Templates/
@@ -26,6 +28,4 @@ Examples/
 !*.c
 !*.cpp
 !*.ioc
-!*.axf
 !*.bin
-!*.hex
