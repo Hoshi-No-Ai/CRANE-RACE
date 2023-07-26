@@ -14,19 +14,19 @@ void robot_movement(void)
         case ACTION_NONE:
             break;
         case ACTION_INIT:
-            // ÉÏ²ã»ú¹¹³õÊ¼»¯
+            // ä¸Šå±‚æœºæ„åˆå§‹åŒ–
             box_state = await;
             break;
         case ACTIO_FETCH:
-            // ÉÏ²ã×¥È¡
+            // ä¸Šå±‚æŠ“å–
             box_state = get_state1;
             break;
         case ACTION_PUT:
-            // ÉÏ²ã×¥È¡
+            // ä¸Šå±‚æŠ“å–
             box_state = get_state1;
             break;
         case ACTION_POS_1:
-            // ÅÜµ½µÚÒ»¸öµãÎ»
+            // è·‘åˆ°ç¬¬ä¸€ä¸ªç‚¹ä½
             nav.auto_path.m_point_end.point_set(POS_1_X , POS_1_Y , POS_1_Q );
             nav.auto_path.m_velt_acc.Velt_Acc_Set(500, 60, 500, 500);
             SET_NAV_PATH_AUTO(1);
@@ -75,7 +75,7 @@ void movement_check(bool if_auto)
         switch (action_pattern)
         {
         case ACTION_INIT:
-            // ÉÏ²ã·¢ËÍ³õÊ¼»¯³É¹¦flag±êÖ¾Î»
+            // ä¸Šå±‚å‘é€åˆå§‹åŒ–æˆåŠŸflagæ ‡å¿—ä½
             if (fetch_pattern == FETCH_AWAIT)
             {
                 action_pattern = ACTION_POS_1;
@@ -88,7 +88,7 @@ void movement_check(bool if_auto)
              }
             break;
         case ACTION_POS_1:
-            // ÅĞ¶Ïµ×ÅÌÊÇ·ñÅÜµ½µãÎ»
+            // åˆ¤æ–­åº•ç›˜æ˜¯å¦è·‘åˆ°ç‚¹ä½
             if (pos_i == ACTION_POS_1)
             {
                 action_pattern = ACTIO_FETCH;
@@ -145,7 +145,7 @@ void position_check(void)
     point_fb.m_y = cRobot.stPot.fpPosY;
     point_fb.m_q = 0.1f * cRobot.stPot.fpPosQ;
 
-    //Èç¹ûÍ£Ö¹×´Ì¬±ä³ÉSTOP_X£¬¼ÇµÃÒª¸ÄÕâÀï£¡
+    //å¦‚æœåœæ­¢çŠ¶æ€å˜æˆSTOP_Xï¼Œè®°å¾—è¦æ”¹è¿™é‡Œï¼
     if (nav.state==NAV_STOP)
     {
         if (fabs(point_fb.m_x - POS_1_X ) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_1_Y ) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_1_Q ) < LIMIT_DELTA_Q)
@@ -197,7 +197,7 @@ float sucker_lift_box_get_state2 = 500, sucker_slide_get_state2 = -45;
 float table_lift_up = -1500, table_lift_down = -800, talbe_lift_await = -10;
 float table_slide_out = -30, table_slide_in = 0;
 float table_slide_await = -10;
-
+int init_motor;
 extern int _servo_degree;
 int this_target = 0; // box 1,cola 2
 void handle_box(void)
@@ -205,6 +205,21 @@ void handle_box(void)
     fetch_pattern = FETCH_MOVE;
     switch (box_state)
     {
+			case none:
+			if(init_motor)
+					{
+						DES.table_lift = -2100;
+						if(fabs(table.lift_motor1.pos_pid.fpFB -	DES.table_lift )<1&&fabs(table.lift_motor2.pos_pid.fpFB -DES.table_lift )<1)
+						{
+							DES.table_lift = -10;
+							table.lift_motor1.encoder.siSumValue = -6298099;
+							table.lift_motor2.encoder.siSumValue = -5797689;
+							table.td_lift.m_x1 = -1750;
+						table.td_lift.m_x2 = 0;
+							init_motor = 0;
+						}
+					}
+		break;					
     case await:
         sucker.Toggle_sucker = 1;
         DES.table_slide = table_slide_in;
@@ -214,7 +229,7 @@ void handle_box(void)
         {
 
             DES.sucker_slide = sucker_slide_await;
-            // TODO£ºµ÷½ÚÏÎ½ÓÊ±¼ä
+            // TODOï¼šè°ƒèŠ‚è¡”æ¥æ—¶é—´
             fetch_pattern = FETCH_AWAIT;
         }
 
@@ -258,7 +273,7 @@ void handle_box(void)
             if (fabs(DES.sucker_lift - sucker.lift_motor.pos_pid.fpFB) < 5)
             {
                 sucker.Toggle_sucker = 1;
-                // TODO£ºµ÷½ÚÏÎ½ÓÊ±¼ä
+                // TODOï¼šè°ƒèŠ‚è¡”æ¥æ—¶é—´
                 fetch_pattern = FETCH_GET;
             }
         }
