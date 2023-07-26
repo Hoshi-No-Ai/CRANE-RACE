@@ -28,7 +28,8 @@ enum fetch_pattern_e{
     FETCH_AWAIT,
     FETCH_GET,
     FETCH_LOSE,
-    FETCH_MOVE
+    FETCH_MOVE,
+		FETCH_GET_PRE
 };
 
 enum BOX_STATE{
