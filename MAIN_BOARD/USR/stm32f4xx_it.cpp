@@ -19,7 +19,7 @@ int lift1_fps, sd_tb1_fps, sd_tb2_fps, mt3509_fps, sucker_fps;
 
 using _api_module_::WIFI_FLAG;
 using _navigation_::calibration_current;
-
+float task_time;
 /*系统滴答时钟中断*/
 void SysTick_Handler(void)
 {
@@ -33,9 +33,12 @@ void SysTick_Handler(void)
     if (Sys_Monitor.rate_monitor.time_base < 1000)
     {
         Sys_Monitor.rate_monitor.time_base++;
+				task_time+=0.001;
     }
     else
     {
+			
+		
         memcpy(Sys_Monitor.rate_monitor.real_rate, Sys_Monitor.rate_monitor.temp_rate,
                sizeof(Sys_Monitor.rate_monitor.temp_rate));
         memset(Sys_Monitor.rate_monitor.temp_rate, 0, sizeof(Sys_Monitor.rate_monitor.temp_rate));

@@ -106,7 +106,7 @@ s16 pwm2 = 0;
 s16 pwm3 = 0;
 s16 pwm4 = 0;
 u16 pwm_value_3_3 = 0; // S1 TIM
-int _servo_degree;
+int _servo_degree = 180;
 void motor_control_task(void *p)
 {
     OS_ERR err;
@@ -232,6 +232,9 @@ void action_task(void *p)
 }
 extern DesSet DES;
 
+float sucker_slide_r = 50;
+	float sucker_lift_r = 1000;
+
 void transmit_task(void *p)
 {
     OS_ERR err;
@@ -242,9 +245,12 @@ void transmit_task(void *p)
 
         memcpy(uart3_eft.num, &DES.sucker_slide, 4);
         memcpy(&uart3_eft.num[4], &DES.sucker_lift, 4);
-        USART3_DMA_Tx(); // ×¢µô¾Í²»»áÏòÉÏ°å·¢ËÍ
+			
+			memcpy(&uart3_eft.num[8], &sucker_slide_r, 4);
+        memcpy(&uart3_eft.num[12], &sucker_lift_r, 4);
+        USART3_DMA_Tx(); // ×¢Âµğ¾²Â»Â»á²ÉÂ°å·¢Ë
 
-        // ¸øÉÏ°å·¢µÄ0-3Î»ÊÇsucker_slide£¬4-7Î»ÊÇsucker_lift
+        // Â¸Ã¸ÉÂ°å·¢ÂµÄ°-3Î»Ê‡sucker_slideÂ£Â¬4-7Î»Ê‡sucker_lift
         OSTimeDly_ms(1);
     }
 }

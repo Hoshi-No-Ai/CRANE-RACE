@@ -1,4 +1,5 @@
 #include "action_task.h"
+#include "hitcrt_os.h"
 
 action_pattern_e action_pattern = ACTION_NONE;
 fetch_pattern_e fetch_pattern = FETCH_INIT;
@@ -22,8 +23,8 @@ void robot_movement(void)
             box_state = get_state1;
             break;
         case ACTION_PUT:
-            // 上层抓取
-            box_state = get_state1;
+            // 上层放置
+            box_state = lose_state1;
             break;
         case ACTION_POS_1:
             // 跑到第一个点位
@@ -189,17 +190,21 @@ void position_check(void)
 
 GET_NUM target_num;
 BOX_STATE box_state, pre_box_state;
-float height_box = 205;
+float height_box = 220;
 
 float sucker_lift_box_await = 1100, sucker_slide_await = 0;
-float sucker_lift_box_get_state1 = 200, sucker_slide_get_state1 = -5;
+float sucker_lift_box_get_state1 = 210, sucker_slide_get_state1 = -5;
 float sucker_lift_box_get_state2 = 500, sucker_slide_get_state2 = -45;
 float table_lift_up = -1500, table_lift_down = -800, talbe_lift_await = -10;
 float table_slide_out = -30, table_slide_in = 0;
 float table_slide_await = -10;
+float sucker_out = 1150;
+float sucker_out2 = 1050;
+
 int init_motor;
 extern int _servo_degree;
 int this_target = 0; // box 1,cola 2
+extern float task_time;
 void handle_box(void)
 {
     fetch_pattern = FETCH_MOVE;
@@ -239,11 +244,19 @@ void handle_box(void)
         sucker.Toggle_sucker = 0;
         // DES.table_lift = table_lift_up;
         DES.table_slide = table_slide_in;
-        DES.sucker_slide = sucker_slide_get_state1;
-        if (this_target == 1)
+       
+        if (this_target == 1)//box
+				{
+					 DES.sucker_slide = sucker_slide_get_state1;
             DES.sucker_lift = sucker_lift_box_get_state1;
+				}
+					
         else if (this_target == 2)
-            DES.sucker_lift = 0;
+				{
+				  	DES.sucker_slide = 0;
+            DES.sucker_lift = -5;
+				}
+						
         if (fabs(DES.sucker_lift - sucker.lift_motor.pos_pid.fpFB) < 5)
         {
             if (this_target == 1)
@@ -262,10 +275,7 @@ void handle_box(void)
         break;
 
     case get_state3:
-        if (pre_box_state != box_state)
-        {
-            target_num.box++;
-        }
+
         DES.sucker_slide = sucker_slide_get_state2;
         if (fabs(DES.sucker_slide - sucker.slide_motor.pos_pid.fpFB) < 5)
         {
@@ -280,7 +290,8 @@ void handle_box(void)
         break;
 
     case lose_state0:
-        DES.sucker_lift = 1170;
+			   sucker.Toggle_sucker = 1;
+        DES.sucker_lift = sucker_out;
         DES.table_lift = table_lift_up;
         if (fabs(DES.table_lift - table.td_lift.m_x1) < 5)
         {
@@ -289,19 +300,37 @@ void handle_box(void)
         break;
 
     case lose_state1:
+			
         DES.table_slide = table_slide_out;
-        DES.sucker_lift = 1170;
+      //  DES.sucker_lift = 1300;
         DES.sucker_slide = 0;
-        if (fabs(DES.sucker_lift - sucker.lift_motor.pos_pid.fpFB) < 5)
+        if (fabs(DES.sucker_slide - sucker.slide_motor.pos_pid.fpFB) < 2)
         {
             if (fabs(DES.table_slide - table.td_slide.m_x1) < 5)
             {
                 DES.table_lift = table_lift_down;
-
+						  	
                 if (fabs(DES.table_lift - table.td_lift.m_x1) < 5)
                 {
-                    _servo_degree = 180;
-                    box_state = lose_state2;
+									DES.sucker_lift = sucker_out2;
+									
+									if(fabs(DES.sucker_lift - sucker.lift_motor.pos_pid.fpFB) < 5)
+									{
+										
+										if(_servo_degree >0)
+										{
+											task_time = 0;
+										}
+										_servo_degree = 0;
+										
+										
+										if(task_time>0.5)
+										{
+											box_state = lose_state2;
+										}
+                    
+									}
+                    
                 }
             }
         }
@@ -309,7 +338,7 @@ void handle_box(void)
 
     case lose_state2:
         DES.table_lift = table_lift_down;
-        DES.sucker_lift = 1000;
+        DES.sucker_lift = 	1300;
         if (fabs(DES.table_lift - table.td_lift.m_x1) < 5)
         {
             DES.table_slide = table_slide_in;

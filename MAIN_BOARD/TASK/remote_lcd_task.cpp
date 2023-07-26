@@ -1,4 +1,6 @@
 #include "remote_lcd_task.h"
+#include "action_task.h"
+extern GET_NUM target_num;
 
 static void wifi_rxdata_update(void) {
     uart6_tx_buf[0].float_num = Sys_Monitor.system_state;
@@ -18,7 +20,7 @@ static void wifi_rxdata_update(void) {
     uart6_tx_buf[18].float_num = nav.auto_path.pos_pid.x.fpDes;
     uart6_tx_buf[19].float_num = nav.auto_path.pos_pid.y.fpDes;
     uart6_tx_buf[20].float_num = nav.auto_path.pos_pid.w.fpDes;
-    uart6_tx_buf[21].float_num = cRobot.stDt35_now.dt35_y2;
+    uart6_tx_buf[21].float_num =target_num.box;
 }
 
 void lcd_display(void) {
