@@ -233,7 +233,7 @@ void C_AUTO_PATH::path_straight(void)
         StartQ = pos_pid.w.fpFB;
 
         // 类似转向的控制
-        turn_Q(m_point_end.m_q, StartQ);
+//        turn_Q(m_point_end.m_q, StartQ);
 
         DELTA_X = m_point_end.m_x - StartX;
         DELTA_Y = m_point_end.m_y - StartY;

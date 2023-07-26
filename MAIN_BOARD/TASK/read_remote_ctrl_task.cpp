@@ -215,8 +215,9 @@ void Key_Deal(void)
                 calibration_current = 28000;
             }
         }
-        else if (keyboard_mode == PATHPLANNING)
+        else if (keyboard_mode == ACTION)
         {
+					action_pattern=ACTION_POS_1;
         }
     }
 
@@ -235,18 +236,38 @@ void Key_Deal(void)
                 calibration_current = 32000;
             }
         }
+				else if (keyboard_mode == ACTION)
+        {
+					action_pattern=ACTION_POS_2;
+        }
     }
     else if (PRESS_KEY_2_3)
     {
+				if (keyboard_mode == ACTION)
+        {
+					action_pattern=ACTION_POS_3;
+        }
     }
     else if (PRESS_KEY_2_4)
     {
+				if (keyboard_mode == ACTION)
+        {
+					action_pattern=ACTION_POS_4;
+        }
     }
     else if (PRESS_KEY_2_5)
     {
+				if (keyboard_mode == ACTION)
+        {
+					action_pattern=ACTION_POS_5;
+        }
     }
     else if (PRESS_KEY_2_6)
     {
+				if (keyboard_mode == ACTION)
+        {
+					action_pattern=ACTION_POS_6;
+        }
     }
     else if (PRESS_KEY_3_1)
     {
@@ -254,18 +275,31 @@ void Key_Deal(void)
         {
             cRobot.Aruco_relocation(aruco_fdb,POS_1,1);
         }
+				else if (keyboard_mode == ACTION)
+        {
+					action_pattern=ACTION_POS_END;
+        }
     }
     else if (PRESS_KEY_3_2)
     {
+				if (keyboard_mode == ACTION)
+        {
+					action_pattern=ACTION_INIT;
+        }
     }
     else if (PRESS_KEY_3_3)
     {
-        cRobot.stPot.fpPosQ = 0;
-        cRobot.stPot.fpPosQ1 = 0;
-        cRobot.DT35_relocation_new();
+        if (keyboard_mode == ACTION)
+        {
+					action_pattern=ACTION_FETCH;
+        }
     }
     else if (PRESS_KEY_3_4)
     {
+				if (keyboard_mode == ACTION)
+        {
+					action_pattern=ACTION_PUT;
+        }
     }
     else if (PRESS_KEY_3_5)
     {

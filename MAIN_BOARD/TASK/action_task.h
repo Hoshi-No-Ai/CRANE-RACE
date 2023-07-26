@@ -19,7 +19,7 @@ enum action_pattern_e{
     ACTION_POS_6,
     ACTION_POS_END,
     ACTION_PUT,
-    ACTIO_FETCH,
+    ACTION_FETCH,
     ACTION_NONE
 };
 
