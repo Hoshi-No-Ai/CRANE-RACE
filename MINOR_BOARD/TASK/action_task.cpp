@@ -10,6 +10,10 @@ void deal_with_message(void)
 	{
 		memcpy(&DES_qzj.sucker_slide, efr6.num, 4);
 		memcpy(&DES_qzj.sucker_lift, &efr6.num[4], 4);
+		
+		memcpy(&DES_qzj.sucker_slide, &efr6.num[8], 4);
+		memcpy(&DES_qzj.sucker_lift, &efr6.num[12], 4);
+		
 	}
 }
 

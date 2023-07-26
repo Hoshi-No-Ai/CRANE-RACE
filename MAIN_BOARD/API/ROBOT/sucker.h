@@ -4,16 +4,6 @@
 #include "motor_drive.h"
 #include "pid_algorithm.h"
 
-typedef struct
-{
-	float sucker_slide;
-	float sucker_lift;
-
-	float table_slide;
-	float table_lift;
-
-} DesSet;
-
 #define ENCODER_NUMBER 8191
 #define SLIDE_GEAR_RATIO (19.f * 42) // 3508减速比3591/187，小轮大轮齿比38:21
 
@@ -59,6 +49,15 @@ typedef struct
 
 #define ctrl_TS 0.001
 
+struct DesSet
+{
+	float sucker_slide;
+	float sucker_lift;
+
+	float table_slide;
+	float table_lift;
+
+} ;
 class cSucker
 {
 public:
@@ -120,5 +119,8 @@ public:
 			GPIO_SetBits(GPIOF, GPIO_Pin_8); // 蜂鸣器对应引脚GPIOG7拉低，
 	};
 };
+
+extern DesSet DES;
+extern cSucker sucker;
 
 #endif

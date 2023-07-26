@@ -1,6 +1,7 @@
 #include "main.h"
 #include "sucker.h"
 #include "table.h"
+#include "action_task.h"
 using _api_module_::calculate_flag;
 using _api_module_::f_g_error;
 #define servo_degree(x) ((2000) / 180 * x + 500)
@@ -221,10 +222,9 @@ void action_task(void *p)
     OS_ERR err;
     p = p;
 
-    while (1)
-    {
-        sucker.drive_sucker();
-        
+    while (1) {
+			sucker.drive_sucker();
+			 handle_box();
         OSTimeDly_ms(1);
     }
 }
