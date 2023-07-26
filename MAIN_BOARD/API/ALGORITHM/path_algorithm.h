@@ -9,6 +9,34 @@
 
 using _navigation_::flag_record;
 
+#define POS_1_X  -578.84f
+#define POS_1_Y  789.40f
+#define POS_1_Q  -89.58f
+
+#define POS_2_X  -466.69f
+#define POS_2_Y  1146.99f
+#define POS_2_Q  -125.41f
+
+#define POS_3_X  -167.61f
+#define POS_3_Y  1562.55f
+#define POS_3_Q  -159.09f
+
+#define POS_4_X  203.35f
+#define POS_4_Y  1367.31f
+#define POS_4_Q  -196.56f
+
+#define POS_5_X  489.78f
+#define POS_5_Y  1152.22f
+#define POS_5_Q  -234.34f
+
+#define POS_6_X  596.72f
+#define POS_6_Y  795.55f
+#define POS_6_Q  -268.33f
+
+#define POS_END_X  590.26f
+#define POS_END_Y  -1673.39f
+#define POS_END_Q  -359.36f
+
 class C_POINT
 {
 public:

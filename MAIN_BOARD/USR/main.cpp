@@ -4,6 +4,7 @@
 #include "action_task.h"
 using _api_module_::calculate_flag;
 using _api_module_::f_g_error;
+using _remote_ctrl_::auto_enable;
 #define servo_degree(x) ((2000) / 180 * x + 500)
 
 /*每次编译前，需要在编译器的【宏定义选项】中管理下列宏！*/
@@ -104,8 +105,6 @@ s16 pwm1 = 0;
 s16 pwm2 = 0;
 s16 pwm3 = 0;
 s16 pwm4 = 0;
-extern cSucker sucker;
-extern cTable table;
 u16 pwm_value_3_3 = 0; // S1 TIM
 int _servo_degree;
 void motor_control_task(void *p)
@@ -223,9 +222,12 @@ void action_task(void *p)
     p = p;
 
     while (1) {
+        robot_movement();
+        movement_check(auto_enable);
+        position_check();
 			sucker.drive_sucker();
 			 handle_box();
-        OSTimeDly_ms(1);
+        OSTimeDly_ms(10);
     }
 }
 extern DesSet DES;

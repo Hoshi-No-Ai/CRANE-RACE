@@ -19,6 +19,7 @@ extern uint8_t wifi_rx_flag;
 
 namespace _remote_ctrl_ {
     extern bool manual_enable;
+    extern bool auto_enable;
 }
 
 namespace _navigation_ {

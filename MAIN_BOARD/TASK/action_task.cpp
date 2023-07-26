@@ -1,39 +1,65 @@
 #include "action_task.h"
 
-action_pattern_e action_pattern = ACTION_INIT;
+action_pattern_e action_pattern = ACTION_NONE;
+fetch_pattern_e fetch_pattern = FETCH_INIT;
+static int pos_i;
 
 void robot_movement(void)
 {
-    static action_pattern_e action_pattern_pre = ACTION_INIT;
+    static action_pattern_e action_pattern_pre = ACTION_NONE;
     if (action_pattern != action_pattern_pre)
     {
         switch (action_pattern)
         {
+        case ACTION_NONE:
+            break;
         case ACTION_INIT:
             // 上层机构初始化
-
+            box_state = await;
+            break;
+        case ACTIO_FETCH:
+            // 上层抓取
+            box_state = get_state1;
+            break;
+        case ACTION_PUT:
+            // 上层抓取
+            box_state = get_state1;
             break;
         case ACTION_POS_1:
             // 跑到第一个点位
-
+            nav.auto_path.m_point_end.point_set(POS_1_X , POS_1_Y , POS_1_Q );
+            nav.auto_path.m_velt_acc.Velt_Acc_Set(500, 60, 500, 500);
+            SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_2:
-            // 跑到第二个点位
+            nav.auto_path.m_point_end.point_set(POS_2_X , POS_2_Y , POS_2_Q );
+            nav.auto_path.m_velt_acc.Velt_Acc_Set(500, 60, 500, 500);
+            SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_3:
-            // 跑到第三个点位
+            nav.auto_path.m_point_end.point_set(POS_3_X , POS_3_Y , POS_3_Q );
+            nav.auto_path.m_velt_acc.Velt_Acc_Set(500, 60, 500, 500);
+            SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_4:
-            // 跑到第四个点位
+            nav.auto_path.m_point_end.point_set(POS_4_X , POS_4_Y , POS_4_Q );
+            nav.auto_path.m_velt_acc.Velt_Acc_Set(500, 60, 500, 500);
+            SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_5:
-            // 跑到第五个点位
+            nav.auto_path.m_point_end.point_set(POS_5_X , POS_5_Y , POS_5_Q );
+            nav.auto_path.m_velt_acc.Velt_Acc_Set(500, 60, 500, 500);
+            SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_6:
-            // 跑到第六个点位
+            nav.auto_path.m_point_end.point_set(POS_6_X , POS_6_Y , POS_6_Q );
+            nav.auto_path.m_velt_acc.Velt_Acc_Set(500, 60, 500, 500);
+            SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_END:
-            // 跑到终点
+            nav.auto_path.m_point_end.point_set(POS_END_X , POS_END_Y , POS_END_Q );
+            nav.auto_path.m_velt_acc.Velt_Acc_Set(500, 60, 500, 500);
+            SET_NAV_PATH_AUTO(1);
             break;
         default:
             break;
@@ -50,60 +76,59 @@ void movement_check(bool if_auto)
         {
         case ACTION_INIT:
             // 上层发送初始化成功flag标志位
-            //  if (/* condition */)
-            //  {
-            //      action_pattern=ACTION_POS_1;
-            //  }
+            if (fetch_pattern == FETCH_AWAIT)
+            {
+                action_pattern = ACTION_POS_1;
+            }
             break;
         case ACTIO_FETCH:
-            // 上层发送抓取成功flag标志位
-            //  if (/* condition */&& action_pattern<7 && action_pattern>0)
-            //  {
-            //      action_pattern=pos_i+1;
-            //  }
+            if (fetch_pattern==FETCH_GET&& action_pattern<7 && action_pattern>0)
+             {
+                 action_pattern=(action_pattern_e)(pos_i+1);
+             }
             break;
         case ACTION_POS_1:
             // 判断底盘是否跑到点位
-            // if (pos_i==ACTION_POS_1)
-            // {
-            //     action_pattern=ACTIO_FETCH;
-            // }
+            if (pos_i == ACTION_POS_1)
+            {
+                action_pattern = ACTIO_FETCH;
+            }
             break;
         case ACTION_POS_2:
-            // if (pos_i==ACTION_POS_2)
-            // {
-            //     action_pattern=ACTIO_FETCH;
-            // }
+            if (pos_i==ACTION_POS_2)
+            {
+                action_pattern=ACTIO_FETCH;
+            }
             break;
         case ACTION_POS_3:
-            // if (pos_i==ACTION_POS_3)
-            // {
-            //     action_pattern=ACTIO_FETCH;
-            // }
+            if (pos_i==ACTION_POS_3)
+            {
+                action_pattern=ACTIO_FETCH;
+            }
             break;
         case ACTION_POS_4:
-            // if (pos_i==ACTION_POS_4)
-            // {
-            //     action_pattern=ACTIO_FETCH;
-            // }
+            if (pos_i==ACTION_POS_4)
+            {
+                action_pattern=ACTIO_FETCH;
+            }
             break;
         case ACTION_POS_5:
-            // if (pos_i==ACTION_POS_5)
-            // {
-            //     action_pattern=ACTIO_FETCH;
-            // }
+            if (pos_i==ACTION_POS_5)
+            {
+                action_pattern=ACTIO_FETCH;
+            }
             break;
         case ACTION_POS_6:
-            // if (pos_i==ACTION_POS_6)
-            // {
-            //     action_pattern=ACTIO_FETCH;
-            // }
+            if (pos_i==ACTION_POS_6)
+            {
+                action_pattern=ACTIO_FETCH;
+            }
             break;
         case ACTION_POS_END:
-            // if (pos_i==ACTION_POS_END)
-            // {
-            //     action_pattern=ACTIO_FETCH;
-            // }
+            if (pos_i==ACTION_POS_END)
+            {
+                action_pattern=ACTION_PUT;
+            }
             break;
         case ACTION_PUT:
             break;
@@ -113,11 +138,58 @@ void movement_check(bool if_auto)
     }
 }
 
+void position_check(void)
+{
+    static C_POINT point_fb;
+    point_fb.m_x = cRobot.stPot.fpPosX;
+    point_fb.m_y = cRobot.stPot.fpPosY;
+    point_fb.m_q = 0.1f * cRobot.stPot.fpPosQ;
+
+    //如果停止状态变成STOP_X，记得要改这里！
+    if (nav.state==NAV_STOP)
+    {
+        if (fabs(point_fb.m_x - POS_1_X ) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_1_Y ) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_1_Q ) < LIMIT_DELTA_Q)
+        {
+            pos_i = 1;
+        }
+        else if (fabs(point_fb.m_x - POS_2_X ) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_2_Y ) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_2_Q ) < LIMIT_DELTA_Q)
+        {
+            pos_i = 2;
+        }
+        else if (fabs(point_fb.m_x - POS_3_X ) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_3_Y ) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_3_Q ) < LIMIT_DELTA_Q)
+        {
+            pos_i = 3;
+        }
+        else if (fabs(point_fb.m_x - POS_4_X ) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_4_Y ) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_4_Q ) < LIMIT_DELTA_Q)
+        {
+            pos_i = 4;
+        }
+        else if (fabs(point_fb.m_x - POS_5_X ) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_5_Y ) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_5_Q ) < LIMIT_DELTA_Q)
+        {
+            pos_i = 5;
+        }
+        else if (fabs(point_fb.m_x - POS_6_X ) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_6_Y ) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_6_Q ) < LIMIT_DELTA_Q)
+        {
+            pos_i = 6;
+        }
+        else if (fabs(point_fb.m_x - POS_END_X ) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_END_Y ) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_END_Q ) < LIMIT_DELTA_Q)
+        {
+            pos_i = 7;
+        }
+        else
+        {
+            pos_i = -1;
+        } 
+    }
+    else
+    {
+        pos_i = -1;
+    }
+}
+
 GET_NUM target_num;
 BOX_STATE box_state, pre_box_state;
 float height_box = 205;
-extern cTable table;
-#include "table.h"
 
 float sucker_lift_box_await = 1100, sucker_slide_await = 0;
 float sucker_lift_box_get_state1 = 200, sucker_slide_get_state1 = -5;
@@ -128,11 +200,11 @@ float table_slide_await = -10;
 
 extern int _servo_degree;
 int this_target = 0; // box 1,cola 2
-void handle_box()
+void handle_box(void)
 {
+    fetch_pattern = FETCH_MOVE;
     switch (box_state)
     {
-
     case await:
         sucker.Toggle_sucker = 1;
         DES.table_slide = table_slide_in;
@@ -142,7 +214,10 @@ void handle_box()
         {
 
             DES.sucker_slide = sucker_slide_await;
+            // TODO：调节衔接时间
+            fetch_pattern = FETCH_AWAIT;
         }
+
         break;
 
     case get_state1:
@@ -183,6 +258,8 @@ void handle_box()
             if (fabs(DES.sucker_lift - sucker.lift_motor.pos_pid.fpFB) < 5)
             {
                 sucker.Toggle_sucker = 1;
+                // TODO：调节衔接时间
+                fetch_pattern = FETCH_GET;
             }
         }
         break;
@@ -229,8 +306,4 @@ void handle_box()
     }
 
     pre_box_state = box_state;
-}
-
-void get_cola()
-{
 }

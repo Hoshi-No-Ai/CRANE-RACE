@@ -2,6 +2,7 @@
 
 using _navigation_::calibration_current;
 using _remote_ctrl_::manual_enable;
+using _remote_ctrl_::auto_enable;
 
 keyboard_mode_e keyboard_mode = DEBUG;
 
@@ -98,7 +99,7 @@ void Key_Deal(void)
     }
     else if(PRESS_KEY_0_2)
     {
-
+        auto_enable=1;
     }
     else if (PRESS_KEY_1_1)
     {
@@ -276,6 +277,7 @@ void Key_Deal(void)
     {
         nav.state = NAV_STOP;
         keyboard_mode = DEBUG;
+        auto_enable=0;
     }
     else if (PRESS_KEY_4_2)
     {

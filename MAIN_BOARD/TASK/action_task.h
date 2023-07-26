@@ -1,8 +1,13 @@
 #ifndef __TEMP_CONTROL_TASK_H__
 #define __TEMP_CONTROL_TASK_H__
 
+#include "read_remote_ctrl_task.h"
 #include "sucker.h"
 #include "table.h"
+
+#define LIMIT_DELTA_X 50.0f
+#define LIMIT_DELTA_Y 50.0f
+#define LIMIT_DELTA_Q 5.0f
 
 enum action_pattern_e{
     ACTION_INIT,
@@ -14,7 +19,16 @@ enum action_pattern_e{
     ACTION_POS_6,
     ACTION_POS_END,
     ACTION_PUT,
-    ACTIO_FETCH
+    ACTIO_FETCH,
+    ACTION_NONE
+};
+
+enum fetch_pattern_e{
+    FETCH_INIT,
+    FETCH_AWAIT,
+    FETCH_GET,
+    FETCH_LOSE,
+    FETCH_MOVE
 };
 
 enum BOX_STATE{
@@ -34,9 +48,12 @@ uint8_t cola;
 };
 
 extern action_pattern_e action_pattern;
+extern fetch_pattern_e fetch_pattern;
+extern BOX_STATE box_state;
 
 void robot_movement(void);
 void movement_check(bool if_auto);
+void position_check(void);
 	
 void handle_box(void);
 

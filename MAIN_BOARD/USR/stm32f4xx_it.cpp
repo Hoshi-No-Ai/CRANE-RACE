@@ -170,9 +170,6 @@ void CAN1_RX0_IRQHandler(void)
     OSIntExit();
 }
 
-extern cSucker sucker;
-extern cTable table;
-
 /*CAN2的接收中断处理*/
 static CanRxMsg RxMessage2;
 void CAN2_RX0_IRQHandler(void)

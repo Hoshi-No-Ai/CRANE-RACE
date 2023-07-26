@@ -71,7 +71,6 @@ public:
 
 	cSucker()
 	{
-
 		cSucker_init();
 	};
 
