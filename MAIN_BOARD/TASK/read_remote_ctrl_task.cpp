@@ -303,9 +303,17 @@ void Key_Deal(void)
     }
     else if (PRESS_KEY_3_5)
     {
+			  if (keyboard_mode == ACTION)
+        {
+					this_target=1;
+        }
     }
     else if (PRESS_KEY_3_6)
     {
+				if (keyboard_mode == ACTION)
+        {
+					this_target=2;
+        }
     }
     else if (PRESS_KEY_4_1)
     {

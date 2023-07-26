@@ -146,7 +146,7 @@ void position_check(void)
     point_fb.m_q = 0.1f * cRobot.stPot.fpPosQ;
 
     // 如果停止状态变成STOP_X，记得要改这里！
-    if (nav.state == NAV_STOP)
+    if (nav.state == NAV_STOP || nav.state ==NAV_STOPX)
     {
         if (fabs(point_fb.m_x - POS_1_X) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_1_Y) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_1_Q) < LIMIT_DELTA_Q)
         {

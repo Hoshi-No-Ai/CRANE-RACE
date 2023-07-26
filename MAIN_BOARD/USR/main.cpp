@@ -5,6 +5,9 @@
 using _api_module_::calculate_flag;
 using _api_module_::f_g_error;
 using _remote_ctrl_::auto_enable;
+using _navigation_::vision_enable;
+using _navigation_::vision_true;
+
 #define servo_degree(x) ((2000) / 180 * x + 500)
 
 /*每次编译前，需要在编译器的【宏定义选项】中管理下列宏！*/
@@ -173,6 +176,12 @@ void navigation_task(void *p)
         }
 #endif
         cRobot.Cal_RobotVelt();
+
+        if (nav.state == NAV_STOPX && vision_enable)
+        {
+            vision_true=des_base_aruco(aruco_fdb);
+        }
+
         navigation();
 
 #ifdef DT35_PATH
@@ -221,12 +230,13 @@ void action_task(void *p)
     OS_ERR err;
     p = p;
 
-    while (1) {
+    while (1)
+    {
         robot_movement();
         movement_check(auto_enable);
         position_check();
-			sucker.drive_sucker();
-			 handle_box();
+        sucker.drive_sucker();
+        handle_box();
         OSTimeDly_ms(10);
     }
 }

@@ -2,6 +2,8 @@
 
 using _api_module_::flag_tuoluo;
 using _navigation_::calibration_current;
+using _navigation_::vision_enable;
+using _navigation_::vision_true;
 using _remote_ctrl_::manual_enable;
 
 static bool path_with_pos_pid = 1;
@@ -24,6 +26,59 @@ void navigation(void)
 
     case NAV_STOP: // 锁死状态下运动电机改用双环
         nav.stop_omni_chassis();
+        break;
+
+    case NAV_STOPX:
+        for (int i = 0; i < 4; i++)
+        {
+            Omni_chassis[i].m_run_motor.motor_pid_state = VELT_LOOP;
+            Omni_chassis[i].m_run_motor.feed_forward_current = WITHOUT_FORWARD;
+        }
+
+        nav.auto_path.pos_pid.x.fpFB = cRobot.stPot.fpPosX;
+        nav.auto_path.pos_pid.y.fpFB = cRobot.stPot.fpPosY;
+        nav.auto_path.pos_pid.w.fpFB = 0.1f * cRobot.stPot.fpPosQ;
+
+        nav.auto_path.velt_pid.x.fpFB = cRobot.stVelt.fpVx;
+        nav.auto_path.velt_pid.y.fpFB = cRobot.stVelt.fpVy;
+        nav.auto_path.velt_pid.w.fpFB = cRobot.stVelt.fpW;
+
+        // 规划来自路径
+        nav.auto_path.pos_pid.x.fpKp = 10.0f;
+        nav.auto_path.pos_pid.y.fpKp = 10.0f;
+        nav.auto_path.pos_pid.w.fpKp = 20.0f;
+
+        if (vision_true)
+        {
+            nav.auto_path.pos_pid.x.fpDes = nav.auto_path.m_point_end.m_x + delta_fb_des.delta_x;
+            nav.auto_path.pos_pid.y.fpDes = nav.auto_path.m_point_end.m_y + delta_fb_des.delta_x;
+            // TODO:视觉信号加减不要写反了
+            nav.auto_path.pos_pid.w.fpDes = nav.auto_path.m_point_end.m_q + aruco_fdb.thetaz;
+        }
+        else
+        {
+            nav.auto_path.pos_pid.x.fpDes = nav.auto_path.m_point_end.m_x;
+            nav.auto_path.pos_pid.y.fpDes = nav.auto_path.m_point_end.m_y;
+            nav.auto_path.pos_pid.w.fpDes = nav.auto_path.m_point_end.m_q;
+        }
+
+        nav.auto_path.basic_velt.fpW *= RADIAN;
+        nav.auto_path.pos_pid.w.fpFB *= RADIAN;
+        nav.auto_path.pos_pid.w.fpDes *= RADIAN;
+
+        nav.auto_path.pos_pid.x.CalPID();
+        nav.auto_path.pos_pid.y.CalPID();
+        nav.auto_path.pos_pid.w.CalPID();
+
+        nav.expect_robot_global_velt.fpVx =
+            nav.auto_path.pos_pid.x.fpU;
+        nav.expect_robot_global_velt.fpVy =
+            nav.auto_path.pos_pid.y.fpU;
+        nav.expect_robot_global_velt.fpW = nav.auto_path.pos_pid.w.fpU;
+
+        nav.Omni_chassis_SpeedDistribute();
+        //            nav.Omni_chassis_Cal_Feedforward();
+
         break;
 
     case NAV_LOCK:
@@ -81,7 +136,7 @@ void navigation(void)
         if (!nav.auto_path.Path_Choose())
         {
             nav.auto_path.flag_path_end = 0;
-            nav.state = NAV_STOP;
+            nav.state = NAV_STOPX;
         }
         nav.auto_path.pos_pid.x.fpKp = 5.0f;
         nav.auto_path.pos_pid.y.fpKp = 5.0f;

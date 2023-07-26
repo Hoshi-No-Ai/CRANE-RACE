@@ -50,6 +50,7 @@ uint8_t cola;
 extern action_pattern_e action_pattern;
 extern fetch_pattern_e fetch_pattern;
 extern BOX_STATE box_state;
+extern int this_target;
 
 void robot_movement(void);
 void movement_check(bool if_auto);
