@@ -238,6 +238,8 @@ int init_motor;
 extern int _servo_degree;
 int this_target = 0; // box 1,cola 2
 extern float task_time;
+extern int temp_target_detect;
+
 void handle_box(void)
 {
     OS_ERR err;
@@ -296,6 +298,7 @@ void handle_box(void)
         {
             // TODO：调节衔接时间
             fetch_pattern = FETCH_AWAIT;
+					
         }
         break;
 
@@ -303,7 +306,11 @@ void handle_box(void)
         sucker.Toggle_sucker = 0;
         // DES.table_lift = table_lift_up;
         DES.table_slide = table_slide_in;
+				if(sucker.lift_motor.pos_pid.fpFB>300)
+				{
+					this_target =  temp_target_detect;
 
+				}
         if (this_target == 1) // box
         {
             DES.sucker_slide = sucker_slide_get_state1;

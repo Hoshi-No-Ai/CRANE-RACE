@@ -143,6 +143,8 @@ void Comm1Rx_IRQ(void) // 串口1电流DMA接收函数
 				distance_uart1 = (UA1RxMailbox[29]-0x30)*1000+ ((int)UA1RxMailbox[30]-0x30)*100+ ( (int)UA1RxMailbox[31]-0x30)*10+  ((int)UA1RxMailbox[32]-0x30)*1;
 
 		}
+		
+		distance_uart1 -=120;
 	//	distance_uart1 = atol(string_dis1);
 			if (ucPit < efr1.usart1_rx_datanum) // 如果没够数，存
 			{

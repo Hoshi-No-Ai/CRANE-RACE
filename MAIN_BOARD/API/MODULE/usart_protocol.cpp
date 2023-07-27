@@ -1,5 +1,7 @@
 #include "usart_protocol.h"
 #include "sucker.h"
+
+#include "action_task.h"
 using _api_module_::calculate_flag;
 using _api_module_::f_g_error;
 using _api_module_::flag_tuoluo;
@@ -213,7 +215,9 @@ int dist_1,dist_2;
 int dist_1_buff[5];
 int dist_2_buff[5];
 
-
+extern GET_NUM target_num;
+extern int this_target;
+int temp_target_detect;
 void Comm3Rx_IRQ(void) // 串口2电流DMA接收函数
 {
     static unsigned char Comm3_Rx_Status = RX_FREE; // 初始状态
@@ -273,9 +277,14 @@ void Comm3Rx_IRQ(void) // 串口2电流DMA接收函数
 										memcpy(&dist_1,&uart3_efr.num[8],4);
 									  memcpy(&dist_2,&uart3_efr.num[12],4);
 										
-									if((dist_1<500&&dist_1<150)&&(dist_2<500&&dist_2<150))
+									if(dist_1>200||dist_2>200)
 									{
+										temp_target_detect = 2;
 										
+									}
+									else
+									{
+										temp_target_detect = 1;
 									}
                 }
                 else
