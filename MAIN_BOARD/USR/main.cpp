@@ -4,9 +4,9 @@
 #include "action_task.h"
 using _api_module_::calculate_flag;
 using _api_module_::f_g_error;
-using _remote_ctrl_::auto_enable;
 using _navigation_::vision_enable;
 using _navigation_::vision_true;
+using _remote_ctrl_::auto_enable;
 
 #define servo_degree(x) ((2000) / 180 * x + 500)
 
@@ -159,6 +159,7 @@ void read_remote_ctrl_task(void *p) // �ֱ�����ɨ������
 }
 
 static int dt35_time = 0;
+static int vision_time = 0;
 void navigation_task(void *p)
 {
     OS_ERR err;
@@ -177,13 +178,15 @@ void navigation_task(void *p)
 #endif
         cRobot.Cal_RobotVelt();
 
-        if (nav.state == NAV_STOPX && vision_enable)
+        if (nav.state == NAV_STOPX && vision_enable && vision_time > 20)
         {
-            vision_true=des_base_aruco(aruco_fdb);
+            vision_true = des_base_aruco(aruco_fdb);
+            vision_time = 0;
         }
 
         navigation();
 
+        vision_time++;
 #ifdef DT35_PATH
         dt35_time++;
 #endif
@@ -243,7 +246,7 @@ void action_task(void *p)
 extern DesSet DES;
 
 float sucker_slide_r = 50;
-	float sucker_lift_r = 1000;
+float sucker_lift_r = 1000;
 
 void transmit_task(void *p)
 {
@@ -255,12 +258,12 @@ void transmit_task(void *p)
 
         memcpy(uart3_eft.num, &DES.sucker_slide, 4);
         memcpy(&uart3_eft.num[4], &DES.sucker_lift, 4);
-			
-			memcpy(&uart3_eft.num[8], &sucker_slide_r, 4);
+
+        memcpy(&uart3_eft.num[8], &sucker_slide_r, 4);
         memcpy(&uart3_eft.num[12], &sucker_lift_r, 4);
         USART3_DMA_Tx(); // עµ𾍲»»Ᏺɏ°巢ˍ
 
-        // ¸øɏ°巢µİ-3λʇsucker_slide£¬4-7λʇsucker_lift
+        // ¸øɏ°巢µ�?-3λʇsucker_slide£¬4-7λʇsucker_lift
         OSTimeDly_ms(1);
     }
 }

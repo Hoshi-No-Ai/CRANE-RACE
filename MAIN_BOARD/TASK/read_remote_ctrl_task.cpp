@@ -1,8 +1,10 @@
 #include "read_remote_ctrl_task.h"
 #include "action_task.h"
+
 using _navigation_::calibration_current;
 using _remote_ctrl_::auto_enable;
 using _remote_ctrl_::manual_enable;
+using _action_::figure_out_object;
 
 keyboard_mode_e keyboard_mode = DEBUG;
 
@@ -89,7 +91,6 @@ void Js_Deal(void)
 
 extern GET_NUM target_num;
 
-extern int this_target;
 void Key_Deal(void)
 {
     JsKey.ReadWlanKeyValue();
@@ -308,6 +309,7 @@ void Key_Deal(void)
         if (keyboard_mode == ACTION)
         {
             this_target = 1;
+            figure_out_object=1;
         }
     }
     else if (PRESS_KEY_3_6)
@@ -315,6 +317,7 @@ void Key_Deal(void)
         if (keyboard_mode == ACTION)
         {
             this_target = 2;
+            figure_out_object=1;
         }
     }
     else if (PRESS_KEY_4_1)
@@ -339,11 +342,10 @@ void Key_Deal(void)
     }
     else if (PRESS_KEY_4_6)
     {
-
         target_num.box++;
-        if (target_num.box > 2)
+        if (target_num.box > 3)
         {
-            target_num.box = 0;
+            target_num.box = 1;
         }
     }
 }

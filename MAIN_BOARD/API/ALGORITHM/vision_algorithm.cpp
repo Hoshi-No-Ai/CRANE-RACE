@@ -8,9 +8,13 @@ fp32 ConvertArray[2][2];
 Delta_2D delta_fb_des;
 // 机器人反馈位置到aruco码的距离（机器人坐标系）
 static Delta_2D delta_fb_aruco_r;
-//TODO: aruco码坐标系下目标位置的坐标表示，x,y信息在宏定义里修改
-// aruco码到机器人目标位置的距离（aruco码坐标系）
+// TODO: aruco码坐标系下目标位置的坐标表示，x,y信息在宏定义里修改
+//  aruco码到机器人目标位置的距离（aruco码坐标系）
 static Delta_2D delta_aruco_des_a = {DES_ARUCO_CENTER, DES_CENTER_DES};
+
+// 取可乐时目标点的位置变化
+Delta_2D delta_des_cola_w;
+static Delta_2D delta_des_cola_r = {DELTA_COLA, 0};
 
 void DealVision(void)
 {
@@ -41,8 +45,37 @@ bool des_base_aruco(aruco &aruco_ref)
     Delta_2D delta_fb_aruco_w = Coord_transformation(theta_w_r, delta_fb_aruco_r);
     Delta_2D delta_aruco_des_w = Coord_transformation(theta_w_a, delta_aruco_des_a);
 
-    delta_fb_des.delta_x =delta_fb_aruco_w.delta_x+delta_aruco_des_w.delta_x;
-    delta_fb_des.delta_y =delta_fb_aruco_w.delta_y+delta_aruco_des_w.delta_y;
+    delta_fb_des.delta_x = delta_fb_aruco_w.delta_x + delta_aruco_des_w.delta_x;
+    delta_fb_des.delta_y = delta_fb_aruco_w.delta_y + delta_aruco_des_w.delta_y;
 
     return aruco_ref.if_detect;
+}
+
+
+
+void delta_des_cola(int num)
+{
+    Delta_2D delta_des_r;
+    switch (num)
+    {
+    case 1:
+        delta_des_r.delta_x=delta_des_cola_r.delta_x;
+        delta_des_r.delta_y=delta_des_cola_r.delta_y;
+        break;
+    case 2:
+        delta_des_r.delta_x=0;
+        delta_des_r.delta_y=0;
+        break;
+    case 3:
+        delta_des_r.delta_x=-delta_des_cola_r.delta_x;
+        delta_des_r.delta_y=-delta_des_cola_r.delta_y;
+        break;
+    default:
+        break;
+    }
+
+    float fpQ = nav.auto_path.m_point_end.m_q * RADIAN;
+    float theta_w_r = fpQ;
+		
+    delta_des_cola_w = Coord_transformation(theta_w_r, delta_des_r);
 }

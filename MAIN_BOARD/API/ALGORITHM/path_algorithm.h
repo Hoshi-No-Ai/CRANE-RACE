@@ -9,9 +9,9 @@
 
 using _navigation_::flag_record;
 
-#define POS_1_X  -585.0f
-#define POS_1_Y  741.0f
-#define POS_1_Q  -88.97f
+#define POS_1_X  -568.21f
+#define POS_1_Y  739.69f
+#define POS_1_Q  -90.71f
 
 #define POS_2_X  -489.0f
 #define POS_2_Y  1091.0f
@@ -33,9 +33,9 @@ using _navigation_::flag_record;
 #define POS_6_Y  779.5f
 #define POS_6_Q  -269.56f
 
-#define POS_END_X  587.8f
+#define POS_END_X  640.0f
 #define POS_END_Y  -1794.4f
-#define POS_END_Q  -360.0f
+#define POS_END_Q  -359.0f
 
 class C_POINT
 {

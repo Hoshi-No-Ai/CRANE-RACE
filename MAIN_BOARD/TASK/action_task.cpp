@@ -1,6 +1,8 @@
 #include "action_task.h"
 #include "hitcrt_os.h"
 
+using _action_::figure_out_object;
+
 action_pattern_e action_pattern = ACTION_NONE;
 fetch_pattern_e fetch_pattern = FETCH_INIT;
 static int pos_i;
@@ -15,19 +17,19 @@ void robot_movement(void)
         case ACTION_NONE:
             break;
         case ACTION_INIT:
-            // ‰∏äÂ±ÇÊú∫ÊûÑÂàùÂßãÂåñ
+            // …œ≤„ª˙ππ≥ı ºªØ
             box_state = await;
             break;
         case ACTION_FETCH:
-            // ‰∏äÂ±ÇÊäìÂèñ
+            // …œ≤„◊•»°
             box_state = get_state1;
             break;
         case ACTION_PUT:
-            // ‰∏äÂ±ÇÊîæÁΩÆ
-            box_state = lose_state1;
+            // …œ≤„∑≈÷√
+            box_state = lose_state0;
             break;
         case ACTION_POS_1:
-            // Ë∑ëÂà∞Á¨¨‰∏Ä‰∏™ÁÇπ‰Ωç
+            // ≈‹µΩµ⁄“ª∏ˆµ„Œª
             nav.auto_path.m_point_end.point_set(POS_1_X, POS_1_Y, POS_1_Q);
             nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 90, 1500, 1500);
             SET_NAV_PATH_AUTO(1);
@@ -62,6 +64,12 @@ void robot_movement(void)
             nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 90, 1500, 1500);
             SET_NAV_PATH_AUTO(1);
             break;
+        case ACTION_POS_CHANGE:
+            // »°ø…¿÷∫Û∏ƒ±‰◊¯±Íµ„
+            nav.auto_path.m_point_end.m_x = nav.auto_path.m_point_end.m_x + delta_des_cola_w.delta_x;
+            nav.auto_path.m_point_end.m_y = nav.auto_path.m_point_end.m_y + delta_des_cola_w.delta_y;
+            nav.auto_path.m_point_end.m_q = nav.auto_path.m_point_end.m_q;
+            break;
         default:
             break;
         }
@@ -71,12 +79,16 @@ void robot_movement(void)
 
 void movement_check(bool if_auto)
 {
+    static C_POINT point_fb;
+    point_fb.m_x = cRobot.stPot.fpPosX;
+    point_fb.m_y = cRobot.stPot.fpPosY;
+    point_fb.m_q = 0.1f * cRobot.stPot.fpPosQ;
     if (if_auto)
     {
         switch (action_pattern)
         {
         case ACTION_INIT:
-            // ‰∏äÂ±ÇÂèëÈÄÅÂàùÂßãÂåñÊàêÂäüflagÊ†áÂøó‰Ωç
+            // …œ≤„∑¢ÀÕ≥ı ºªØ≥…π¶flag±Í÷æŒª
             if (fetch_pattern == FETCH_AWAIT)
             {
                 action_pattern = ACTION_POS_1;
@@ -89,40 +101,40 @@ void movement_check(bool if_auto)
             }
             break;
         case ACTION_POS_1:
-            // Âà§Êñ≠Â∫ïÁõòÊòØÂê¶Ë∑ëÂà∞ÁÇπ‰Ωç
+            // ≈–∂œµ◊≈Ã «∑Ò≈‹µΩµ„Œª
             if (pos_i == ACTION_POS_1)
             {
-                action_pattern = ACTION_FETCH;
+                action_pattern = ACTION_POS_CHECK;
             }
             break;
         case ACTION_POS_2:
             if (pos_i == ACTION_POS_2)
             {
-                action_pattern = ACTION_FETCH;
+                action_pattern = ACTION_POS_CHECK;
             }
             break;
         case ACTION_POS_3:
             if (pos_i == ACTION_POS_3)
             {
-                action_pattern = ACTION_FETCH;
+                action_pattern = ACTION_POS_CHECK;
             }
             break;
         case ACTION_POS_4:
             if (pos_i == ACTION_POS_4)
             {
-                action_pattern = ACTION_FETCH;
+                action_pattern = ACTION_POS_CHECK;
             }
             break;
         case ACTION_POS_5:
             if (pos_i == ACTION_POS_5)
             {
-                action_pattern = ACTION_FETCH;
+                action_pattern = ACTION_POS_CHECK;
             }
             break;
         case ACTION_POS_6:
             if (pos_i == ACTION_POS_6)
             {
-                action_pattern = ACTION_FETCH;
+                action_pattern = ACTION_POS_CHECK;
             }
             break;
         case ACTION_POS_END:
@@ -132,6 +144,29 @@ void movement_check(bool if_auto)
             }
             break;
         case ACTION_PUT:
+            break;
+        case ACTION_POS_CHECK:
+            //TODO:º§π‚¥´∏–∆˜∏¯≥ˆ ∂±µΩµƒ–≈∫≈
+            if (figure_out_object)
+            {
+                if (this_target == 1)
+                {
+                    action_pattern = ACTION_FETCH;
+                    figure_out_object=0;
+                }
+                else if (this_target == 2)
+                {
+                    delta_des_cola(target_num.cola);
+                    action_pattern = ACTION_POS_CHANGE;
+                    figure_out_object=0;
+                }
+            }
+            break;
+        case ACTION_POS_CHANGE:
+            if (fabs(nav.auto_path.pos_pid.x.fpDes - nav.auto_path.pos_pid.x.fpFB) < LIMIT_DELTA_X && fabs(nav.auto_path.pos_pid.y.fpDes - nav.auto_path.pos_pid.y.fpFB) < LIMIT_DELTA_Y && fabs(nav.auto_path.pos_pid.w.fpDes - nav.auto_path.pos_pid.w.fpFB) < LIMIT_DELTA_Q)
+            {
+                action_pattern = ACTION_FETCH;
+            }
             break;
         default:
             break;
@@ -146,7 +181,7 @@ void position_check(void)
     point_fb.m_y = cRobot.stPot.fpPosY;
     point_fb.m_q = 0.1f * cRobot.stPot.fpPosQ;
 
-    // Â¶ÇÊûúÂÅúÊ≠¢Áä∂ÊÄÅÂèòÊàêSTOP_XÔºåËÆ∞ÂæóË¶ÅÊîπËøôÈáåÔºÅ
+    // »Áπ˚Õ£÷π◊¥Ã¨±‰≥…STOP_X£¨º«µ√“™∏ƒ’‚¿Ô£°
     if (nav.state == NAV_STOP || nav.state == NAV_STOPX)
     {
         if (fabs(point_fb.m_x - POS_1_X) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_1_Y) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_1_Q) < LIMIT_DELTA_Q)
@@ -177,10 +212,6 @@ void position_check(void)
         {
             pos_i = 7;
         }
-        else
-        {
-            pos_i = -1;
-        }
     }
     else
     {
@@ -207,12 +238,12 @@ int this_target = 0; // box 1,cola 2
 extern float task_time;
 void handle_box(void)
 {
-	OS_ERR err;
-	if(fetch_pattern !=FETCH_GET_PRE)
-	{
-		fetch_pattern=FETCH_MOVE;
-	}
-     
+    OS_ERR err;
+    if (fetch_pattern != FETCH_GET_PRE)
+    {
+        fetch_pattern = FETCH_MOVE;
+    }
+
     switch (box_state)
     {
     case none:
@@ -235,19 +266,34 @@ void handle_box(void)
         DES.table_slide = table_slide_in;
         DES.table_lift = talbe_lift_await;
         DES.sucker_lift = sucker_lift_box_await;
-		
-				//ÂèØ‰πêÈ´òÂ∫¶
-				if(fetch_pattern==FETCH_GET_PRE && sucker.lift_motor.pos_pid.fpFB>height_box)
-				{
-					fetch_pattern=FETCH_GET;
-					this_target=0;
-				}
-		
+        DES.sucker_slide = sucker_slide_await;
+
+        // ø…¿÷∏ﬂ∂»
+        if (fetch_pattern == FETCH_GET_PRE && sucker.lift_motor.pos_pid.fpFB > height_box && this_target == 2)
+        {
+            fetch_pattern = FETCH_GET;
+            this_target = 0;
+            target_num.cola++;
+            if (target_num.cola > 3)
+            {
+                target_num.cola = 1;
+            }
+        }
+        else if (this_target == 1 && fetch_pattern==FETCH_GET_PRE)
+        {
+            fetch_pattern = FETCH_GET;
+            this_target = 0;
+            target_num.box++;
+            if (target_num.box > 3)
+            {
+                target_num.box = 1;
+            }
+        }
+
         if (fabs(DES.sucker_lift - sucker.lift_motor.pos_pid.fpFB) < 5)
         {
-            DES.sucker_slide = sucker_slide_await;
-            // TODOÔºöË∞ÉËäÇË°îÊé•Êó∂Èó¥
-						fetch_pattern = FETCH_AWAIT;
+            // TODO£∫µ˜Ω⁄œŒΩ” ±º‰
+            fetch_pattern = FETCH_AWAIT;
         }
         break;
 
@@ -270,14 +316,14 @@ void handle_box(void)
         if (fabs(DES.sucker_lift - sucker.lift_motor.pos_pid.fpFB) < 5)
         {
             if (this_target == 1)
-						{
-							box_state = get_state2;
-						}
+            {
+                box_state = get_state2;
+            }
             else if (this_target == 2)
-						{
-							box_state = await;
-							fetch_pattern = FETCH_GET_PRE;
-						}
+            {
+                box_state = await;
+                fetch_pattern = FETCH_GET_PRE;
+            }
         }
         break;
 
@@ -294,18 +340,19 @@ void handle_box(void)
         DES.sucker_slide = sucker_slide_get_state2;
         if (fabs(DES.sucker_slide - sucker.slide_motor.pos_pid.fpFB) < 5)
         {
-            DES.sucker_lift = sucker_lift_box_get_state2 + target_num.box * height_box;
+            DES.sucker_lift = sucker_lift_box_get_state2 + (target_num.box - 1) * height_box;
             if (fabs(DES.sucker_lift - sucker.lift_motor.pos_pid.fpFB) < 5)
             {
                 sucker.Toggle_sucker = 1;
-                // TODOÔºöË∞ÉËäÇË°îÊé•Êó∂Èó¥
-								OSTimeDly_ms(2000);
-								box_state = await;
-								if(this_target==2)
-								{
-									fetch_pattern = FETCH_GET;
-									this_target=0;
-								}            
+                // TODO£∫µ˜Ω⁄œŒΩ” ±º‰
+                OSTimeDly_ms(1000);
+								fetch_pattern=FETCH_GET_PRE;
+                box_state = await;
+                //                if (this_target == 1)
+                //                {
+                //                    fetch_pattern = FETCH_GET;
+                //                    this_target = 0;
+                //                }
             }
         }
         break;

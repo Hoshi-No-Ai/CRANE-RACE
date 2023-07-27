@@ -17,8 +17,8 @@ static void wifi_rxdata_update(void) {
     uart6_tx_buf[16].float_num = cRobot.cFollowoerWheel.m_CoderBCur;
 //    uart6_tx_buf[17].float_num = cRobot.cGyro.fpQ;
 
-    uart6_tx_buf[18].float_num = sucker.lift_motor.pos_pid.fpFB;
-    uart6_tx_buf[19].float_num = fetch_pattern;
+    uart6_tx_buf[18].float_num = delta_des_cola_w.delta_x;
+    uart6_tx_buf[19].float_num = delta_des_cola_w.delta_y;
     uart6_tx_buf[20].float_num = this_target;
     uart6_tx_buf[21].float_num = target_num.box;
 }

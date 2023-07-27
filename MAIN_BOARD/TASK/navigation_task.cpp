@@ -50,10 +50,16 @@ void navigation(void)
 
         if (vision_true)
         {
-            nav.auto_path.pos_pid.x.fpDes = nav.auto_path.m_point_end.m_x + delta_fb_des.delta_x;
-            nav.auto_path.pos_pid.y.fpDes = nav.auto_path.m_point_end.m_y + delta_fb_des.delta_x;
+            nav.auto_path.pos_pid.x.fpDes = nav.auto_path.pos_pid.x.fpFB + delta_fb_des.delta_x;
+            nav.auto_path.pos_pid.y.fpDes = nav.auto_path.pos_pid.y.fpFB + delta_fb_des.delta_y;
             // TODO:视觉信号加减不要写反了
-            nav.auto_path.pos_pid.w.fpDes = nav.auto_path.m_point_end.m_q + aruco_fdb.thetaz;
+            nav.auto_path.pos_pid.w.fpDes = nav.auto_path.pos_pid.w.fpFB + aruco_fdb.thetaz;
+            if (this_target == 1)
+            {
+                nav.auto_path.pos_pid.x.fpDes = nav.auto_path.pos_pid.x.fpDes + delta_des_cola_w.delta_x;
+                nav.auto_path.pos_pid.y.fpDes = nav.auto_path.pos_pid.y.fpDes + delta_des_cola_w.delta_y;
+                nav.auto_path.pos_pid.w.fpDes = nav.auto_path.pos_pid.w.fpDes;
+            }
         }
         else
         {
