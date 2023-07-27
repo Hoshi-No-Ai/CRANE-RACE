@@ -79,7 +79,7 @@ void Comm1Rx_IRQ(void)
     }
 }
 
-// SB维特
+// SB
 uart1_rx_protocol_t uart1_efr = {0x55, 0x52, 0x55, 0x53, UART1_RX_DATA_LEN1, UART1_RX_DATA_LEN2, {0}, {0}, 0x01, 0xAA};
 
 uint8_t ucData1;
@@ -209,6 +209,10 @@ uint8_t ucData3;
 /*串口2相关的缓存区*/
 uint8_t uart3_data_buf[UART3_RX_DATA_LEN];
 extern cSucker sucker;
+int dist_1,dist_2;
+int dist_1_buff[5];
+int dist_2_buff[5];
+
 
 void Comm3Rx_IRQ(void) // 串口2电流DMA接收函数
 {
@@ -266,7 +270,13 @@ void Comm3Rx_IRQ(void) // 串口2电流DMA接收函数
 										memcpy(&sucker.slide_motor.pos_pid.fpFB,uart3_efr.num,4);
 									memcpy(&sucker.lift_motor.pos_pid.fpFB,&uart3_efr.num[4],4);
 									
+										memcpy(&dist_1,&uart3_efr.num[8],4);
+									  memcpy(&dist_2,&uart3_efr.num[12],4);
 										
+									if((dist_1<500&&dist_1<150)&&(dist_2<500&&dist_2<150))
+									{
+										
+									}
                 }
                 else
                 {

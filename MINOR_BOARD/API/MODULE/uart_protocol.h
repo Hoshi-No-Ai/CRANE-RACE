@@ -21,10 +21,10 @@ typedef enum
 	RX_DATA_LEN,
 }rx_protocol_e;
 
-#define UART1_RX_DATA_LEN 	12
+#define UART1_RX_DATA_LEN 	38
 #define UART6_RX_DATA_LEN 	16
 #define UART1_TX_DATA_LEN   10
-#define UART6_TX_DATA_LEN   8
+#define UART6_TX_DATA_LEN   16
 
 union Float2uchar
 { 
@@ -100,6 +100,8 @@ extern s8 bBuf[20];
 extern void USART1_DMA_Tx(void);
 extern void Comm1Rx_IRQ(void);
 void Comm6Rx_IRQ(void);
+void Comm3Rx_IRQ(void);
+
 
 
 extern uart1_tx_protocol_t eft1;

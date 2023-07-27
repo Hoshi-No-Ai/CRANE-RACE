@@ -232,6 +232,9 @@ void action_task(void *p)
 }
 extern DesSet DES;
 
+float sucker_slide_r = 100;
+	float sucker_lift_r = 700;
+
 void transmit_task(void *p)
 {
     OS_ERR err;
@@ -242,6 +245,9 @@ void transmit_task(void *p)
 
         memcpy(uart3_eft.num, &DES.sucker_slide, 4);
         memcpy(&uart3_eft.num[4], &DES.sucker_lift, 4);
+			
+			memcpy(&uart3_eft.num[8], &sucker_slide_r, 4);
+        memcpy(&uart3_eft.num[12], &sucker_lift_r, 4);
         USART3_DMA_Tx(); // 注掉就不会向上板发送
 
         // 给上板发的0-3位是sucker_slide，4-7位是sucker_lift

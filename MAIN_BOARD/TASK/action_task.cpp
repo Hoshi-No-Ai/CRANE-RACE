@@ -27,37 +27,37 @@ void robot_movement(void)
             break;
         case ACTION_POS_1:
             // 跑到第一个点位
-            nav.auto_path.m_point_end.point_set(POS_1_X , POS_1_Y , POS_1_Q );
+            nav.auto_path.m_point_end.point_set(POS_1_X, POS_1_Y, POS_1_Q);
             nav.auto_path.m_velt_acc.Velt_Acc_Set(500, 60, 500, 500);
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_2:
-            nav.auto_path.m_point_end.point_set(POS_2_X , POS_2_Y , POS_2_Q );
+            nav.auto_path.m_point_end.point_set(POS_2_X, POS_2_Y, POS_2_Q);
             nav.auto_path.m_velt_acc.Velt_Acc_Set(500, 60, 500, 500);
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_3:
-            nav.auto_path.m_point_end.point_set(POS_3_X , POS_3_Y , POS_3_Q );
+            nav.auto_path.m_point_end.point_set(POS_3_X, POS_3_Y, POS_3_Q);
             nav.auto_path.m_velt_acc.Velt_Acc_Set(500, 60, 500, 500);
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_4:
-            nav.auto_path.m_point_end.point_set(POS_4_X , POS_4_Y , POS_4_Q );
+            nav.auto_path.m_point_end.point_set(POS_4_X, POS_4_Y, POS_4_Q);
             nav.auto_path.m_velt_acc.Velt_Acc_Set(500, 60, 500, 500);
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_5:
-            nav.auto_path.m_point_end.point_set(POS_5_X , POS_5_Y , POS_5_Q );
+            nav.auto_path.m_point_end.point_set(POS_5_X, POS_5_Y, POS_5_Q);
             nav.auto_path.m_velt_acc.Velt_Acc_Set(500, 60, 500, 500);
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_6:
-            nav.auto_path.m_point_end.point_set(POS_6_X , POS_6_Y , POS_6_Q );
+            nav.auto_path.m_point_end.point_set(POS_6_X, POS_6_Y, POS_6_Q);
             nav.auto_path.m_velt_acc.Velt_Acc_Set(500, 60, 500, 500);
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_END:
-            nav.auto_path.m_point_end.point_set(POS_END_X , POS_END_Y , POS_END_Q );
+            nav.auto_path.m_point_end.point_set(POS_END_X, POS_END_Y, POS_END_Q);
             nav.auto_path.m_velt_acc.Velt_Acc_Set(500, 60, 500, 500);
             SET_NAV_PATH_AUTO(1);
             break;
@@ -82,10 +82,10 @@ void movement_check(bool if_auto)
             }
             break;
         case ACTIO_FETCH:
-            if (fetch_pattern==FETCH_GET&& action_pattern<7 && action_pattern>0)
-             {
-                 action_pattern=(action_pattern_e)(pos_i+1);
-             }
+            if (fetch_pattern == FETCH_GET && action_pattern < 7 && action_pattern > 0)
+            {
+                action_pattern = (action_pattern_e)(pos_i + 1);
+            }
             break;
         case ACTION_POS_1:
             // 判断底盘是否跑到点位
@@ -95,39 +95,39 @@ void movement_check(bool if_auto)
             }
             break;
         case ACTION_POS_2:
-            if (pos_i==ACTION_POS_2)
+            if (pos_i == ACTION_POS_2)
             {
-                action_pattern=ACTIO_FETCH;
+                action_pattern = ACTIO_FETCH;
             }
             break;
         case ACTION_POS_3:
-            if (pos_i==ACTION_POS_3)
+            if (pos_i == ACTION_POS_3)
             {
-                action_pattern=ACTIO_FETCH;
+                action_pattern = ACTIO_FETCH;
             }
             break;
         case ACTION_POS_4:
-            if (pos_i==ACTION_POS_4)
+            if (pos_i == ACTION_POS_4)
             {
-                action_pattern=ACTIO_FETCH;
+                action_pattern = ACTIO_FETCH;
             }
             break;
         case ACTION_POS_5:
-            if (pos_i==ACTION_POS_5)
+            if (pos_i == ACTION_POS_5)
             {
-                action_pattern=ACTIO_FETCH;
+                action_pattern = ACTIO_FETCH;
             }
             break;
         case ACTION_POS_6:
-            if (pos_i==ACTION_POS_6)
+            if (pos_i == ACTION_POS_6)
             {
-                action_pattern=ACTIO_FETCH;
+                action_pattern = ACTIO_FETCH;
             }
             break;
         case ACTION_POS_END:
-            if (pos_i==ACTION_POS_END)
+            if (pos_i == ACTION_POS_END)
             {
-                action_pattern=ACTION_PUT;
+                action_pattern = ACTION_PUT;
             }
             break;
         case ACTION_PUT:
@@ -145,41 +145,41 @@ void position_check(void)
     point_fb.m_y = cRobot.stPot.fpPosY;
     point_fb.m_q = 0.1f * cRobot.stPot.fpPosQ;
 
-    //如果停止状态变成STOP_X，记得要改这里！
-    if (nav.state==NAV_STOP)
+    // 如果停止状态变成STOP_X，记得要改这里！
+    if (nav.state == NAV_STOP)
     {
-        if (fabs(point_fb.m_x - POS_1_X ) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_1_Y ) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_1_Q ) < LIMIT_DELTA_Q)
+        if (fabs(point_fb.m_x - POS_1_X) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_1_Y) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_1_Q) < LIMIT_DELTA_Q)
         {
             pos_i = 1;
         }
-        else if (fabs(point_fb.m_x - POS_2_X ) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_2_Y ) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_2_Q ) < LIMIT_DELTA_Q)
+        else if (fabs(point_fb.m_x - POS_2_X) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_2_Y) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_2_Q) < LIMIT_DELTA_Q)
         {
             pos_i = 2;
         }
-        else if (fabs(point_fb.m_x - POS_3_X ) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_3_Y ) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_3_Q ) < LIMIT_DELTA_Q)
+        else if (fabs(point_fb.m_x - POS_3_X) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_3_Y) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_3_Q) < LIMIT_DELTA_Q)
         {
             pos_i = 3;
         }
-        else if (fabs(point_fb.m_x - POS_4_X ) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_4_Y ) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_4_Q ) < LIMIT_DELTA_Q)
+        else if (fabs(point_fb.m_x - POS_4_X) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_4_Y) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_4_Q) < LIMIT_DELTA_Q)
         {
             pos_i = 4;
         }
-        else if (fabs(point_fb.m_x - POS_5_X ) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_5_Y ) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_5_Q ) < LIMIT_DELTA_Q)
+        else if (fabs(point_fb.m_x - POS_5_X) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_5_Y) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_5_Q) < LIMIT_DELTA_Q)
         {
             pos_i = 5;
         }
-        else if (fabs(point_fb.m_x - POS_6_X ) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_6_Y ) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_6_Q ) < LIMIT_DELTA_Q)
+        else if (fabs(point_fb.m_x - POS_6_X) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_6_Y) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_6_Q) < LIMIT_DELTA_Q)
         {
             pos_i = 6;
         }
-        else if (fabs(point_fb.m_x - POS_END_X ) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_END_Y ) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_END_Q ) < LIMIT_DELTA_Q)
+        else if (fabs(point_fb.m_x - POS_END_X) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_END_Y) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_END_Q) < LIMIT_DELTA_Q)
         {
             pos_i = 7;
         }
         else
         {
             pos_i = -1;
-        } 
+        }
     }
     else
     {
@@ -205,21 +205,21 @@ void handle_box(void)
     fetch_pattern = FETCH_MOVE;
     switch (box_state)
     {
-			case none:
-			if(init_motor)
-					{
-						DES.table_lift = -2100;
-						if(fabs(table.lift_motor1.pos_pid.fpFB -	DES.table_lift )<1&&fabs(table.lift_motor2.pos_pid.fpFB -DES.table_lift )<1)
-						{
-							DES.table_lift = -10;
-							table.lift_motor1.encoder.siSumValue = -6298099;
-							table.lift_motor2.encoder.siSumValue = -5797689;
-							table.td_lift.m_x1 = -1750;
-						table.td_lift.m_x2 = 0;
-							init_motor = 0;
-						}
-					}
-		break;					
+    case none:
+        if (init_motor)
+        {
+            DES.table_lift = -2100;
+            if (fabs(table.lift_motor1.pos_pid.fpFB - DES.table_lift) < 1 && fabs(table.lift_motor2.pos_pid.fpFB - DES.table_lift) < 1)
+            {
+                DES.table_lift = -10;
+                table.lift_motor1.encoder.siSumValue = -6298099;
+                table.lift_motor2.encoder.siSumValue = -5797689;
+                table.td_lift.m_x1 = -1750;
+                table.td_lift.m_x2 = 0;
+                init_motor = 0;
+            }
+        }
+        break;
     case await:
         sucker.Toggle_sucker = 1;
         DES.table_slide = table_slide_in;

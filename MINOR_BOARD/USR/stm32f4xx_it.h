@@ -68,6 +68,8 @@ void CAN2_TX_IRQHandler(void);
 void CAN2_RX0_IRQHandler(void);
 
 void USART1_IRQHandler(void);
+void USART2_IRQHandler(void);
+void USART3_IRQHandler(void);
 void USART6_IRQHandler(void);
 extern int GG_temptime;
 #ifdef __cplusplus

@@ -9,6 +9,8 @@ void bsp_init(void)
 	TIM2_Configuration(1250-1,8400-1);
 	USART1_Configuration();
 	USART6_Configuration();
+	USART2_Configuration();
+	USART3_Configuration();
 	gpio_init();
 //	Openclose_motor.
 	

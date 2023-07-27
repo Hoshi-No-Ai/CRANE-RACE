@@ -1,5 +1,5 @@
 #include "uart_protocol.h"
-
+#include "string.h"
 uart1_tx_protocol_t eft1 =
 	{
 		0x55,
@@ -42,7 +42,33 @@ void USART1_DMA_Tx(void) // 串口1 DMA发送函数
 
 uint8_t ucData1;
 /*串口1相关的缓存区*/
+char string_cmpare_vallid[22] = "State;0 , Range Valid";
+char string_cmpare_outrange[21] = "State;4 , Phase Fail";
+
 uint8_t uart1_data_buf[UART1_RX_DATA_LEN];
+int32_t distance_uart1;
+int else_err;
+char right_ans[20];
+char outrange_ans[20];
+	char ifright[20];
+		
+int compare_string(char * a,char* b,int len)
+{
+	for(int i=0;i<len;i++)
+	{
+		if(a[i]==b[i])
+		{
+		}
+		else
+		{
+			return 0;
+		}
+		
+		
+	}
+	return 1;
+	
+}
 
 void Comm1Rx_IRQ(void) // 串口1电流DMA接收函数
 {
@@ -51,7 +77,7 @@ void Comm1Rx_IRQ(void) // 串口1电流DMA接收函数
 	static unsigned char ucPit = 0;					// 数据字节计数
 	//	unsigned char i = 0;			                                //计数变量，遍历整个DMA数组
 
-	for (i = 0; i < UART1_RX_DATA_LEN + 5; i = i + 1) // 遍历数组，数组大小i改变根据USART1_RXMB_LEN大小变化
+	for (i = 0; i < UART1_RX_DATA_LEN ; i = i + 1) // 遍历数组，数组大小i改变根据USART1_RXMB_LEN大小变化
 	{
 		ucData1 = UA1RxMailbox[i]; // 取出一个字节
 		/*********************************状态机解析数据包************************************/
@@ -59,14 +85,14 @@ void Comm1Rx_IRQ(void) // 串口1电流DMA接收函数
 		switch (Comm1_Rx_Status)
 		{
 		case RX_FREE:
-			if (ucData1 == efr1.usart1_rx_start1)
+			if (ucData1 == 0x53)
 			{
 				Comm1_Rx_Status = RX_START_1; // 自由状态下接到0x55认为开始
 			}
 			break;
 
 		case RX_START_1:
-			if (ucData1 == efr1.usart1_rx_start2)
+			if (ucData1 == 0x74)
 			{
 				Comm1_Rx_Status = RX_START_2;
 			}
@@ -77,13 +103,14 @@ void Comm1Rx_IRQ(void) // 串口1电流DMA接收函数
 			break;
 
 		case RX_START_2:
-			if (ucData1 == efr1.date_len_float)
+			if (ucData1 == 0x61)
 			{
 				Comm1_Rx_Status = RX_START_3;
 			}
+			break;
 
 		case RX_START_3:
-			if (ucData1 == efr1.usart1_rx_datanum)
+			if (ucData1 ==0x74)
 			{
 				Comm1_Rx_Status = RX_DATAS;
 			}
@@ -94,6 +121,29 @@ void Comm1Rx_IRQ(void) // 串口1电流DMA接收函数
 			break;
 
 		case RX_DATAS:
+		//	memcpy(string_distance1, UA1RxMailbox, 38);
+	
+		memcpy(ifright, &UA1RxMailbox[0], 20);		
+			memcpy(right_ans,string_cmpare_vallid, 20);
+		memcpy(outrange_ans, string_cmpare_outrange, 20);
+		
+		
+		if(compare_string(ifright,right_ans,20)  == 1)
+		{
+			distance_uart1 = 0;
+			if((int)UA1RxMailbox[29]>0x30)	distance_uart1 +=	((int)UA1RxMailbox[29]-0x30)*1000;
+			if((int)UA1RxMailbox[30]>0x30)distance_uart1 +=	((int)UA1RxMailbox[30]-0x30)*100;
+			if((int)UA1RxMailbox[31]>0x30)distance_uart1 +=	((int)UA1RxMailbox[31]-0x30)*10;
+			if((int)UA1RxMailbox[32]>0x30)distance_uart1 +=	(int)UA1RxMailbox[32]-0x30;
+			
+
+		}
+		else if(compare_string(ifright,outrange_ans,20)  == 1)
+		{
+				distance_uart1 = (UA1RxMailbox[29]-0x30)*1000+ ((int)UA1RxMailbox[30]-0x30)*100+ ( (int)UA1RxMailbox[31]-0x30)*10+  ((int)UA1RxMailbox[32]-0x30)*1;
+
+		}
+	//	distance_uart1 = atol(string_dis1);
 			if (ucPit < efr1.usart1_rx_datanum) // 如果没够数，存
 			{
 				*(uart1_data_buf + ucPit) = ucData1;
@@ -117,7 +167,7 @@ void Comm1Rx_IRQ(void) // 串口1电流DMA接收函数
 		{
 			if (ucData1 == efr1.usart1_rx_tail2) // 如果接到了0xAA，数据有效
 			{
-				memcpy(efr1.num, uart1_data_buf, UART1_RX_DATA_LEN);
+				
 			}
 			Comm1_Rx_Status = RX_FREE;
 		}
@@ -127,6 +177,122 @@ void Comm1Rx_IRQ(void) // 串口1电流DMA接收函数
 		}
 	}
 }
+
+
+
+
+//uint8_t uart1_data_buf[UART1_RX_DATA_LEN];
+int distance_uart3;
+
+
+void Comm3Rx_IRQ(void) // 串口1电流DMA接收函数
+{
+	u8 i = 0;
+	static unsigned char Comm1_Rx_Status = RX_FREE; // 初始状态
+	static unsigned char ucPit = 0;					// 数据字节计数
+	//	unsigned char i = 0;			                                //计数变量，遍历整个DMA数组
+
+	for (i = 0; i < UART1_RX_DATA_LEN ; i = i + 1) // 遍历数组，数组大小i改变根据USART1_RXMB_LEN大小变化
+	{
+		ucData1 = UA3RxMailbox[i]; // 取出一个字节
+		/*********************************状态机解析数据包************************************/
+		/*依次进行判断帧头帧尾*/
+		switch (Comm1_Rx_Status)
+		{
+		case RX_FREE:
+			if (ucData1 == 0x53)
+			{
+				Comm1_Rx_Status = RX_START_1; // 自由状态下接到0x55认为开始
+			}
+			break;
+
+		case RX_START_1:
+			if (ucData1 == 0x74)
+			{
+				Comm1_Rx_Status = RX_START_2;
+			}
+			else
+			{
+				Comm1_Rx_Status = RX_FREE;
+			}
+			break;
+
+		case RX_START_2:
+			if (ucData1 == 0x61)
+			{
+				Comm1_Rx_Status = RX_START_3;
+			}
+			break;
+
+		case RX_START_3:
+			if (ucData1 ==0x74)
+			{
+				Comm1_Rx_Status = RX_DATAS;
+			}
+			else
+			{
+				Comm1_Rx_Status = RX_FREE;
+			}
+			break;
+
+		case RX_DATAS:
+		//	memcpy(string_distance1, UA1RxMailbox, 38);
+	
+		memcpy(ifright, &UA3RxMailbox[0], 20);		
+			memcpy(right_ans,string_cmpare_vallid, 20);
+		memcpy(outrange_ans, string_cmpare_outrange, 20);
+		
+		
+		if(compare_string(ifright,right_ans,20)  == 1)
+		{
+			distance_uart3 = 0;
+			if((int)UA3RxMailbox[29]>0x30)	distance_uart3 +=	((int)UA3RxMailbox[29]-0x30)*1000;
+			if((int)UA3RxMailbox[30]>0x30)distance_uart3 +=	((int)UA3RxMailbox[30]-0x30)*100;
+			if((int)UA3RxMailbox[31]>0x30)distance_uart3 +=	((int)UA3RxMailbox[31]-0x30)*10;
+			if((int)UA3RxMailbox[32]>0x30)distance_uart3 +=	(int)UA3RxMailbox[32]-0x30;
+			
+
+		}
+		else if(compare_string(ifright,outrange_ans,20)  == 1)
+		{
+				distance_uart3 = (UA3RxMailbox[29]-0x30)*1000+ ((int)UA3RxMailbox[30]-0x30)*100+ ( (int)UA3RxMailbox[31]-0x30)*10+  ((int)UA3RxMailbox[32]-0x30)*1;
+
+		}
+	//	distance_uart1 = atol(string_dis1);
+			if (ucPit < efr1.usart1_rx_datanum) // 如果没够数，存
+			{
+				*(uart1_data_buf + ucPit) = ucData1;
+				ucPit++;
+			}
+			else // 够数了判断0x00
+			{
+				ucPit = 0;
+				if (ucData1 == efr1.usart1_rx_tail1)
+				{
+					Comm1_Rx_Status = RX_TAIL_1;
+				}
+				else
+				{
+					Comm1_Rx_Status = RX_FREE;
+				}
+			}
+			break;
+
+		case RX_TAIL_1:
+		{
+			if (ucData1 == efr1.usart1_rx_tail2) // 如果接到了0xAA，数据有效
+			{
+				
+			}
+			Comm1_Rx_Status = RX_FREE;
+		}
+		break;
+		default:
+			break;
+		}
+	}
+}
+
 
 void USART6_DMA_Tx(void) // 串口6 DMA发送函数
 {
