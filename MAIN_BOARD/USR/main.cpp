@@ -4,32 +4,35 @@
 #include "action_task.h"
 using _api_module_::calculate_flag;
 using _api_module_::f_g_error;
+using _navigation_::vision_enable;
+using _navigation_::vision_true;
 using _remote_ctrl_::auto_enable;
+
 #define servo_degree(x) ((2000) / 180 * x + 500)
 
-/*Ã¿´Î±àÒëÇ°£¬ĞèÒªÔÚ±àÒëÆ÷µÄ¡¾ºê¶¨ÒåÑ¡Ïî¡¿ÖĞ¹ÜÀíÏÂÁĞºê£¡*/
+/*æ¯æ¬¡ç¼–è¯‘å‰ï¼Œéœ€è¦åœ¨ç¼–è¯‘å™¨çš„ã€å®å®šä¹‰é€‰é¡¹ã€‘ä¸­ç®¡ç†ä¸‹åˆ—å®ï¼*/
 // #define ENABLE_DEBUG
 // #define ENABLE_MONITOR
 // #define WIFI_REMOTE_CTRL
 // #define DT35_PATH
 #define AUTO_FETCH
 
-DECLARE_HITCRT_OS_TASK(); // ÉùÃ÷ÈÎÎñ
+DECLARE_HITCRT_OS_TASK(); // å£°æ˜ä»»åŠ¡
 
 u8 udp_demo_sendbuf[ARM_DEBUG_SIZE * 4 + 4] = "Explorer STM32F407 NETCONN UDP demo send data\r\n";
-u8 udp_flag; // UDPÊı¾İ·¢ËÍ±êÖ¾
+u8 udp_flag; // UDPæ•°æ®å‘é€æ ‡å¿—
 
 int main(void)
 {
     OS_ERR err;
-    CPU_SR_ALLOC(); // ÁÙ½çÇø´úÂë³õÊ¼»¯
+    CPU_SR_ALLOC(); // ä¸´ç•ŒåŒºä»£ç åˆå§‹åŒ–
 
     bsp_init();
 
     delay_ms(100);
     delay_ms(100);
 
-    //	ÍÓÂİÒÇÁãÆ¯
+    //	é™€èºä»ªé›¶æ¼‚
     calculate_flag = 1;
     f_g_error = -3.587097922961;
     //	flag_tuoluo=1;
@@ -38,20 +41,20 @@ int main(void)
     OSInit(&err);
 
 #ifdef ENABLE_DEBUG
-    lwip_comm_init(); // lwip³õÊ¼?
+    lwip_comm_init(); // lwipåˆå§‹?
     udp_demo_test();
 
 #endif
 
     Sys_Monitor.system_state = SYS_RUN;
 
-    OS_CRITICAL_ENTER(); // ½øÈëÁÙ½çÇø£¬È·±£ÀïÃæµÄÓï¾ä²»±»´ò¶Ï
+    OS_CRITICAL_ENTER(); // è¿›å…¥ä¸´ç•ŒåŒºï¼Œç¡®ä¿é‡Œé¢çš„è¯­å¥ä¸è¢«æ‰“æ–­
 
-    CREATE_OS_TASK(system_monitor_task);   // ´´½¨³õÊ¼»¯ÈÎÎñ
-    CREATE_OS_TASK(remote_lcd_task);       // ´´½¨Ò£¿ØÆ÷ÏÔÊ¾ÆÁÈÎÎñ
-    CREATE_OS_TASK(read_remote_ctrl_task); // ´´½¨ÊÖ±ú¼üÅÌÉ¨ÃèÈÎÎñ
+    CREATE_OS_TASK(system_monitor_task);   // åˆ›å»ºåˆå§‹åŒ–ä»»åŠ¡
+    CREATE_OS_TASK(remote_lcd_task);       // åˆ›å»ºé¥æ§å™¨æ˜¾ç¤ºå±ä»»åŠ¡
+    CREATE_OS_TASK(read_remote_ctrl_task); // åˆ›å»ºæ‰‹æŸ„é”®ç›˜æ‰«æä»»åŠ¡
     CREATE_OS_TASK(motor_control_task);
-    CREATE_OS_TASK(navigation_task); // ´´½¨¶¨Î»µ¼º½ÈÎÎñ
+    CREATE_OS_TASK(navigation_task); // åˆ›å»ºå®šä½å¯¼èˆªä»»åŠ¡
 
 #ifdef ENABLE_DEBUG
     CREATE_OS_TASK(debug_task);
@@ -60,7 +63,7 @@ int main(void)
     CREATE_OS_TASK(action_task);
     CREATE_OS_TASK(transmit_task);
 
-    OS_CRITICAL_EXIT(); // ÍË³öÁÙ½çÇø
+    OS_CRITICAL_EXIT(); // é€€å‡ºä¸´ç•ŒåŒº
     OSStart(&err);
 
     while (1)
@@ -74,9 +77,9 @@ void system_monitor_task(void *p)
     p = p;
     CPU_Init();
 
-    OSStatTaskCPUUsageInit(&err); // ¿ªÍ³¼ÆÈÎÎñ
+    OSStatTaskCPUUsageInit(&err); // å¼€ç»Ÿè®¡ä»»åŠ¡
 
-    OSTimeDly_ms(2000); // ¸ø±ØÒªµÄÑÓÊ±£¬µÈ´ı½ÓÊÕµ½Ö¡ÂÊ
+    OSTimeDly_ms(2000); // ç»™å¿…è¦çš„å»¶æ—¶ï¼Œç­‰å¾…æ¥æ”¶åˆ°å¸§ç‡
 
     while (1)
     {
@@ -106,7 +109,7 @@ s16 pwm2 = 0;
 s16 pwm3 = 0;
 s16 pwm4 = 0;
 u16 pwm_value_3_3 = 0; // S1 TIM
-int _servo_degree;
+int _servo_degree = 180;
 void motor_control_task(void *p)
 {
     OS_ERR err;
@@ -140,7 +143,7 @@ void motor_control_task(void *p)
     }
 }
 
-void read_remote_ctrl_task(void *p) // ÊÖ±ú¼üÅÌÉ¨ÃèÈÎÎñ
+void read_remote_ctrl_task(void *p) // æ‰‹æŸ„é”®ç›˜æ‰«æä»»åŠ¡
 {
     OS_ERR err;
     p = p;
@@ -151,17 +154,18 @@ void read_remote_ctrl_task(void *p) // ÊÖ±ú¼üÅÌÉ¨ÃèÈÎÎñ
         //        Js_Deal();
         Key_Deal();
 
-        OSTimeDly_ms(20); // ºÍnrfÖ¡ÂÊÆ¥Åä£¬wifiÔòÎª10ms
+        OSTimeDly_ms(20); // å’Œnrfå¸§ç‡åŒ¹é…ï¼Œwifiåˆ™ä¸º10ms
     }
 }
 
 static int dt35_time = 0;
+static int vision_time = 0;
 void navigation_task(void *p)
 {
     OS_ERR err;
     p = p;
 
-    OSTimeDly_ms(2000); // µÈËæ¶¯ÂÖInitºÃ
+    OSTimeDly_ms(2000); // ç­‰éšåŠ¨è½®Initå¥½
     while (1)
     {
         cRobot.RobotLocation();
@@ -173,8 +177,16 @@ void navigation_task(void *p)
         }
 #endif
         cRobot.Cal_RobotVelt();
+
+        if (nav.state == NAV_STOPX && vision_enable && vision_time > 20)
+        {
+            vision_true = des_base_aruco(aruco_fdb);
+            vision_time = 0;
+        }
+
         navigation();
 
+        vision_time++;
 #ifdef DT35_PATH
         dt35_time++;
 #endif
@@ -204,7 +216,7 @@ void debug_task(void *p)
 }
 #endif
 
-void remote_lcd_task(void *p) // esp8266·¢ËÍÈÎÎñ
+void remote_lcd_task(void *p) // esp8266å‘é€ä»»åŠ¡
 {
     OS_ERR err;
     p = p;
@@ -221,19 +233,20 @@ void action_task(void *p)
     OS_ERR err;
     p = p;
 
-    while (1) {
+    while (1)
+    {
         robot_movement();
         movement_check(auto_enable);
         position_check();
-			sucker.drive_sucker();
-			 handle_box();
+        sucker.drive_sucker();
+        handle_box();
         OSTimeDly_ms(10);
     }
 }
 extern DesSet DES;
 
-float sucker_slide_r = 100;
-	float sucker_lift_r = 700;
+float sucker_slide_r = 50;
+float sucker_lift_r = 1000;
 
 void transmit_task(void *p)
 {
@@ -245,12 +258,12 @@ void transmit_task(void *p)
 
         memcpy(uart3_eft.num, &DES.sucker_slide, 4);
         memcpy(&uart3_eft.num[4], &DES.sucker_lift, 4);
-			
-			memcpy(&uart3_eft.num[8], &sucker_slide_r, 4);
-        memcpy(&uart3_eft.num[12], &sucker_lift_r, 4);
-        USART3_DMA_Tx(); // ×¢µô¾Í²»»áÏòÉÏ°å·¢ËÍ
 
-        // ¸øÉÏ°å·¢µÄ0-3Î»ÊÇsucker_slide£¬4-7Î»ÊÇsucker_lift
+        memcpy(&uart3_eft.num[8], &sucker_slide_r, 4);
+        memcpy(&uart3_eft.num[12], &sucker_lift_r, 4);
+        USART3_DMA_Tx(); // æ³¨ç¢Œé¹åµ…ç¦„ç¦„é‡“é‡‡å¾›æ¿å‘è—£
+
+        // èµ‚é…¶è“®æ³å®¸â’™çš„?-3ä½è• sucker_slideæ‹¢å¢4-7ä½è• sucker_lift
         OSTimeDly_ms(1);
     }
 }

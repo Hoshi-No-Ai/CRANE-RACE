@@ -8,6 +8,7 @@
 #include "path_algorithm.h"
 #include "read_remote_ctrl_task.h"
 #include "remote_control.h"
+#include "vision_algorithm.h"
 
 void navigation(void);
 

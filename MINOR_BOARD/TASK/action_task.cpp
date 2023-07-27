@@ -17,6 +17,7 @@ void deal_with_message(void)
 	}
 }
 
+
 void action_detection(void)
 {
 	rate_monitor.temp_rate[4]++;

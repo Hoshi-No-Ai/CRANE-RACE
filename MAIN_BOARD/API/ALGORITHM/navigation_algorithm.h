@@ -16,21 +16,24 @@
     nav.auto_path.run_time = 0;    \
     flag_record = 1
 
-enum nav_state_e {
+enum nav_state_e
+{
     NAV_INIT,
-    NAV_MANUAL,  // ÊÖ¶¯¿ØÖÆ
+    NAV_MANUAL, // ï¿½Ö¶ï¿½ï¿½ï¿½ï¿½ï¿½
     NAV_NEW_MANUAL,
-    NAV_AUTO_PATH,  // ×Ô¶¯Â·¾¶µ¼º½
+    NAV_AUTO_PATH, // ï¿½Ô¶ï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     NAV_PATHPLANNING,
     NAV_OFF,
     NAV_STOP,
     NAV_LOCK,
-    NAV_CALIBRATION_1,  // ÅÜ¿ª»·£¬²âÆô¶¯µçÁ÷Óë¼ÓËÙ¶ÈÏµÊý
-    NAV_CALIBRATION_2,  // ÅÜ×î´ó¼ÓËÙ¶È£¬ÐÞÕý¼ÓËÙ¶ÈÏµÊý
+    NAV_CALIBRATION_1, // ï¿½Ü¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½Ïµï¿½ï¿½
+    NAV_CALIBRATION_2, // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶È£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½Ïµï¿½ï¿½
+    NAV_STOPX
 };
 
-class C_NAV {
-   public:
+class C_NAV
+{
+public:
     nav_state_e state;
     C_VECTOR expect_robot_global_velt;
     C_VECTOR expect_robot_local_Velt;

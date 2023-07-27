@@ -5,11 +5,12 @@
 #include "sucker.h"
 #include "table.h"
 
-#define LIMIT_DELTA_X 50.0f
-#define LIMIT_DELTA_Y 50.0f
-#define LIMIT_DELTA_Q 5.0f
+#define LIMIT_DELTA_X 20.0f
+#define LIMIT_DELTA_Y 20.0f
+#define LIMIT_DELTA_Q 1.0f
 
-enum action_pattern_e{
+enum action_pattern_e
+{
     ACTION_INIT,
     ACTION_POS_1,
     ACTION_POS_2,
@@ -19,42 +20,58 @@ enum action_pattern_e{
     ACTION_POS_6,
     ACTION_POS_END,
     ACTION_PUT,
-    ACTIO_FETCH,
+    ACTION_FETCH,
+    ACTION_POS_CHECK,
+    ACTION_POS_CHANGE,
     ACTION_NONE
 };
 
-enum fetch_pattern_e{
+enum fetch_pattern_e
+{
     FETCH_INIT,
     FETCH_AWAIT,
     FETCH_GET,
     FETCH_LOSE,
-    FETCH_MOVE
+    FETCH_MOVE,
+    FETCH_GET_PRE
 };
 
-enum BOX_STATE{
-	none,
-	await,
-	get_state1,
-	get_state2,
-	get_state3,
-	lose_state0,
-	lose_state1,
-	lose_state2	
+enum BOX_STATE
+{
+    none,
+    await,
+    get_state1,
+    get_state2,
+    get_state3,
+    lose_state0,
+    lose_state1,
+    lose_state2
 };
 
-struct GET_NUM{
-uint8_t box;
-uint8_t cola;
+struct GET_NUM
+{
+    uint8_t box;
+    uint8_t cola;
+	
+		GET_NUM()
+		{
+			box=1;
+			cola=1;
+		}
+		
+		~GET_NUM(){}
 };
 
 extern action_pattern_e action_pattern;
 extern fetch_pattern_e fetch_pattern;
 extern BOX_STATE box_state;
+extern int this_target;
+extern GET_NUM target_num;
 
 void robot_movement(void);
 void movement_check(bool if_auto);
 void position_check(void);
-	
+
 void handle_box(void);
 
 #endif
