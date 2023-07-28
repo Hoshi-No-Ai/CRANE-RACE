@@ -195,3 +195,67 @@ void USART6_IRQHandler(void)
 
 	OSIntExit();
 }
+
+
+
+extern USART_RX_TypeDef USART2_Rcr;
+
+void USART2_IRQHandler(void)
+{
+    CPU_SR cpu_sr;
+    OS_CRITICAL_ENTER();
+    OSIntEnter();
+    OS_CRITICAL_EXIT();
+
+    if (USART_GetITStatus(USART2, USART_IT_RXNE) != RESET)
+    {
+        // 数据处理
+        USART_ClearITPendingBit(USART2, USART_IT_RXNE);
+    }
+    else if (USART_GetITStatus(USART2, USART_IT_IDLE) != RESET)
+    {
+        USART2->SR;
+        USART2->DR; // 先读SR后读DR清楚中断标志位
+        USART_Receive(&USART2_Rcr);
+       // Comm2Rx_IRQ();
+    }
+
+    OSIntExit();
+}
+
+
+
+extern USART_RX_TypeDef USART3_Rcr;
+
+void USART3_IRQHandler(void)
+{
+    CPU_SR cpu_sr;
+    OS_CRITICAL_ENTER();
+    OSIntEnter();
+    OS_CRITICAL_EXIT();
+
+    if (USART_GetITStatus(USART3, USART_IT_RXNE) != RESET)
+    {
+        // 数据处理
+        USART_ClearITPendingBit(USART3, USART_IT_RXNE);
+    }
+    else if (USART_GetITStatus(USART3, USART_IT_IDLE) != RESET)
+    {
+        USART3->SR;
+        USART3->DR; // 先读SR后读DR清楚中断标志位
+        USART_Receive(&USART3_Rcr);
+        Comm3Rx_IRQ();
+//Sys_Monitor.rate_monitor.temp_rate[MINOR_32]++;
+    }
+    OSIntExit();
+}
+
+
+
+
+
+
+
+
+
+

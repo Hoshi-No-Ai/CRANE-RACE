@@ -18,7 +18,8 @@
 .mxproject
 *.hex
 *.axf
-
+JLinkLog.txt
+*.hex
 RTE/
 Templates/
 Examples/

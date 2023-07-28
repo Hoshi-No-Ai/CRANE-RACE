@@ -17,25 +17,26 @@ void robot_movement(void)
         case ACTION_NONE:
             break;
         case ACTION_INIT:
-            // ÉÏ²ã»ú¹¹³õÊ¼»¯
+            // ä¸Šå±‚æœºæ„åˆå§‹åŒ–
             box_state = await;
             break;
         case ACTION_FETCH:
-            // ÉÏ²ã×¥È¡
+            // ä¸Šå±‚æŠ“å–
             box_state = get_state1;
             break;
         case ACTION_PUT:
-            // ÉÏ²ã·ÅÖÃ
+            // ä¸Šå±‚æ”¾ç½®
             box_state = lose_state0;
             break;
         case ACTION_POS_1:
-            // ÅÜµ½µÚÒ»¸öµãÎ»
+            // è·‘åˆ°ç¬¬ä¸€ä¸ªç‚¹ä½
             nav.auto_path.m_point_end.point_set(POS_1_X, POS_1_Y, POS_1_Q);
             nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 90, 1500, 1500);
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_2:
             nav.auto_path.m_point_end.point_set(POS_2_X, POS_2_Y, POS_2_Q);
+
             nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 90, 1500, 1500);
             SET_NAV_PATH_AUTO(1);
             break;
@@ -46,6 +47,7 @@ void robot_movement(void)
             break;
         case ACTION_POS_4:
             nav.auto_path.m_point_end.point_set(POS_4_X, POS_4_Y, POS_4_Q);
+
             nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 90, 1500, 1500);
             SET_NAV_PATH_AUTO(1);
             break;
@@ -65,7 +67,7 @@ void robot_movement(void)
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_CHANGE:
-            // È¡¿ÉÀÖºó¸Ä±ä×ø±êµã
+            // å–å¯ä¹åæ”¹å˜åæ ‡ç‚¹
             nav.auto_path.m_point_end.m_x = nav.auto_path.m_point_end.m_x + delta_des_cola_w.delta_x;
             nav.auto_path.m_point_end.m_y = nav.auto_path.m_point_end.m_y + delta_des_cola_w.delta_y;
             nav.auto_path.m_point_end.m_q = nav.auto_path.m_point_end.m_q;
@@ -88,7 +90,7 @@ void movement_check(bool if_auto)
         switch (action_pattern)
         {
         case ACTION_INIT:
-            // ÉÏ²ã·¢ËÍ³õÊ¼»¯³É¹¦flag±êÖ¾Î»
+            // ä¸Šå±‚å‘é€åˆå§‹åŒ–æˆåŠŸflagæ ‡å¿—ä½
             if (fetch_pattern == FETCH_AWAIT)
             {
                 action_pattern = ACTION_POS_1;
@@ -101,7 +103,7 @@ void movement_check(bool if_auto)
             }
             break;
         case ACTION_POS_1:
-            // ÅĞ¶Ïµ×ÅÌÊÇ·ñÅÜµ½µãÎ»
+            // åˆ¤æ–­åº•ç›˜æ˜¯å¦è·‘åˆ°ç‚¹ä½
             if (pos_i == ACTION_POS_1)
             {
                 action_pattern = ACTION_POS_CHECK;
@@ -146,7 +148,7 @@ void movement_check(bool if_auto)
         case ACTION_PUT:
             break;
         case ACTION_POS_CHECK:
-            //TODO:¼¤¹â´«¸ĞÆ÷¸ø³öÊ¶±ğµ½µÄĞÅºÅ
+            //TODO:æ¿€å…‰ä¼ æ„Ÿå™¨ç»™å‡ºè¯†åˆ«åˆ°çš„ä¿¡å·
             if (figure_out_object)
             {
                 if (this_target == 1)
@@ -181,7 +183,7 @@ void position_check(void)
     point_fb.m_y = cRobot.stPot.fpPosY;
     point_fb.m_q = 0.1f * cRobot.stPot.fpPosQ;
 
-    // Èç¹ûÍ£Ö¹×´Ì¬±ä³ÉSTOP_X£¬¼ÇµÃÒª¸ÄÕâÀï£¡
+    // å¦‚æœåœæ­¢çŠ¶æ€å˜æˆSTOP_Xï¼Œè®°å¾—è¦æ”¹è¿™é‡Œï¼
     if (nav.state == NAV_STOP || nav.state == NAV_STOPX)
     {
         if (fabs(point_fb.m_x - POS_1_X) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_1_Y) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_1_Q) < LIMIT_DELTA_Q)
@@ -236,6 +238,8 @@ int init_motor;
 extern int _servo_degree;
 int this_target = 0; // box 1,cola 2
 extern float task_time;
+extern int temp_target_detect;
+
 void handle_box(void)
 {
     OS_ERR err;
@@ -268,7 +272,7 @@ void handle_box(void)
         DES.sucker_lift = sucker_lift_box_await;
         DES.sucker_slide = sucker_slide_await;
 
-        // ¿ÉÀÖ¸ß¶È
+        // å¯ä¹é«˜åº¦
         if (fetch_pattern == FETCH_GET_PRE && sucker.lift_motor.pos_pid.fpFB > height_box && this_target == 2)
         {
             fetch_pattern = FETCH_GET;
@@ -292,8 +296,9 @@ void handle_box(void)
 
         if (fabs(DES.sucker_lift - sucker.lift_motor.pos_pid.fpFB) < 5)
         {
-            // TODO£ºµ÷½ÚÏÎ½ÓÊ±¼ä
+            // TODOï¼šè°ƒèŠ‚è¡”æ¥æ—¶é—´
             fetch_pattern = FETCH_AWAIT;
+					
         }
         break;
 
@@ -301,7 +306,11 @@ void handle_box(void)
         sucker.Toggle_sucker = 0;
         // DES.table_lift = table_lift_up;
         DES.table_slide = table_slide_in;
+				if(sucker.lift_motor.pos_pid.fpFB>300)
+				{
+					this_target =  temp_target_detect;
 
+				}
         if (this_target == 1) // box
         {
             DES.sucker_slide = sucker_slide_get_state1;
@@ -344,7 +353,7 @@ void handle_box(void)
             if (fabs(DES.sucker_lift - sucker.lift_motor.pos_pid.fpFB) < 5)
             {
                 sucker.Toggle_sucker = 1;
-                // TODO£ºµ÷½ÚÏÎ½ÓÊ±¼ä
+                // TODOï¼šè°ƒèŠ‚è¡”æ¥æ—¶é—´
                 OSTimeDly_ms(1000);
 								fetch_pattern=FETCH_GET_PRE;
                 box_state = await;
