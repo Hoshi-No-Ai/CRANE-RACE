@@ -43,6 +43,7 @@ struct Delta_2D
 bool des_base_aruco(aruco &aruco_ref);
 
 void delta_des_cola(int num);
+bool Identify_box_cola(int &target);
 
 extern Delta_2D delta_fb_des;
 extern Delta_2D delta_des_cola_w;

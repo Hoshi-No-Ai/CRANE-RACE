@@ -5,6 +5,9 @@ using _navigation_::calibration_current;
 using _navigation_::vision_enable;
 using _navigation_::vision_true;
 using _remote_ctrl_::manual_enable;
+using _action_::flag_stop_wait;
+
+int stop_wait_time;
 
 static bool path_with_pos_pid = 1;
 
@@ -47,6 +50,16 @@ void navigation(void)
         nav.auto_path.pos_pid.x.fpKp = 10.0f;
         nav.auto_path.pos_pid.y.fpKp = 10.0f;
         nav.auto_path.pos_pid.w.fpKp = 20.0f;
+				
+				if(flag_stop_wait)
+				{
+					stop_wait_time++;
+					if(stop_wait_time>1000)
+					{
+						flag_stop_wait=0;
+						stop_wait_time=0;
+					}
+				}
 
         if (vision_true)
         {

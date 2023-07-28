@@ -10,6 +10,8 @@
 #include "string.h"
 #include "uart.h"
 
+#include "sucker.h"
+
 #define DT35_NUM 0x04
 
 #define MAX_RX_DATA_LEN 114
@@ -257,6 +259,9 @@ extern rx_protocol_t uart6_efr;
 // extern uart6_rx_protocol_t uart6_efr;
 
 extern aruco aruco_fdb;
+extern int temp_target_detect;
+extern cSucker sucker;
+extern int dist_1, dist_2;
 
 void USART3_DMA_Tx(void);
 void Comm3Rx_IRQ(void);

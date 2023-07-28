@@ -1,7 +1,5 @@
 #include "usart_protocol.h"
-#include "sucker.h"
 
-#include "action_task.h"
 using _api_module_::calculate_flag;
 using _api_module_::f_g_error;
 using _api_module_::flag_tuoluo;
@@ -210,13 +208,10 @@ void USART3_DMA_Tx(void) // 串口2 DMA发送函数
 uint8_t ucData3;
 /*串口2相关的缓存区*/
 uint8_t uart3_data_buf[UART3_RX_DATA_LEN];
-extern cSucker sucker;
-int dist_1,dist_2;
+int dist_1, dist_2;
 int dist_1_buff[5];
 int dist_2_buff[5];
 
-extern GET_NUM target_num;
-extern int this_target;
 int temp_target_detect;
 void Comm3Rx_IRQ(void) // 串口2电流DMA接收函数
 {
@@ -271,21 +266,20 @@ void Comm3Rx_IRQ(void) // 串口2电流DMA接收函数
                 if (ucData3 == uart3_efr.tail1)
                 {
                     Comm3_Rx_Status = RX_TAIL_1;
-										memcpy(&sucker.slide_motor.pos_pid.fpFB,uart3_efr.num,4);
-									memcpy(&sucker.lift_motor.pos_pid.fpFB,&uart3_efr.num[4],4);
-									
-										memcpy(&dist_1,&uart3_efr.num[8],4);
-									  memcpy(&dist_2,&uart3_efr.num[12],4);
-										
-									if(dist_1>200||dist_2>200)
-									{
-										temp_target_detect = 2;
-										
-									}
-									else
-									{
-										temp_target_detect = 1;
-									}
+                    memcpy(&sucker.slide_motor.pos_pid.fpFB, uart3_efr.num, 4);
+                    memcpy(&sucker.lift_motor.pos_pid.fpFB, &uart3_efr.num[4], 4);
+
+                    memcpy(&dist_1, &uart3_efr.num[8], 4);
+                    memcpy(&dist_2, &uart3_efr.num[12], 4);
+
+                    if (dist_1 > 200 || dist_2 > 200)
+                    {
+                        temp_target_detect = 2;
+                    }
+                    else
+                    {
+                        temp_target_detect = 1;
+                    }
                 }
                 else
                 {
@@ -579,7 +573,7 @@ void Comm2Rx_IRQ(void) // 串口6 DMA接收函数
             if (ucData2 == uart2_efr.tail2) // 如果接到了0xAA，数据有效
             {
                 memcpy(uart2_efr.num, uart2_data_buf, UART2_RX_DATA_LEN);
-                memcpy(&aruco_fdb, uart2_efr.num, 4*7);
+                memcpy(&aruco_fdb, uart2_efr.num, 4 * 7);
             }
             Comm2_Rx_Status = RX_FREE;
             break;

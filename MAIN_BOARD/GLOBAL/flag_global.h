@@ -35,6 +35,7 @@ namespace _navigation_
 namespace _action_
 {
     extern bool figure_out_object;
+		extern bool flag_stop_wait;
 }
 
 #endif

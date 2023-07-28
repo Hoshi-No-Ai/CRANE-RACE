@@ -8,6 +8,8 @@ using _action_::figure_out_object;
 
 keyboard_mode_e keyboard_mode = DEBUG;
 
+extern int test_enable;
+
 void Js_Deal(void)
 {
     // static bool calibration_status = 0;
@@ -169,6 +171,10 @@ void Key_Deal(void)
                 calibration_current = 16000;
             }
         }
+				else if (keyboard_mode == ACTION)
+				{
+					init_motor=1;
+				}
     }
     else if (PRESS_KEY_1_5)
     {
@@ -342,10 +348,11 @@ void Key_Deal(void)
     }
     else if (PRESS_KEY_4_6)
     {
-        target_num.box++;
-        if (target_num.box > 3)
-        {
-            target_num.box = 1;
-        }
+//        target_num.box++;
+//        if (target_num.box > 3)
+//        {
+//            target_num.box = 1;
+//        }
+			test_enable=1;
     }
 }

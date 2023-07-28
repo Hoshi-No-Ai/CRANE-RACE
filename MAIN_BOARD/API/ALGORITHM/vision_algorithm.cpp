@@ -79,3 +79,16 @@ void delta_des_cola(int num)
 		
     delta_des_cola_w = Coord_transformation(theta_w_r, delta_des_r);
 }
+
+bool Identify_box_cola(int &target)
+{
+    if(nav.state==NAV_STOPX)
+    {
+        target=temp_target_detect;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
