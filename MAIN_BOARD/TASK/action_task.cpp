@@ -66,14 +66,16 @@ void robot_movement(void)
             nav.auto_path.m_velt_acc.Velt_Acc_Set(1000, 60, 1000, 1000);
             SET_NAV_PATH_AUTO(1);
             break;
-				case ACTION_POS_CHECK:
-            flag_stop_wait=1;
+        case ACTION_POS_CHECK:
+            flag_stop_wait = 1;
             break;
         case ACTION_POS_CHANGE:
             // 取可乐后改变坐标
             nav.auto_path.m_point_end.m_x = nav.auto_path.m_point_end.m_x + delta_des_cola_w.delta_x;
             nav.auto_path.m_point_end.m_y = nav.auto_path.m_point_end.m_y + delta_des_cola_w.delta_y;
             nav.auto_path.m_point_end.m_q = nav.auto_path.m_point_end.m_q;
+            nav.auto_path.m_velt_acc.Velt_Acc_Set(500, 60, 500, 500);
+            SET_NAV_PATH_AUTO(1);
             break;
         default:
             break;
@@ -82,8 +84,7 @@ void robot_movement(void)
     }
 }
 
-int test_enable=0;
-
+int test_enable = 0;
 
 void movement_check(bool if_auto)
 {
@@ -154,22 +155,22 @@ void movement_check(bool if_auto)
         case ACTION_PUT:
             break;
         case ACTION_POS_CHECK:
-            //TODO:激光传感器给出识别到的信号
-						
-            figure_out_object=Identify_box_cola(this_target);
-            if (figure_out_object&&!flag_stop_wait)
+            // TODO:激光传感器给出识别到的信号
+
+            figure_out_object = Identify_box_cola(this_target);
+            if (figure_out_object && !flag_stop_wait)
             {
-								test_enable=0;
+                test_enable = 0;
                 if (this_target == 1)
                 {
                     action_pattern = ACTION_FETCH;
-                    figure_out_object=0;
+                    figure_out_object = 0;
                 }
                 else if (this_target == 2)
                 {
                     delta_des_cola(target_num.cola);
                     action_pattern = ACTION_POS_CHANGE;
-                    figure_out_object=0;
+                    figure_out_object = 0;
                 }
             }
             break;
@@ -245,7 +246,6 @@ float sucker_out2 = 1050;
 int init_motor;
 int this_target = 0; // box 1,cola 2
 
-
 void handle_box(void)
 {
     OS_ERR err;
@@ -279,7 +279,6 @@ void handle_box(void)
         DES.sucker_lift = sucker_lift_box_await;
         DES.sucker_slide = sucker_slide_await;
 
-
         if (fetch_pattern == FETCH_GET_PRE && sucker.lift_motor.pos_pid.fpFB > height_box && this_target == 2)
         {
             fetch_pattern = FETCH_GET;
@@ -290,7 +289,7 @@ void handle_box(void)
                 target_num.cola = 1;
             }
         }
-        else if (this_target == 1 && fetch_pattern==FETCH_GET_PRE)
+        else if (this_target == 1 && fetch_pattern == FETCH_GET_PRE)
         {
             fetch_pattern = FETCH_GET;
             this_target = 0;
@@ -305,7 +304,6 @@ void handle_box(void)
         {
             // TODO：调节衔接时间
             fetch_pattern = FETCH_AWAIT;
-					
         }
         break;
 
@@ -358,7 +356,7 @@ void handle_box(void)
                 sucker.Toggle_sucker = 1;
                 // TODO：调节衔接时间
                 OSTimeDly_ms(1000);
-								fetch_pattern=FETCH_GET_PRE;
+                fetch_pattern = FETCH_GET_PRE;
                 box_state = await;
                 //                if (this_target == 1)
                 //                {

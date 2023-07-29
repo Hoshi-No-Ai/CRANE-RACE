@@ -5,9 +5,9 @@
 #include "sucker.h"
 #include "table.h"
 
-#define LIMIT_DELTA_X 20.0f
-#define LIMIT_DELTA_Y 20.0f
-#define LIMIT_DELTA_Q 1.0f
+#define LIMIT_DELTA_X 10.0f
+#define LIMIT_DELTA_Y 10.0f
+#define LIMIT_DELTA_Q 0.5f
 
 enum action_pattern_e
 {
