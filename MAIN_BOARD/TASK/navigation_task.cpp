@@ -54,7 +54,7 @@ void navigation(void)
 				if(flag_stop_wait)
 				{
 					stop_wait_time++;
-					if(stop_wait_time>1000)
+					if(stop_wait_time>500)
 					{
 						flag_stop_wait=0;
 						stop_wait_time=0;

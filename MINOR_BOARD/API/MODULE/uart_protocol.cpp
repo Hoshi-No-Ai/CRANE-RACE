@@ -42,15 +42,18 @@ void USART1_DMA_Tx(void) // 串口1 DMA发送函数
 
 uint8_t ucData1;
 /*串口1相关的缓存区*/
-char string_cmpare_vallid[22] = "State;0 , Range Valid";
-char string_cmpare_outrange[21] = "State;4 , Phase Fail";
+char string_cmpare_vallid[8] = "State;0";
+char string_cmpare_signal_err[8] = "State;2";
+
+
+char string_cmpare_outrange[8] = "State;4";
 
 uint8_t uart1_data_buf[UART1_RX_DATA_LEN];
 int32_t distance_uart1;
 int else_err;
-char right_ans[20];
-char outrange_ans[20];
-	char ifright[20];
+char right_ans[8];
+char outrange_ans[8];
+	char ifright[8];
 		
 int compare_string(char * a,char* b,int len)
 {
@@ -123,24 +126,33 @@ void Comm1Rx_IRQ(void) // 串口1电流DMA接收函数
 		case RX_DATAS:
 		//	memcpy(string_distance1, UA1RxMailbox, 38);
 	
-		memcpy(ifright, &UA1RxMailbox[0], 20);		
-			memcpy(right_ans,string_cmpare_vallid, 20);
-		memcpy(outrange_ans, string_cmpare_outrange, 20);
+		memcpy(ifright, &UA1RxMailbox[0], 8);		
+			memcpy(right_ans,string_cmpare_vallid, 8);
+		memcpy(outrange_ans, string_cmpare_outrange, 8);
 		
-		
-		if(compare_string(ifright,right_ans,20)  == 1)
+					distance_uart1 = 0;
+
+		if(compare_string(ifright,right_ans,7)  == 1)
 		{
-			distance_uart1 = 0;
-			if((int)UA1RxMailbox[29]>0x30)	distance_uart1 +=	((int)UA1RxMailbox[29]-0x30)*1000;
-			if((int)UA1RxMailbox[30]>0x30)distance_uart1 +=	((int)UA1RxMailbox[30]-0x30)*100;
-			if((int)UA1RxMailbox[31]>0x30)distance_uart1 +=	((int)UA1RxMailbox[31]-0x30)*10;
-			if((int)UA1RxMailbox[32]>0x30)distance_uart1 +=	(int)UA1RxMailbox[32]-0x30;
+			if((int)UA1RxMailbox[26]>0x30)	distance_uart1 +=	((int)UA1RxMailbox[26]-0x30)*1000;
+			if((int)UA1RxMailbox[27]>0x30)distance_uart1 +=	((int)UA1RxMailbox[27]-0x30)*100;
+			if((int)UA1RxMailbox[28]>0x30)distance_uart1 +=	((int)UA1RxMailbox[28]-0x30)*10;
+			if((int)UA1RxMailbox[29]>0x30)distance_uart1 +=	(int)UA1RxMailbox[29]-0x30;
 			
 
 		}
-		else if(compare_string(ifright,outrange_ans,20)  == 1)
+		else if(compare_string(ifright,string_cmpare_signal_err,7)  == 1)
 		{
-				distance_uart1 = (UA1RxMailbox[29]-0x30)*1000+ ((int)UA1RxMailbox[30]-0x30)*100+ ( (int)UA1RxMailbox[31]-0x30)*10+  ((int)UA1RxMailbox[32]-0x30)*1;
+			if((int)UA1RxMailbox[26]>0x30)	distance_uart1 +=	((int)UA1RxMailbox[26]-0x30)*1000;
+			if((int)UA1RxMailbox[27]>0x30)distance_uart1 +=	((int)UA1RxMailbox[27]-0x30)*100;
+			if((int)UA1RxMailbox[28]>0x30)distance_uart1 +=	((int)UA1RxMailbox[28]-0x30)*10;
+			if((int)UA1RxMailbox[29]>0x30)distance_uart1 +=	(int)UA1RxMailbox[29]-0x30;
+			
+
+		}
+		else if(compare_string(ifright,outrange_ans,7)  == 1)
+		{
+				distance_uart1 = (UA1RxMailbox[26]-0x30)*1000+ ((int)UA1RxMailbox[27]-0x30)*100+ ( (int)UA1RxMailbox[28]-0x30)*10+  ((int)UA1RxMailbox[29]-0x30)*1;
 
 		}
 		
@@ -240,14 +252,14 @@ void Comm3Rx_IRQ(void) // 串口1电流DMA接收函数
 		case RX_DATAS:
 		//	memcpy(string_distance1, UA1RxMailbox, 38);
 	
-		memcpy(ifright, &UA3RxMailbox[0], 20);		
-			memcpy(right_ans,string_cmpare_vallid, 20);
-		memcpy(outrange_ans, string_cmpare_outrange, 20);
+		memcpy(ifright, &UA3RxMailbox[0], 8);		
+			memcpy(right_ans,string_cmpare_vallid, 8);
+		memcpy(outrange_ans, string_cmpare_outrange, 8);
 		
-		
-		if(compare_string(ifright,right_ans,20)  == 1)
+					distance_uart3 = 0;
+
+		if(compare_string(ifright,right_ans,7)  == 1)
 		{
-			distance_uart3 = 0;
 			if((int)UA3RxMailbox[29]>0x30)	distance_uart3 +=	((int)UA3RxMailbox[29]-0x30)*1000;
 			if((int)UA3RxMailbox[30]>0x30)distance_uart3 +=	((int)UA3RxMailbox[30]-0x30)*100;
 			if((int)UA3RxMailbox[31]>0x30)distance_uart3 +=	((int)UA3RxMailbox[31]-0x30)*10;
@@ -255,7 +267,7 @@ void Comm3Rx_IRQ(void) // 串口1电流DMA接收函数
 			
 
 		}
-		else if(compare_string(ifright,outrange_ans,20)  == 1)
+		else if(compare_string(ifright,outrange_ans,7)  == 1)
 		{
 				distance_uart3 = (UA3RxMailbox[29]-0x30)*1000+ ((int)UA3RxMailbox[30]-0x30)*100+ ( (int)UA3RxMailbox[31]-0x30)*10+  ((int)UA3RxMailbox[32]-0x30)*1;
 
