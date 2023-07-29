@@ -245,7 +245,7 @@ float sucker_out2 = 1050;
 int init_motor;
 int this_target = 0; // box 1,cola 2
 
-
+int cola_finish =0,box_finish = 0;
 void handle_box(void)
 {
     OS_ERR err;
@@ -253,7 +253,6 @@ void handle_box(void)
     {
         fetch_pattern = FETCH_MOVE;
     }
-
     switch (box_state)
     {
     case none:
@@ -276,10 +275,30 @@ void handle_box(void)
         sucker.Toggle_sucker = 1;
         DES.table_slide = table_slide_in;
         DES.table_lift = talbe_lift_await;
-        DES.sucker_lift = sucker_lift_box_await;
+     //   DES.sucker_lift = sucker_lift_box_await;
         DES.sucker_slide = sucker_slide_await;
 
-
+				if(fabs(sucker.slide_motor.pos_pid.fpFB- DES.sucker_slide)<5)
+				{
+					 DES.sucker_lift  = 400;
+					if(box_finish*cola_finish)
+					{
+						DES.sucker_lift = sucker_out;
+					}
+				}
+				else
+				{
+					if(!box_finish)
+					{
+					 DES.sucker_lift  = sucker_lift_box_get_state2 + (target_num.box - 1) * height_box+200;
+					}
+					else
+					{
+						 DES.sucker_lift  = sucker_out;
+					}
+					
+				}
+		
         if (fetch_pattern == FETCH_GET_PRE && sucker.lift_motor.pos_pid.fpFB > height_box && this_target == 2)
         {
             fetch_pattern = FETCH_GET;
@@ -288,6 +307,7 @@ void handle_box(void)
             if (target_num.cola > 3)
             {
                 target_num.cola = 1;
+							cola_finish= 1;
             }
         }
         else if (this_target == 1 && fetch_pattern==FETCH_GET_PRE)
@@ -298,6 +318,7 @@ void handle_box(void)
             if (target_num.box > 3)
             {
                 target_num.box = 1;
+							box_finish = 1;
             }
         }
 
