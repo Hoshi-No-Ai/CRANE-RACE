@@ -58,6 +58,10 @@ struct DesSet
 	float table_lift;
 
 } ;
+
+extern float sucker_slide_r ;
+extern float sucker_lift_r ;
+
 class cSucker
 {
 public:
@@ -78,11 +82,11 @@ public:
 	{
 		td_slide.m_h = ctrl_TS;
 		td_slide.m_T = ctrl_TS;
-		td_slide.m_r = 100;
+		td_slide.m_r = sucker_slide_r;
 
 		td_lift.m_h = ctrl_TS;
 		td_lift.m_T = ctrl_TS;
-		td_lift.m_r = 700;
+		td_lift.m_r = sucker_lift_r;
 
 		slide_motor.pos_pid.fpUMax = 1000;
 		slide_motor.pos_pid.fpEpMax = 1000;

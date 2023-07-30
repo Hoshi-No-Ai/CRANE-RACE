@@ -213,6 +213,10 @@ int dist_1_buff[5];
 int dist_2_buff[5];
 
 int temp_target_detect;
+float cal_distance_by_sensor;
+extern float pre_motor_sucker;
+extern float velt_sucker;
+
 void Comm3Rx_IRQ(void) // 串口2电流DMA接收函数
 {
     static unsigned char Comm3_Rx_Status = RX_FREE; // 初始状态
@@ -266,11 +270,16 @@ void Comm3Rx_IRQ(void) // 串口2电流DMA接收函数
                 if (ucData3 == uart3_efr.tail1)
                 {
                     Comm3_Rx_Status = RX_TAIL_1;
+									pre_motor_sucker = sucker.lift_motor.pos_pid.fpFB;
                     memcpy(&sucker.slide_motor.pos_pid.fpFB, uart3_efr.num, 4);
                     memcpy(&sucker.lift_motor.pos_pid.fpFB, &uart3_efr.num[4], 4);
+									 velt_sucker =(sucker.lift_motor.pos_pid.fpFB- pre_motor_sucker)/0.001;
 
                     memcpy(&dist_1, &uart3_efr.num[8], 4);
+								
                     memcpy(&dist_2, &uart3_efr.num[12], 4);
+										dist_1 +=128;
+									dist_2 +=62;
 
                     if (dist_1 > 200 || dist_2 > 200)
                     {
@@ -279,6 +288,9 @@ void Comm3Rx_IRQ(void) // 串口2电流DMA接收函数
                     else
                     {
                         temp_target_detect = 1;
+											cal_distance_by_sensor = 0.1047*(dist_1+dist_2)/2-20.33;
+											if(cal_distance_by_sensor>0)cal_distance_by_sensor = 0;
+											if(cal_distance_by_sensor<-10)cal_distance_by_sensor = -12;
                     }
                 }
                 else

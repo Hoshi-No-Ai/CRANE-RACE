@@ -1,6 +1,9 @@
 #include "remote_lcd_task.h"
 #include "action_task.h"
 extern GET_NUM target_num;
+extern float cal_distance_by_sensor;
+extern DesSet DES;
+extern float cal_sssssssss;
 
 static void wifi_rxdata_update(void)
 {
@@ -21,7 +24,7 @@ static void wifi_rxdata_update(void)
     uart6_tx_buf[18].float_num = dist_1;
     uart6_tx_buf[19].float_num = dist_2;
     uart6_tx_buf[20].float_num = temp_target_detect;
-    uart6_tx_buf[21].float_num = target_num.box;
+    uart6_tx_buf[21].float_num =cal_sssssssss;
 }
 
 void lcd_display(void)

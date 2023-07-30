@@ -10,7 +10,7 @@
 #define DES_ARUCO_CENTER 0.0f
 #define DES_CENTER_DES 0.0f
 
-#define DELTA_COLA 68.0f
+#define DELTA_COLA 84.0f
 
 struct ST_CAMERA
 {

@@ -45,7 +45,9 @@ enum BOX_STATE
     get_state3,
     lose_state0,
     lose_state1,
-    lose_state2
+    lose_state2,
+		zhengli,
+
 };
 
 struct GET_NUM
