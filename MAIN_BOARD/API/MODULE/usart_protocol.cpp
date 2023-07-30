@@ -279,9 +279,9 @@ void Comm3Rx_IRQ(void) // 串口2电流DMA接收函数
 								
                     memcpy(&dist_2, &uart3_efr.num[12], 4);
 										dist_1 +=128;
-									dist_2 +=62;
+									dist_2 +=42;
 
-                    if (dist_1 > 200 || dist_2 > 200)
+                    if (dist_1 > 250 || dist_2 > 250)
                     {
                         temp_target_detect = 2;
                     }

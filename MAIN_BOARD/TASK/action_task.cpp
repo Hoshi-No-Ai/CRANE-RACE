@@ -33,33 +33,33 @@ void robot_movement(void)
         case ACTION_POS_1:
             // 跑到点位
             nav.auto_path.m_point_end.point_set(POS_1_X, POS_1_Y, POS_1_Q);
-            nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 90, 1500, 1500);
+            nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 30, 1500, 1500);
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_2:
             nav.auto_path.m_point_end.point_set(POS_2_X, POS_2_Y, POS_2_Q);
 
-            nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 90, 1500, 1500);
+            nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 30, 1500, 1500);
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_3:
             nav.auto_path.m_point_end.point_set(POS_3_X, POS_3_Y, POS_3_Q);
-            nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 90, 1500, 1500);
+            nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 30, 1500, 1500);
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_4:
             nav.auto_path.m_point_end.point_set(POS_4_X, POS_4_Y, POS_4_Q);
-            nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 90, 1500, 1500);
+            nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 30, 1500, 1500);
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_5:
             nav.auto_path.m_point_end.point_set(POS_5_X, POS_5_Y, POS_5_Q);
-            nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 90, 1500, 1500);
+            nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 30, 1500, 1500);
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_6:
             nav.auto_path.m_point_end.point_set(POS_6_X, POS_6_Y, POS_6_Q);
-            nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 90, 1500, 1500);
+            nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 30, 1500, 1500);
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_END:
@@ -162,7 +162,7 @@ void movement_check(bool if_auto)
         case ACTION_POS_CHECK:
             // TODO:激光传感器给出识别到的信号
 						stable_time++;
-						if(stable_time>100)
+						if(stable_time>200)
 						{
 							figure_out_object = Identify_box_cola(this_target);
 							if (figure_out_object && !flag_stop_wait)
