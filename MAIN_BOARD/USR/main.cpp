@@ -247,7 +247,7 @@ void action_task(void *p)
 }
 extern DesSet DES;
 
-float sucker_slide_r = 50;
+float sucker_slide_r = 75;
 float sucker_lift_r = 1000;
 extern uint8_t omtor_mode1;
 void transmit_task(void *p)

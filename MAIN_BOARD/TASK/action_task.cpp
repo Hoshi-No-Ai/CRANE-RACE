@@ -33,33 +33,33 @@ void robot_movement(void)
         case ACTION_POS_1:
             // ≈‹µΩµ„Œª
             nav.auto_path.m_point_end.point_set(POS_1_X, POS_1_Y, POS_1_Q);
-            nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 30, 1500, 1500);
+            nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 60, 1500, 1500);
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_2:
             nav.auto_path.m_point_end.point_set(POS_2_X, POS_2_Y, POS_2_Q);
 
-            nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 30, 1500, 1500);
+            nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 60, 1500, 1500);
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_3:
             nav.auto_path.m_point_end.point_set(POS_3_X, POS_3_Y, POS_3_Q);
-            nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 30, 1500, 1500);
+            nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 60, 1500, 1500);
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_4:
             nav.auto_path.m_point_end.point_set(POS_4_X, POS_4_Y, POS_4_Q);
-            nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 30, 1500, 1500);
+            nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 60, 1500, 1500);
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_5:
             nav.auto_path.m_point_end.point_set(POS_5_X, POS_5_Y, POS_5_Q);
-            nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 30, 1500, 1500);
+            nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 60, 1500, 1500);
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_6:
             nav.auto_path.m_point_end.point_set(POS_6_X, POS_6_Y, POS_6_Q);
-            nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 30, 1500, 1500);
+            nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 60, 1500, 1500);
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_END:
@@ -249,7 +249,7 @@ BOX_STATE box_state, pre_box_state;
 float height_box = 220;
 
 float sucker_lift_box_await = 1100, sucker_slide_await = 0;
-float sucker_lift_box_get_state1 = 210, sucker_slide_get_state1 = -7;
+float sucker_lift_box_get_state1 = 220, sucker_slide_get_state1 = -7;
 float sucker_lift_box_get_state2 = 500, sucker_slide_get_state2 = -50;
 float table_lift_up = -1500, table_lift_down = -800, talbe_lift_await = -10;
 float table_slide_out = -30, table_slide_in = 0;
@@ -261,7 +261,7 @@ int init_motor;
 int this_target = 0; // box 1,cola 2
 
 int cola_finish = 0, box_finish = 0;
-extern float cal_distance_by_sensor;
+ float cal_distance_by_sensor;
 
 int detect_box =0;
 float cal_sssssssss;

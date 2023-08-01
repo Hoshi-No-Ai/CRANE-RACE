@@ -213,10 +213,9 @@ int dist_1_buff[5];
 int dist_2_buff[5];
 
 int temp_target_detect;
-float cal_distance_by_sensor;
 extern float pre_motor_sucker;
 extern float velt_sucker;
-
+extern float cal_distance_by_sensor;
 void Comm3Rx_IRQ(void) // 串口2电流DMA接收函数
 {
     static unsigned char Comm3_Rx_Status = RX_FREE; // 初始状态

@@ -135,7 +135,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>d</Name>
+          <Name></Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -152,9 +152,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>269</LineNumber>
+          <LineNumber>270</LineNumber>
           <EnabledFlag>0</EnabledFlag>
-          <Address>134236786</Address>
+          <Address>134236770</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -163,14 +163,14 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\API\MODULE\uart_protocol.cpp</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\RC2021_DR_MINOR\../API/MODULE/uart_protocol.cpp\269</Expression>
+          <Expression>\\RC2021_DR_MINOR\../API/MODULE/uart_protocol.cpp\270</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>265</LineNumber>
+          <LineNumber>266</LineNumber>
           <EnabledFlag>0</EnabledFlag>
-          <Address>134236768</Address>
+          <Address>134236752</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -179,12 +179,12 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\API\MODULE\uart_protocol.cpp</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\RC2021_DR_MINOR\../API/MODULE/uart_protocol.cpp\265</Expression>
+          <Expression>\\RC2021_DR_MINOR\../API/MODULE/uart_protocol.cpp\266</Expression>
         </Bp>
         <Bp>
           <Number>2</Number>
           <Type>0</Type>
-          <LineNumber>268</LineNumber>
+          <LineNumber>269</LineNumber>
           <EnabledFlag>0</EnabledFlag>
           <Address>0</Address>
           <ByteObject>0</ByteObject>

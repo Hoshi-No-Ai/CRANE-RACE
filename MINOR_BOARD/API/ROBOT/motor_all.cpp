@@ -13,7 +13,7 @@ int GG_flag = 0;
 int time_delay = 0;
 extern cSucker sucker;
 extern bool motor_mode1;
-float ff_crt = 0;
+float ff_crt = -200;
 extern cSucker sucker;
 void motor_crl_task(void)
 {
