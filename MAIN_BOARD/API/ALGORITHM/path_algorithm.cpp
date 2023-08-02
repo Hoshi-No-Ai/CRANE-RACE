@@ -30,7 +30,7 @@ void turn_Q(fp32 &des, fp32 &fb)
     des = fb + des_forward - fb_feedback;
 }
 
-// Ö±Ïßx+·½Ïò²âÊÔ
+// ç›´çº¿x+æ–¹å‘æµ‹è¯•
 void C_AUTO_PATH::path_x_test(void)
 {
     static fp32 S;
@@ -39,7 +39,7 @@ void C_AUTO_PATH::path_x_test(void)
     static fp32 A_down;
     static fp32 R;
     static fp32 Vmax;
-    if (flag_record) // ³õÊ¼»¯¼ÓËÙ¶È£¬ÔË¶¯Ê±¼ä£¬Î»ÒÆetc
+    if (flag_record) // åˆå§‹åŒ–åŠ é€Ÿåº¦ï¼Œè¿åŠ¨æ—¶é—´ï¼Œä½ç§»etc
     {
         A_up = 4000;   //-4500;
         A_down = 4000; //-4500;
@@ -119,7 +119,7 @@ void C_AUTO_PATH::path_x_test(void)
     // basic_velt.fpW *= 0.5f;
 }
 
-// Ö±Ïßy+·½Ïò²âÊÔ
+// ç›´çº¿y+æ–¹å‘æµ‹è¯•
 void C_AUTO_PATH::path_y_test(void)
 {
     static fp32 S;
@@ -128,7 +128,7 @@ void C_AUTO_PATH::path_y_test(void)
     static fp32 A_down;
     static fp32 R;
     static fp32 Vmax;
-    if (flag_record) // ³õÊ¼»¯¼ÓËÙ¶È£¬ÔË¶¯Ê±¼ä£¬Î»ÒÆetc
+    if (flag_record) // åˆå§‹åŒ–åŠ é€Ÿåº¦ï¼Œè¿åŠ¨æ—¶é—´ï¼Œä½ç§»etc
     {
         A_up = 4000;   //-4500;
         A_down = 4000; //-4500;
@@ -221,7 +221,7 @@ void C_AUTO_PATH::path_straight(void)
     static fp32 V_move;
     static fp32 W_move;
 
-    if (flag_record) // ³õÊ¼»¯¼ÓËÙ¶È£¬ÔË¶¯Ê±¼ä£¬Î»ÒÆetc
+    if (flag_record) // åˆå§‹åŒ–åŠ é€Ÿåº¦ï¼Œè¿åŠ¨æ—¶é—´ï¼Œä½ç§»etc
     {
         A_up = m_velt_acc.A_up;     // 3000;
         A_down = m_velt_acc.A_down; // 3000;
@@ -232,14 +232,14 @@ void C_AUTO_PATH::path_straight(void)
         StartY = pos_pid.y.fpFB;
         StartQ = pos_pid.w.fpFB;
 
-        // ÀàËÆ×ªÏòµÄ¿ØÖÆ
-//        turn_Q(m_point_end.m_q, StartQ);
+        // ç±»ä¼¼è½¬å‘çš„æ§åˆ¶
+        //        turn_Q(m_point_end.m_q, StartQ);
 
         DELTA_X = m_point_end.m_x - StartX;
         DELTA_Y = m_point_end.m_y - StartY;
         DELTA_Q = m_point_end.m_q - StartQ;
 
-        // ¿ÉÄÜÒªµ÷Õû¾ø¶ÔÊ½Q´óĞ¡
+        // å¯èƒ½è¦è°ƒæ•´ç»å¯¹å¼Qå¤§å°
         if (fabs(DELTA_Q) < 5)
         {
             StartQ = m_point_end.m_q;
@@ -271,17 +271,16 @@ void C_AUTO_PATH::path_straight(void)
 
         W_move = DELTA_Q / (0.8f * (t1 + t2 + t3));
         t_w = 0.8f * (t1 + t2 + t3);
-				if(W_move>Wmax)
-				{
-					W_move=Wmax;
-					t_w=DELTA_Q/Wmax;
-				}
-					else if(W_move<-Wmax)
-					{
-						W_move=-Wmax;
-						t_w=DELTA_Q/-Wmax;
-					}
-
+        if (W_move > Wmax)
+        {
+            W_move = Wmax;
+            t_w = DELTA_Q / Wmax;
+        }
+        else if (W_move < -Wmax)
+        {
+            W_move = -Wmax;
+            t_w = DELTA_Q / -Wmax;
+        }
 
         pos_pid.x.fpSumE = 0;
         pos_pid.y.fpSumE = 0;

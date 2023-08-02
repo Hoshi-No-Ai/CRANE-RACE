@@ -16,7 +16,7 @@
 
 #define MAX_RX_DATA_LEN 114
 
-#define USART6_RX_DATA_LEN 33  // Ò£¿ØÆ÷·¢À´µÄÊı¾İÎª32×Ö½Ú£¬Á½³µÍ¨Ñ¶µÄÊı¾İÎª114×Ö½Ú
+#define USART6_RX_DATA_LEN 33 // é¥æ§å™¨å‘æ¥çš„æ•°æ®ä¸º32å­—èŠ‚ï¼Œä¸¤è½¦é€šè®¯çš„æ•°æ®ä¸º114å­—èŠ‚
 #define USART6_TX_DATA_LEN 114
 
 #define UART2_RX_DATA_LEN (COM_LENGTH * 4)
@@ -34,7 +34,8 @@
 // #define UART6_RX_DATA_LEN 	16
 // #define UART6_TX_DATA_LEN   46
 
-enum rx_protocol_e {
+enum rx_protocol_e
+{
     RX_FREE,
     RX_START_1,
     RX_START_2,
@@ -50,26 +51,25 @@ enum rx_protocol_e {
     RX_TOWER_DATAS,
 };
 
-struct aruco{
-	fp32 x;
-	fp32 y;
-	fp32 z;
-	fp32 thetax;
-	fp32 thetay;
-	fp32 thetaz;
-  fp32 if_detect;
+struct aruco
+{
+    fp32 x;
+    fp32 y;
+    fp32 z;
+    fp32 thetax;
+    fp32 thetay;
+    fp32 thetaz;
+    fp32 if_detect;
 };
-
-
 
 // class uart_protocol
 //{
 // public:
-//	uint8_t start1;	//Ö¡Í·1
-//	uint8_t start2;	//Ö¡Í·2
+//	uint8_t start1;	//å¸§å¤´1
+//	uint8_t start2;	//å¸§å¤´2
 //	uint8_t datanum;
-//	uint8_t tail1;	//Ö¡Î²1
-//	uint8_t tail2;	//Ö¡Î²2
+//	uint8_t tail1;	//å¸§å°¾1
+//	uint8_t tail2;	//å¸§å°¾2
 //
 //	uart_protocol(uint8_t _start1 = 0x55, uint8_t _start2 = 0x22,
 //													uint8_t _tail1 = 0x01, uint8_t _tail2 = 0xAA)
@@ -93,113 +93,123 @@ struct aruco{
 //	uint8_t get_receive_data_num(void) {return rx_protocol.datanum;}
 // };
 
-struct uart1_rx_protocol_t {
-    uint8_t start11;  // Ö¡Í·1
-    uint8_t start12;  // Ö¡Í·2
-    uint8_t start21;  // Ö¡Í·1
-    uint8_t start22;  // Ö¡Í·2
+struct uart1_rx_protocol_t
+{
+    uint8_t start11; // å¸§å¤´1
+    uint8_t start12; // å¸§å¤´2
+    uint8_t start21; // å¸§å¤´1
+    uint8_t start22; // å¸§å¤´2
     uint8_t datanum1;
     uint8_t datanum2;
 
-    s8 num1[UART1_RX_DATA_LEN1];  // ´ı½ÓÊÕÊı¾İ
-    s8 num2[UART1_RX_DATA_LEN2];  // ´ı½ÓÊÕÊı¾İ
+    s8 num1[UART1_RX_DATA_LEN1]; // å¾…æ¥æ”¶æ•°æ®
+    s8 num2[UART1_RX_DATA_LEN2]; // å¾…æ¥æ”¶æ•°æ®
 
-    uint8_t tail1;  // Ö¡Î²1
-    uint8_t tail2;  // Ö¡Î²2
+    uint8_t tail1; // å¸§å°¾1
+    uint8_t tail2; // å¸§å°¾2
 
-};  // ½ÓÊÕĞÅÏ¢±¨ÎÄ½á¹¹Ìå
+}; // æ¥æ”¶ä¿¡æ¯æŠ¥æ–‡ç»“æ„ä½“
 
-struct uart3_tx_protocol_t {
-    uint8_t start1;  // Ö¡Í·1
-    uint8_t start2;  // Ö¡Í·2
+struct uart3_tx_protocol_t
+{
+    uint8_t start1; // å¸§å¤´1
+    uint8_t start2; // å¸§å¤´2
     uint8_t datanum;
 
-    s8 num[UART3_TX_DATA_LEN];  // ´ı·¢ËÍÊı¾İ
+    s8 num[UART3_TX_DATA_LEN]; // å¾…å‘é€æ•°æ®
 
-    uint8_t tail1;  // Ö¡Î²1
-    uint8_t tail2;  // Ö¡Î²2
+    uint8_t tail1; // å¸§å°¾1
+    uint8_t tail2; // å¸§å°¾2
 
-};  // ·¢ËÍĞÅÏ¢±¨ÎÄ½á¹¹Ìå
+}; // å‘é€ä¿¡æ¯æŠ¥æ–‡ç»“æ„ä½“
 
-struct uart3_rx_protocol_t {
-    uint8_t start1;  // Ö¡Í·1
-    uint8_t start2;  // Ö¡Í·2
+struct uart3_rx_protocol_t
+{
+    uint8_t start1; // å¸§å¤´1
+    uint8_t start2; // å¸§å¤´2
     uint8_t datanum;
 
-    s8 num[UART3_RX_DATA_LEN];  // ´ı½ÓÊÕÊı¾İ
+    s8 num[UART3_RX_DATA_LEN]; // å¾…æ¥æ”¶æ•°æ®
 
-    uint8_t tail1;  // Ö¡Î²1
-    uint8_t tail2;  // Ö¡Î²2
+    uint8_t tail1; // å¸§å°¾1
+    uint8_t tail2; // å¸§å°¾2
 
-};  // ½ÓÊÕĞÅÏ¢±¨ÎÄ½á¹¹Ìå
+}; // æ¥æ”¶ä¿¡æ¯æŠ¥æ–‡ç»“æ„ä½“
 
-enum wifi_rx_id_e { REMOTE_CTRL, ROBOT };
+enum wifi_rx_id_e
+{
+    REMOTE_CTRL,
+    ROBOT
+};
 
-/*´®¿Ú6ÓÃ×÷ºÍÊÓ¾õÍ¨ĞÅ*/
-struct uart2_tx_protocol_t {
-    uint8_t start1;  // Ö¡Í·1
-    uint8_t start2;  // Ö¡Í·2
+/*ä¸²å£6ç”¨ä½œå’Œè§†è§‰é€šä¿¡*/
+struct uart2_tx_protocol_t
+{
+    uint8_t start1; // å¸§å¤´1
+    uint8_t start2; // å¸§å¤´2
     uint8_t ID;
     uint8_t datanum;
 
     float2char num[UART2_TX_DATA_LEN];
 
-    uint8_t tail1;  // Ö¡Î²1
-    uint8_t tail2;  // Ö¡Î²2
+    uint8_t tail1; // å¸§å°¾1
+    uint8_t tail2; // å¸§å°¾2
 
-};  // ·¢ËÍĞÅÏ¢±¨ÎÄ½á¹¹Ìå
+}; // å‘é€ä¿¡æ¯æŠ¥æ–‡ç»“æ„ä½“
 
-struct uart2_rx_protocol_t {
-    uint8_t start1;  // Ö¡Í·1
-    uint8_t start2;  // Ö¡Í·2
+struct uart2_rx_protocol_t
+{
+    uint8_t start1; // å¸§å¤´1
+    uint8_t start2; // å¸§å¤´2
     uint8_t ID;
     uint8_t data_len_float;
     uint8_t datanum;
-    uint8_t num[UART2_RX_DATA_LEN];  // ´ı½ÓÊÕÊı¾İ
+    uint8_t num[UART2_RX_DATA_LEN]; // å¾…æ¥æ”¶æ•°æ®
 
-    uint8_t tail1;  // Ö¡Î²1
-    uint8_t tail2;  // Ö¡Î²2
+    uint8_t tail1; // å¸§å°¾1
+    uint8_t tail2; // å¸§å°¾2
 
-};  // ½ÓÊÕĞÅÏ¢±¨ÎÄ½á¹¹Ìå
+}; // æ¥æ”¶ä¿¡æ¯æŠ¥æ–‡ç»“æ„ä½“
 
 // struct uart6_tx_robot_t
 //{
-//	uint8_t wifi_start1;	//Ö¡Í·1
-//	uint8_t wifi_start2;	//Ö¡Í·2
+//	uint8_t wifi_start1;	//å¸§å¤´1
+//	uint8_t wifi_start2;	//å¸§å¤´2
 //	uint8_t wifi_start3;
 //	uint8_t wifi_start4;
 
 //	wifi_rx_id_e ID;
 //
-//	uint8_t num[USART6_TX_DATA_LEN];		//´ı·¢ËÍÊı¾İ
+//	uint8_t num[USART6_TX_DATA_LEN];		//å¾…å‘é€æ•°æ®
 //
-//	uint8_t tail1;	//Ö¡Î²1
-//	uint8_t tail2;	//Ö¡Î²2
+//	uint8_t tail1;	//å¸§å°¾1
+//	uint8_t tail2;	//å¸§å°¾2
 //
-//};//·¢ËÍĞÅÏ¢±¨ÎÄ½á¹¹Ìå
+//};//å‘é€ä¿¡æ¯æŠ¥æ–‡ç»“æ„ä½“
 
 // struct rx_protocol_t
 //{
-//	uint8_t start1;  //Ö¡Í·1
-//	uint8_t start2;  //Ö¡Í·2
+//	uint8_t start1;  //å¸§å¤´1
+//	uint8_t start2;  //å¸§å¤´2
 //	uint8_t start3;
 //	uint8_t start4;
 
 //	uint8_t datanum;
 //
-//	uint8_t num[MAX_RX_DATA_LEN];	//´ı½ÓÊÕÊı¾İ
+//	uint8_t num[MAX_RX_DATA_LEN];	//å¾…æ¥æ”¶æ•°æ®
 //	uint8_t remote_ctrl_num[USART6_RX_DATA_LEN];
 
-//	uint8_t tail1;   //Ö¡Î²1
-//	uint8_t tail2;   //Ö¡Î²2
+//	uint8_t tail1;   //å¸§å°¾1
+//	uint8_t tail2;   //å¸§å°¾2
 //	uint8_t tail3;
 //	uint8_t tail4;
 //
-//};//½ÓÊÕĞÅÏ¢±¨ÎÄ½á¹¹Ìå
+//};//æ¥æ”¶ä¿¡æ¯æŠ¥æ–‡ç»“æ„ä½“
 
-struct uart6_tx_remote_ctrl_t {
-    uint8_t wifi_start1;  // Ö¡Í·1
-    uint8_t wifi_start2;  // Ö¡Í·2
+struct uart6_tx_remote_ctrl_t
+{
+    uint8_t wifi_start1; // å¸§å¤´1
+    uint8_t wifi_start2; // å¸§å¤´2
     uint8_t wifi_start3;
     uint8_t wifi_start4;
 
@@ -208,42 +218,44 @@ struct uart6_tx_remote_ctrl_t {
 
     wifi_rx_id_e ID;
 
-    uint8_t num[USART6_TX_DATA_LEN];  // ´ı·¢ËÍÊı¾İ
+    uint8_t num[USART6_TX_DATA_LEN]; // å¾…å‘é€æ•°æ®
 
-    uint8_t tail1;  // Ö¡Î²1
-    uint8_t tail2;  // Ö¡Î²2
+    uint8_t tail1; // å¸§å°¾1
+    uint8_t tail2; // å¸§å°¾2
 
-};  // ·¢ËÍĞÅÏ¢±¨ÎÄ½á¹¹Ìå
+}; // å‘é€ä¿¡æ¯æŠ¥æ–‡ç»“æ„ä½“
 
-struct uart6_tx_robot_t {
-    uint8_t wifi_start1;  // Ö¡Í·1
-    uint8_t wifi_start2;  // Ö¡Í·2
+struct uart6_tx_robot_t
+{
+    uint8_t wifi_start1; // å¸§å¤´1
+    uint8_t wifi_start2; // å¸§å¤´2
     uint8_t wifi_start3;
     uint8_t wifi_start4;
 
     wifi_rx_id_e ID;
 
-    uint8_t num[USART6_TX_DATA_LEN];  // ´ı·¢ËÍÊı¾İ
+    uint8_t num[USART6_TX_DATA_LEN]; // å¾…å‘é€æ•°æ®
 
-    uint8_t tail1;  // Ö¡Î²1
-    uint8_t tail2;  // Ö¡Î²2
+    uint8_t tail1; // å¸§å°¾1
+    uint8_t tail2; // å¸§å°¾2
 
-};  // ·¢ËÍĞÅÏ¢±¨ÎÄ½á¹¹Ìå
+}; // å‘é€ä¿¡æ¯æŠ¥æ–‡ç»“æ„ä½“
 
-struct rx_protocol_t {
-    uint8_t start1;  // Ö¡Í·1
-    uint8_t start2;  // Ö¡Í·2
+struct rx_protocol_t
+{
+    uint8_t start1; // å¸§å¤´1
+    uint8_t start2; // å¸§å¤´2
 
     wifi_rx_id_e ID;
 
     uint8_t datanum;
 
-    uint8_t num[MAX_RX_DATA_LEN];  // ´ı½ÓÊÕÊı¾İ
+    uint8_t num[MAX_RX_DATA_LEN]; // å¾…æ¥æ”¶æ•°æ®
     uint8_t remote_ctrl_num[USART6_RX_DATA_LEN];
 
-    uint8_t tail1;  // Ö¡Î²1
-    uint8_t tail2;  // Ö¡Î²2
-};                  // ½ÓÊÕĞÅÏ¢±¨ÎÄ½á¹¹Ìå
+    uint8_t tail1; // å¸§å°¾1
+    uint8_t tail2; // å¸§å°¾2
+};                 // æ¥æ”¶ä¿¡æ¯æŠ¥æ–‡ç»“æ„ä½“
 
 extern uart1_rx_protocol_t uart1_efr;
 
@@ -271,7 +283,7 @@ void USART6_DMA_Tx(wifi_rx_id_e device);
 void Comm6Rx_IRQ(void);
 void UART2_DMA_Tx(void);
 void Comm2Rx_IRQ(void);
-uint16_t USART_Receive(USART_RX_TypeDef* USARTx);
+uint16_t USART_Receive(USART_RX_TypeDef *USARTx);
 void Comm1Rx_IRQ(void);
 
 #endif

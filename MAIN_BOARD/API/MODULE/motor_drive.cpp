@@ -1,36 +1,41 @@
 #include "motor_drive.h"
 
 /*************************************************************************
-º¯ Êı Ãû£ºGetEncoderNumber
-º¯Êı¹¦ÄÜ£º½ÓÊÕ6623¡¢C620/C610·µ»ØµÄ»úĞµ½Ç¶ÈÖµ£¨¾ø¶ÔÊ½±àÂëÆ÷Öµ£©
-±¸    ×¢£º»úĞµ½Ç¶ÈÖµ·¶Î§£º0~8191£¨0x1FFF£©
+å‡½ æ•° åï¼šGetEncoderNumber
+å‡½æ•°åŠŸèƒ½ï¼šæ¥æ”¶6623ã€C620/C610è¿”å›çš„æœºæ¢°è§’åº¦å€¼ï¼ˆç»å¯¹å¼ç¼–ç å™¨å€¼ï¼‰
+å¤‡    æ³¨ï¼šæœºæ¢°è§’åº¦å€¼èŒƒå›´ï¼š0~8191ï¼ˆ0x1FFFï¼‰
 *************************************************************************/
-int32_t C_Encoder::Get_Encoder_Number(CanRxMsg* rx_message) {
+int32_t C_Encoder::Get_Encoder_Number(CanRxMsg *rx_message)
+{
     int32_t encoder_temp;
     encoder_temp = rx_message->Data[0] << 8 | rx_message->Data[1];
     return encoder_temp;
 }
 
 /************************************************************************
-º¯ Êı Ãû£ºGet_Speed
-º¯Êı¹¦ÄÜ£º½ÓÊÕC620/C610·µ»ØµÄ×ªËÙ£¬µ¥Î»£ºr/min
-±¸    ×¢£ºRM3508µç»ú¼õËÙ±ÈÎª1£º19£»M2006µç»ú¼õËÙ±ÈÎª1£º36
+å‡½ æ•° åï¼šGet_Speed
+å‡½æ•°åŠŸèƒ½ï¼šæ¥æ”¶C620/C610è¿”å›çš„è½¬é€Ÿï¼Œå•ä½ï¼šr/min
+å¤‡    æ³¨ï¼šRM3508ç”µæœºå‡é€Ÿæ¯”ä¸º1ï¼š19ï¼›M2006ç”µæœºå‡é€Ÿæ¯”ä¸º1ï¼š36
 *************************************************************************/
-int32_t C_Encoder::Get_Speed(CanRxMsg* rx_message) {
+int32_t C_Encoder::Get_Speed(CanRxMsg *rx_message)
+{
     int32_t speed_temp;
-    if (rx_message->Data[2] & 0x01 << 7) {
+    if (rx_message->Data[2] & 0x01 << 7)
+    {
         speed_temp = (0xFFFF << 16 | rx_message->Data[2] << 8 | rx_message->Data[3]);
-    } else
-        speed_temp = (rx_message->Data[2] << 8 | rx_message->Data[3]);  // rpm
+    }
+    else
+        speed_temp = (rx_message->Data[2] << 8 | rx_message->Data[3]); // rpm
     return speed_temp;
 }
 
 /*************************************************************************
-º¯ Êı Ãû£ºEncoder_Process
-º¯Êı¹¦ÄÜ£ºÓĞË¢µç»úÔöÁ¿Ê½±àÂëÆ÷¼°RM3510µç»ú¾ø¶ÔÊ½±àÂëÆ÷Êı¾İ´¦Àí£¬µÃµ½×ªËÙ
-±¸    ×¢£ºtype:0--¾ø¶ÔÊ½±àÂëÆ÷£»1--ÔöÁ¿Ê½±àÂëÆ÷
+å‡½ æ•° åï¼šEncoder_Process
+å‡½æ•°åŠŸèƒ½ï¼šæœ‰åˆ·ç”µæœºå¢é‡å¼ç¼–ç å™¨åŠRM3510ç”µæœºç»å¯¹å¼ç¼–ç å™¨æ•°æ®å¤„ç†ï¼Œå¾—åˆ°è½¬é€Ÿ
+å¤‡    æ³¨ï¼štype:0--ç»å¯¹å¼ç¼–ç å™¨ï¼›1--å¢é‡å¼ç¼–ç å™¨
 *************************************************************************/
-void C_Encoder::Encoder_Process(int32_t value, uint8_t type) {
+void C_Encoder::Encoder_Process(int32_t value, uint8_t type)
+{
     static fp32 fpVeltCoff;
     siPreRawValue = siRawValue;
     siRawValue = value;
@@ -38,33 +43,37 @@ void C_Encoder::Encoder_Process(int32_t value, uint8_t type) {
 
     if (siDiff <
         -siNumber /
-            2)  //Á½´Î±àÂëÆ÷µÄ·´À¡Öµ²î±ğÌ«´ó,±íÊ¾¾ø¶ÔÊ½±àÂëÆ÷È¦Êı·¢ÉúÁË¸Ä±ä»òÔöÁ¿Ê½±àÂëÆ÷µÄ¶¨Ê±Æ÷¼ÆÊıÆ÷ÏòÉÏÒç³ö
+            2) // ä¸¤æ¬¡ç¼–ç å™¨çš„åé¦ˆå€¼å·®åˆ«å¤ªå¤§,è¡¨ç¤ºç»å¯¹å¼ç¼–ç å™¨åœˆæ•°å‘ç”Ÿäº†æ”¹å˜æˆ–å¢é‡å¼ç¼–ç å™¨çš„å®šæ—¶å™¨è®¡æ•°å™¨å‘ä¸Šæº¢å‡º
     {
         (type == 0) ? (siDiff += (siNumber + 1))
-                    : (siDiff += 65536);  //¶¨Ê±Æ÷16Î»¼ÆÊıÆ÷¼ÆÊı·¶Î§0-65535¹²65536¸öÊı
-    } else if (
+                    : (siDiff += 65536); // å®šæ—¶å™¨16ä½è®¡æ•°å™¨è®¡æ•°èŒƒå›´0-65535å…±65536ä¸ªæ•°
+    }
+    else if (
         siDiff >
         siNumber /
-            2)  //Á½´Î±àÂëÆ÷µÄ·´À¡Öµ²î±ğÌ«´ó,±íÊ¾¾ø¶ÔÊ½±àÂëÆ÷È¦Êı·¢ÉúÁË¸Ä±ä»òÔöÁ¿Ê½±àÂëÆ÷µÄ¶¨Ê±Æ÷¼ÆÊıÆ÷ÏòÏÂÒç³ö
+            2) // ä¸¤æ¬¡ç¼–ç å™¨çš„åé¦ˆå€¼å·®åˆ«å¤ªå¤§,è¡¨ç¤ºç»å¯¹å¼ç¼–ç å™¨åœˆæ•°å‘ç”Ÿäº†æ”¹å˜æˆ–å¢é‡å¼ç¼–ç å™¨çš„å®šæ—¶å™¨è®¡æ•°å™¨å‘ä¸‹æº¢å‡º
     {
         (type == 0) ? (siDiff -= (siNumber + 1)) : (siDiff -= 65536);
     }
 
-    if (type == 0) {
-        fpVeltCoff = 60.0f / siGearRatio / siNumber / 0.001f;  // 0.001ÊÇÖ¸Á½´Î²ÉÑù¼ä¸ô1ms
-    } else {
-        fpVeltCoff = 60.0f / siGearRatio / siNumber / 0.001f /
-                     4.0f;  // 0.001ÊÇÖ¸Á½´Î²ÉÑù¼ä¸ô1ms,4ÊÇÖ¸¶¨Ê±Æ÷±àÂëÆ÷Ä£Ê½µÄ4±¶Æµ
+    if (type == 0)
+    {
+        fpVeltCoff = 60.0f / siGearRatio / siNumber / 0.001f; // 0.001æ˜¯æŒ‡ä¸¤æ¬¡é‡‡æ ·é—´éš”1ms
     }
-    fpSpeed = fpVeltCoff * siDiff;  //µ¥Î»£ºr/min
-    siSumValue += siDiff;           //¼ÇÂ¼±àÂëÆ÷µÄ×ÜÊı£¬Î»ÖÃ±Õ»·ÓÃ
+    else
+    {
+        fpVeltCoff = 60.0f / siGearRatio / siNumber / 0.001f /
+                     4.0f; // 0.001æ˜¯æŒ‡ä¸¤æ¬¡é‡‡æ ·é—´éš”1ms,4æ˜¯æŒ‡å®šæ—¶å™¨ç¼–ç å™¨æ¨¡å¼çš„4å€é¢‘
+    }
+    fpSpeed = fpVeltCoff * siDiff; // å•ä½ï¼šr/min
+    siSumValue += siDiff;          // è®°å½•ç¼–ç å™¨çš„æ€»æ•°ï¼Œä½ç½®é—­ç¯ç”¨
 }
 
 /*************************************************************************
-º¯ Êı Ãû£ºGetPosition
-º¯Êı¹¦ÄÜ£º»ñµÃ´óºìµÄ±àÂëÆ÷ÀÛ¼ÓÖµ
-±¸
-×¢£º´Ëº¯ÊıÖ»¼ÆËãÁËÕë¶Ô360¾ø¶Ô·µ»ØÖµµÄÀÛ¼ÓÖµ£¬²¢Ã»ÓĞ·µ»Ø×ªËÙµÈ²ÎÊı£¬Òò´Ë½öÊÊÓÃÓÚ´óºìµç»úÕâÖÖÓÉµçµ÷·µ»Ø×ªËÙÖµµÄÇé¿ö
+å‡½ æ•° åï¼šGetPosition
+å‡½æ•°åŠŸèƒ½ï¼šè·å¾—å¤§çº¢çš„ç¼–ç å™¨ç´¯åŠ å€¼
+å¤‡
+æ³¨ï¼šæ­¤å‡½æ•°åªè®¡ç®—äº†é’ˆå¯¹360ç»å¯¹è¿”å›å€¼çš„ç´¯åŠ å€¼ï¼Œå¹¶æ²¡æœ‰è¿”å›è½¬é€Ÿç­‰å‚æ•°ï¼Œå› æ­¤ä»…é€‚ç”¨äºå¤§çº¢ç”µæœºè¿™ç§ç”±ç”µè°ƒè¿”å›è½¬é€Ÿå€¼çš„æƒ…å†µ
 *************************************************************************/
 // void C_Encoder::GetPosition(void) {
 //     siDiff = siRawValue - siPreRawValue;
@@ -77,8 +86,9 @@ void C_Encoder::Encoder_Process(int32_t value, uint8_t type) {
 //     siPreRawValue = siRawValue;
 // }
 
-void C_Motor::can_send_data(CAN_TypeDef* CANx, uint32_t StdID, int16_t ssMotor1, int16_t ssMotor2,
-                            int16_t ssMotor3, int16_t ssMotor4) {
+void C_Motor::can_send_data(CAN_TypeDef *CANx, uint32_t StdID, int16_t ssMotor1, int16_t ssMotor2,
+                            int16_t ssMotor3, int16_t ssMotor4)
+{
     CanTxMsg tx_message;
 
     tx_message.StdId = StdID;

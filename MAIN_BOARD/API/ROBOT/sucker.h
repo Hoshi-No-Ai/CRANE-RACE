@@ -5,7 +5,7 @@
 #include "pid_algorithm.h"
 
 #define ENCODER_NUMBER 8191
-#define SLIDE_GEAR_RATIO (19.f * 42) // 3508¼õËÙ±È3591/187£¬Ğ¡ÂÖ´óÂÖ³İ±È38:21
+#define SLIDE_GEAR_RATIO (19.f * 42) // 3508å‡é€Ÿæ¯”3591/187ï¼Œå°è½®å¤§è½®é½¿æ¯”38:21
 
 // slide_3508
 #define SLIDE_VELT_KP 200.0f
@@ -56,11 +56,10 @@ struct DesSet
 
 	float table_slide;
 	float table_lift;
+};
 
-} ;
-
-extern float sucker_slide_r ;
-extern float sucker_lift_r ;
+extern float sucker_slide_r;
+extern float sucker_lift_r;
 
 class cSucker
 {
@@ -117,9 +116,9 @@ public:
 	void drive_sucker(void)
 	{
 		if (!Toggle_sucker)
-			GPIO_ResetBits(GPIOF, GPIO_Pin_8); // ·äÃùÆ÷¶ÔÓ¦Òı½ÅGPIOG7À­µÍ£¬
+			GPIO_ResetBits(GPIOF, GPIO_Pin_8); // èœ‚é¸£å™¨å¯¹åº”å¼•è„šGPIOG7æ‹‰ä½ï¼Œ
 		else
-			GPIO_SetBits(GPIOF, GPIO_Pin_8); // ·äÃùÆ÷¶ÔÓ¦Òı½ÅGPIOG7À­µÍ£¬
+			GPIO_SetBits(GPIOF, GPIO_Pin_8); // èœ‚é¸£å™¨å¯¹åº”å¼•è„šGPIOG7æ‹‰ä½ï¼Œ
 	};
 };
 

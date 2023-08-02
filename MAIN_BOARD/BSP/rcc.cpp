@@ -1,9 +1,9 @@
 #include "rcc.h"
 
-/*��ʼ��ϵͳʱ�Ӽ�ʹ������ʱ��*/
+/*初始化系统时钟及使能外设时钟*/
 void RCC_Configuration(void)
 {
-	// SYSTICK��Ƶ--1ms��ϵͳʱ���ж�
+	// SYSTICK分频--1ms的系统时钟中断
 	if (SysTick_Config(SystemCoreClock / 1000))
 	{
 		/* Capture error */

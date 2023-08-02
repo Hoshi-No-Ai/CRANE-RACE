@@ -2,7 +2,7 @@
 #define _DEBUG_API_H
 
 #include "main.h"
-#include "debug_api.h" 
+#include "debug_api.h"
 #include "basic_type.h"
 #include "stm32f4xx.h"
 #include "gimbal_control_types.h"
@@ -11,34 +11,44 @@ typedef union
 {
 	SINT32 siRead;
 	FP32 fpRead;
-}UN_READ;
-
+} UN_READ;
 typedef union
 {
 	SINT32 siSave[512];
 	FP32 fpSave[512];
-}UN_SAVE;
-extern u16 g_ucSavePit;//FLASH´æ´¢Î»
-extern u16 g_ucReadPit;//FLASH¶ÁÈ¡Î»
-extern UN_SAVE unSave;//´æ´¢½á¹¹Ìå
-extern  UN_READ	unRead;//¶ÁÈ¡½á¹¹Ìå
+} UN_SAVE;
+extern u16 g_ucSavePit; // FLASHå­˜å‚¨ä½
+extern u16 g_ucReadPit; // FLASHè¯»å–ä½
+extern UN_SAVE unSave;	// å­˜å‚¨ç»“æ„ä½“
+extern UN_READ unRead;	// è¯»å–ç»“æ„ä½“
 
-/*½ÓÊÕÊı¾İ*/
-#define Receive(Data1, Data2, Data3)  	Data1 = g_fpUartData[0];\
-										Data2 = g_fpUartData[1];\
-										Data3 = g_fpUartData[2]
-/*·¢ËÍÊı¾İ*/
-#define Send(Data1, Data2, Data3)       g_fpUartSendData[0] = Data1;\
-										g_fpUartSendData[1] = Data2;\
-										g_fpUartSendData[2] = Data3
+/*æ¥æ”¶æ•°æ®*/
+#define Receive(Data1, Data2, Data3) \
+	Data1 = g_fpUartData[0];         \
+	Data2 = g_fpUartData[1];         \
+	Data3 = g_fpUartData[2]
+/*å‘é€æ•°æ®*/
+#define Send(Data1, Data2, Data3) \
+	g_fpUartSendData[0] = Data1;  \
+	g_fpUartSendData[1] = Data2;  \
+	g_fpUartSendData[2] = Data3
 
-/*Êı¾İ¶ÁÈ¡ÃüÁî*/
-#define ReadInt(Data) unRead.siRead = GetOneInt32(g_ucReadPit); Data = unRead.siRead; g_ucReadPit++
-#define ReadFp(Data) unRead.siRead = GetOneInt32(g_ucReadPit); Data = unRead.fpRead; g_ucReadPit++
+/*æ•°æ®è¯»å–å‘½ä»¤*/
+#define ReadInt(Data)                         \
+	unRead.siRead = GetOneInt32(g_ucReadPit); \
+	Data = unRead.siRead;                     \
+	g_ucReadPit++
+#define ReadFp(Data)                          \
+	unRead.siRead = GetOneInt32(g_ucReadPit); \
+	Data = unRead.fpRead;                     \
+	g_ucReadPit++
 
-/*Êı¾İ´æ´¢ÃüÁî*/
-#define SaveInt(Data) unSave.siSave[g_ucSavePit] = (SINT32)Data; g_ucSavePit++
-#define SaveFp(Data) unSave.fpSave[g_ucSavePit] = (FP32)Data; g_ucSavePit++
+/*æ•°æ®å­˜å‚¨å‘½ä»¤*/
+#define SaveInt(Data)                          \
+	unSave.siSave[g_ucSavePit] = (SINT32)Data; \
+	g_ucSavePit++
+#define SaveFp(Data)                         \
+	unSave.fpSave[g_ucSavePit] = (FP32)Data; \
+	g_ucSavePit++
 
 #endif
-

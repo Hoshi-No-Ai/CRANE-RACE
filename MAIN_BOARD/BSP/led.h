@@ -3,7 +3,7 @@
 
 #include "stm32f4xx.h"
 
-//ARM_LEDÉÁË¸
+// ARM_LEDé—ªçƒ
 #define ARM_LED_FLASH() GPIOF->ODR ^= GPIO_Pin_7
 
 void ARM_LED_Configuration(void);

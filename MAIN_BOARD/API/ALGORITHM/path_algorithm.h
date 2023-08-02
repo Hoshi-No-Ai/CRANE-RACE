@@ -9,33 +9,33 @@
 
 using _navigation_::flag_record;
 
-#define POS_1_X  -570.81f
-#define POS_1_Y  749.69f
-#define POS_1_Q  -89.89f
+#define POS_1_X -570.81f
+#define POS_1_Y 749.69f
+#define POS_1_Q -89.89f
 
-#define POS_2_X  -470.80f
-#define POS_2_Y  1093.09f
-#define POS_2_Q  -126.02f
+#define POS_2_X -470.80f
+#define POS_2_Y 1093.09f
+#define POS_2_Q -126.02f
 
-#define POS_3_X  -188.26f
-#define POS_3_Y  1300.14f
-#define POS_3_Q  -161.35f
+#define POS_3_X -188.26f
+#define POS_3_Y 1300.14f
+#define POS_3_Q -161.35f
 
-#define POS_4_X  166.53f
-#define POS_4_Y  1327.13f
-#define POS_4_Q  -197.28f
+#define POS_4_X 166.53f
+#define POS_4_Y 1327.13f
+#define POS_4_Q -197.28f
 
-#define POS_5_X  462.530f
-#define POS_5_Y  1125.420f
-#define POS_5_Q  -232.80f
+#define POS_5_X 462.530f
+#define POS_5_Y 1125.420f
+#define POS_5_Q -232.80f
 
-#define POS_6_X  575.66f
-#define POS_6_Y  793.58f
-#define POS_6_Q  -268.33f
+#define POS_6_X 575.66f
+#define POS_6_Y 793.58f
+#define POS_6_Q -268.33f
 
-#define POS_END_X  640.0f
-#define POS_END_Y  -1794.4f
-#define POS_END_Q  -359.0f
+#define POS_END_X 640.0f
+#define POS_END_Y -1794.4f
+#define POS_END_Q -359.0f
 
 class C_POINT
 {
@@ -86,9 +86,9 @@ public:
 class Robot_pid_t
 {
 public:
-    C_PID x; // �?坐标X（单位：mm�?
-    C_PID y; // 竖坐标Y（单位：mm�?
-    C_PID w; // �?向�?�Q（单位：0.1度）
+    C_PID x;
+    C_PID y;
+    C_PID w;
 };
 
 class C_AUTO_PATH

@@ -4,22 +4,21 @@
 #include "motor_drive.h"
 #include "pid_algorithm.h"
 
-// 8Ê¸Á¿µ×ÅÌĞèÒªµÄ³ß´ç£¬µ¥Î»mm
-#define L_HALF 308.63f / 1.414f  // °ë³µ³¤£¬Ö¸X·½Ïò
-#define B_HALF 308.63f / 1.414f  // °ë³µ¿í£¬Ö¸Y·½Ïò
+// 8çŸ¢é‡åº•ç›˜éœ€è¦çš„å°ºå¯¸ï¼Œå•ä½mm
+#define L_HALF 308.63f / 1.414f // åŠè½¦é•¿ï¼ŒæŒ‡Xæ–¹å‘
+#define B_HALF 308.63f / 1.414f // åŠè½¦å®½ï¼ŒæŒ‡Yæ–¹å‘
 #define R_HALF 308.63f
-#define R_WHEEL 76.0f  // 44.0f//ÊÊµ±¸øĞ¡R_WHEEL£¬ÕâÑù¿ÉÒÔÊ¹except_global_veltĞ¡ÓÚvelt_fb£¬´ïµ½ÏëÒªµÄĞ§¹û
 
-#define OMNI_GEAR_RATIO 19.0f  // È«ÏòÂÖ¼õËÙ±È
+#define OMNI_GEAR_RATIO 19.0f // å…¨å‘è½®å‡é€Ÿæ¯”
 
-// È«ÏòÂÖ²ÎÊı
-#define OMNI_VELT_KP 1500  // 450
+// å…¨å‘è½®å‚æ•°
+#define OMNI_VELT_KP 1500 // 450
 #define OMNI_VELT_KI 5    // 0
 #define OMNI_VELT_KD 0
 #define OMNI_VELT_UMax 20000.0f
 #define OMNI_VELT_Ts 0.001f
 
-/*feedforward*/  // 24.5072
+/*feedforward*/ // 24.5072
 
 #define K_RU_STRAIGHT 0.0f
 #define K_LU_STRAIGHT 0.0f
@@ -41,12 +40,24 @@
 
 #define START_CURRENT_UP 2.180650738014755e+03
 
-enum tri_chassis_e { T_UP, T_RIGHTDOWN, T_LEFTDOWN };
+enum tri_chassis_e
+{
+    T_UP,
+    T_RIGHTDOWN,
+    T_LEFTDOWN
+};
 
-enum chassis_e { RIGHTUP, LEFTUP, LEFTDOWN, RIGHTDOWN };
+enum chassis_e
+{
+    RIGHTUP,
+    LEFTUP,
+    LEFTDOWN,
+    RIGHTDOWN
+};
 
-class C_Omniwheel_Motors {
-   public:
+class C_Omniwheel_Motors
+{
+public:
     C_Motor m_run_motor;
 
     C_Omniwheel_Motors()

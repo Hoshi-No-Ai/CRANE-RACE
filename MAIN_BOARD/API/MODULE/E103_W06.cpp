@@ -4,23 +4,22 @@ union float2char uart6_tx_buf[40];
 union float2char uart3_tx_buf[40];
 uint8_t wifi_tx_buf[100];
 
-void wifi_printf(char* fmt,...)  
-{  
-	uint16_t i,j;
+void wifi_printf(char *fmt, ...)
+{
+	uint16_t i, j;
 	va_list ap;
 	va_start(ap, fmt);
-	vsprintf((char*)wifi_tx_buf, fmt, ap);
+	vsprintf((char *)wifi_tx_buf, fmt, ap);
 	va_end(ap);
-	i = strlen((const char*)wifi_tx_buf);//´Ë´Î·¢ËÍÊý¾ÝµÄ³¤¶È
-	for(j = 0; j < i; ++j)//Ñ­»··¢ËÍÊý¾Ý
+	i = strlen((const char *)wifi_tx_buf); // æ­¤æ¬¡å‘é€æ•°æ®çš„é•¿åº¦
+	for (j = 0; j < i; ++j)				   // å¾ªçŽ¯å‘é€æ•°æ®
 	{
-		while(USART_GetFlagStatus(USART6, USART_FLAG_TC) == RESET); //µÈ´ýÉÏ´Î´«ÊäÍê³É 
-		USART_SendData(USART6, (uint8_t)wifi_tx_buf[j]); 	 //·¢ËÍÊý¾Ýµ½´®¿Ú4 
+		while (USART_GetFlagStatus(USART6, USART_FLAG_TC) == RESET)
+			;											 // ç­‰å¾…ä¸Šæ¬¡ä¼ è¾“å®Œæˆ
+		USART_SendData(USART6, (uint8_t)wifi_tx_buf[j]); // å‘é€æ•°æ®åˆ°ä¸²å£4
 	}
 }
 
 void wifi_init(void)
 {
-	
 }
-

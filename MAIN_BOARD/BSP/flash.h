@@ -4,34 +4,34 @@
 #include "stm32f4xx.h"
 #include "basic_type.h"
 
-#define  MAX_FLASH_LEN   1000
+#define MAX_FLASH_LEN 1000
 
 /* Base address of the Flash sectors */
-#define ADDR_FLASH_SECTOR_0     ((uint32_t)0x08000000) /* Base @ of Sector 0, 16 Kbytes */
-#define ADDR_FLASH_SECTOR_1     ((uint32_t)0x08004000) /* Base @ of Sector 1, 16 Kbytes */
-#define ADDR_FLASH_SECTOR_2     ((uint32_t)0x08008000) /* Base @ of Sector 2, 16 Kbytes */
-#define ADDR_FLASH_SECTOR_3     ((uint32_t)0x0800C000) /* Base @ of Sector 3, 16 Kbytes */
-#define ADDR_FLASH_SECTOR_4     ((uint32_t)0x08010000) /* Base @ of Sector 4, 64 Kbytes */
-#define ADDR_FLASH_SECTOR_5     ((uint32_t)0x08020000) /* Base @ of Sector 5, 128 Kbytes */
-#define ADDR_FLASH_SECTOR_6     ((uint32_t)0x08040000) /* Base @ of Sector 6, 128 Kbytes */
-#define ADDR_FLASH_SECTOR_7     ((uint32_t)0x08060000) /* Base @ of Sector 7, 128 Kbytes */
-#define ADDR_FLASH_SECTOR_8     ((uint32_t)0x08080000) /* Base @ of Sector 8, 128 Kbytes */
-#define ADDR_FLASH_SECTOR_9     ((uint32_t)0x080A0000) /* Base @ of Sector 9, 128 Kbytes */
-#define ADDR_FLASH_SECTOR_10    ((uint32_t)0x080C0000) /* Base @ of Sector 10, 128 Kbytes */
-#define ADDR_FLASH_SECTOR_11    ((uint32_t)0x080E0000) /* Base @ of Sector 11, 128 Kbytes */
+#define ADDR_FLASH_SECTOR_0 ((uint32_t)0x08000000)  /* Base @ of Sector 0, 16 Kbytes */
+#define ADDR_FLASH_SECTOR_1 ((uint32_t)0x08004000)  /* Base @ of Sector 1, 16 Kbytes */
+#define ADDR_FLASH_SECTOR_2 ((uint32_t)0x08008000)  /* Base @ of Sector 2, 16 Kbytes */
+#define ADDR_FLASH_SECTOR_3 ((uint32_t)0x0800C000)  /* Base @ of Sector 3, 16 Kbytes */
+#define ADDR_FLASH_SECTOR_4 ((uint32_t)0x08010000)  /* Base @ of Sector 4, 64 Kbytes */
+#define ADDR_FLASH_SECTOR_5 ((uint32_t)0x08020000)  /* Base @ of Sector 5, 128 Kbytes */
+#define ADDR_FLASH_SECTOR_6 ((uint32_t)0x08040000)  /* Base @ of Sector 6, 128 Kbytes */
+#define ADDR_FLASH_SECTOR_7 ((uint32_t)0x08060000)  /* Base @ of Sector 7, 128 Kbytes */
+#define ADDR_FLASH_SECTOR_8 ((uint32_t)0x08080000)  /* Base @ of Sector 8, 128 Kbytes */
+#define ADDR_FLASH_SECTOR_9 ((uint32_t)0x080A0000)  /* Base @ of Sector 9, 128 Kbytes */
+#define ADDR_FLASH_SECTOR_10 ((uint32_t)0x080C0000) /* Base @ of Sector 10, 128 Kbytes */
+#define ADDR_FLASH_SECTOR_11 ((uint32_t)0x080E0000) /* Base @ of Sector 11, 128 Kbytes */
 
-#define SAVE_DATA_START_ADDR 	  	ADDR_FLASH_SECTOR_11
+#define SAVE_DATA_START_ADDR ADDR_FLASH_SECTOR_11
 
 extern u8 g_ucFlashFlag;
 extern u8 g_ucFlashWrongNum;
 extern s32 g_siFlashValue[MAX_FLASH_LEN];
 
-FP32 GetOneFP32(UINT32 uiReadAddr);//¶ÁÈ¡Ò»¸ö¸¡µãÊı¾İ
-SSHORT16 GetOneShort16(UINT32 uiReadAddr);//¶ÁÈ¡Ò»¸ö16Î»Êı¾İ
-SINT32	GetOneInt32(UINT32 uiReadAddr);//¶ÁÈ¡Ò»¸ö32Î»Êı¾İ
-UCHAR8  SaveOneWord32(SINT32 siData,UINT32 uiWriteAddr);//ÏòÖ¸¶¨µØÖ·Ğ´ÈëÒ»¸ö32Î»Êı¾İ
-UCHAR8  SaveParaWord32(UINT32 uiLength,UINT32 uiFlashAddr,SINT32 *p); //´ÓÖ¸¶¨µØÖ·¿ªÊ¼Ğ´ÈëÒ»×é32Î»Êı¾İ
-UCHAR8  SaveAllWord32(void);
-UCHAR8  SaveParaFP32(UINT32 uiLength,UINT32 uiFlashAddr,FP32 *p);
+FP32 GetOneFP32(UINT32 uiReadAddr);                                    // è¯»å–ä¸€ä¸ªæµ®ç‚¹æ•°æ®
+SSHORT16 GetOneShort16(UINT32 uiReadAddr);                             // è¯»å–ä¸€ä¸ª16ä½æ•°æ®
+SINT32 GetOneInt32(UINT32 uiReadAddr);                                 // è¯»å–ä¸€ä¸ª32ä½æ•°æ®
+UCHAR8 SaveOneWord32(SINT32 siData, UINT32 uiWriteAddr);               // å‘æŒ‡å®šåœ°å€å†™å…¥ä¸€ä¸ª32ä½æ•°æ®
+UCHAR8 SaveParaWord32(UINT32 uiLength, UINT32 uiFlashAddr, SINT32 *p); // ä»æŒ‡å®šåœ°å€å¼€å§‹å†™å…¥ä¸€ç»„32ä½æ•°æ®
+UCHAR8 SaveAllWord32(void);
+UCHAR8 SaveParaFP32(UINT32 uiLength, UINT32 uiFlashAddr, FP32 *p);
 
 #endif

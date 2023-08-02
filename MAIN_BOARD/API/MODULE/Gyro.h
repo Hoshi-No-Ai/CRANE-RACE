@@ -16,7 +16,8 @@ extern fp64 GyrotestTab[3];
 
 extern fp32 value_door;
 
-struct Bw50HzLPFTypeDef {
+struct Bw50HzLPFTypeDef
+{
     float xv[4];
     float yv[4];
     float input;
@@ -25,7 +26,7 @@ struct Bw50HzLPFTypeDef {
 
 extern Bw50HzLPFTypeDef GyroLPF;
 
-void Butterworth50HzLPF(Bw50HzLPFTypeDef* pLPF);
+void Butterworth50HzLPF(Bw50HzLPFTypeDef *pLPF);
 fp64 Gyro_TableLookUp(fp64 DataAccu);
 
 #endif

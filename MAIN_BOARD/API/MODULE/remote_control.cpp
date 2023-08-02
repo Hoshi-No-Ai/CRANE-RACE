@@ -3,24 +3,25 @@
 using _api_module_::WIFI_FLAG;
 using _api_module_::wifi_rx_flag;
 
-// ÊÖ±ú¼üÖµºÍÒ¡¸ËÀà
+// æ‰‹æŸ„é”®å€¼å’Œæ‘‡æ†ç±»
 C_JsKey JsKey;
 
 /******************************************************************
-ÎŞÏßÊÖ±úÏà¹Øº¯Êı
+æ— çº¿æ‰‹æŸ„ç›¸å…³å‡½æ•°
 **********************************************************************/
 uint8_t tmp_buf[33];
 uint8_t tmp_buf_11;
 
 /************************************************************
-º¯Êı¹¦ÄÜ:Í¨¹ıÊÖ±úÒ¡¸ËÖµ·ÖÅäËÙ¶È
+å‡½æ•°åŠŸèƒ½:é€šè¿‡æ‰‹æŸ„æ‘‡æ†å€¼åˆ†é…é€Ÿåº¦
 ************************************************************/
-void C_JsKey::CalSpeed(C_NAV &p_nav) {
+void C_JsKey::CalSpeed(C_NAV &p_nav)
+{
     uint8_t ucJSTmp;
-    int16_t Vx, Vy, Vw;  // Vt;
+    int16_t Vx, Vy, Vw; // Vt;
     const fp32 smooth = 30;
 
-    static C_LPF FJx(smooth, 0.002f);  // ĞèÒªpre_out£¬¹ÊĞèÒªÉèÎª¾²Ì¬±äÁ¿
+    static C_LPF FJx(smooth, 0.002f); // éœ€è¦pre_outï¼Œæ•…éœ€è¦è®¾ä¸ºé™æ€å˜é‡
     static C_LPF FJy(smooth, 0.002f);
     static C_LPF FJw(smooth, 0.002f);
 
@@ -29,11 +30,16 @@ void C_JsKey::CalSpeed(C_NAV &p_nav) {
     // Vx=(ucJSTmp - JS_MID_POS);
     Vx = (ucJSTmp - JS_MID_POS_X);
 
-    if (fabs((fp32)Vx) < G_SPEED) {
+    if (fabs((fp32)Vx) < G_SPEED)
+    {
         FJx.m_in = 0;
-    } else if (Vx >= G_SPEED) {
+    }
+    else if (Vx >= G_SPEED)
+    {
         FJx.m_in = (Vx - G_SPEED) * M_SPEED / (JS_MID_POS_X - G_SPEED);
-    } else if (Vx <= -G_SPEED) {
+    }
+    else if (Vx <= -G_SPEED)
+    {
         FJx.m_in = (Vx + G_SPEED) * M_SPEED / (JS_MID_POS_X - G_SPEED);
     }
 
@@ -42,21 +48,31 @@ void C_JsKey::CalSpeed(C_NAV &p_nav) {
 
     Vy = (ucJSTmp - JS_MID_POS_Y);
 
-    if (fabs((fp32)Vy) < G_SPEED) {
+    if (fabs((fp32)Vy) < G_SPEED)
+    {
         FJy.m_in = 0;
-    } else if (Vy >= G_SPEED) {
+    }
+    else if (Vy >= G_SPEED)
+    {
         FJy.m_in = (Vy - G_SPEED) * M_SPEED / (JS_MID_POS_Y - G_SPEED);
-    } else if (Vy <= -G_SPEED) {
+    }
+    else if (Vy <= -G_SPEED)
+    {
         FJy.m_in = (Vy + G_SPEED) * M_SPEED / (JS_MID_POS_Y - G_SPEED);
     }
     ucJSTmp = usJsRight;
-    Vw = -(ucJSTmp - 0x7B);  // JS_MID_POS;
+    Vw = -(ucJSTmp - 0x7B); // JS_MID_POS;
 
-    if (fabs((fp32)Vw) < G_SPEED) {
+    if (fabs((fp32)Vw) < G_SPEED)
+    {
         FJw.m_in = 0;
-    } else if (Vw >= G_SPEED) {
+    }
+    else if (Vw >= G_SPEED)
+    {
         FJw.m_in = (Vw - G_SPEED) * M_SPEED / (0x7B - G_SPEED);
-    } else if (Vw <= -G_SPEED) {
+    }
+    else if (Vw <= -G_SPEED)
+    {
         FJw.m_in = (Vw + G_SPEED) * M_SPEED / (0x7B - G_SPEED);
     }
 
@@ -66,91 +82,106 @@ void C_JsKey::CalSpeed(C_NAV &p_nav) {
 
     p_nav.expect_robot_global_velt.fpVx = -FJy.m_out;
     p_nav.expect_robot_global_velt.fpVy = FJx.m_out;
-    p_nav.expect_robot_global_velt.fpW = -FJw.m_out / 700.0f;  // ¡À?????????10
+    p_nav.expect_robot_global_velt.fpW = -FJw.m_out / 700.0f; // Â±?????????10
 }
 
 /******************************************************************
-º¯Êı¹¦ÄÜ: ÊÖ±ú¼üÖµ´¦Àíº¯Êı
-±¸×¢:  500ÄÚ´¦ÀíÎªµ¥»÷£¬³¬¹ıºó´¦ÀíÎªÁ¬»÷£¬ÇÒÃ¿100msÊ¹°´¼üÓĞĞ§Ò»´Î
+å‡½æ•°åŠŸèƒ½: æ‰‹æŸ„é”®å€¼å¤„ç†å‡½æ•°
+å¤‡æ³¨:  500å†…å¤„ç†ä¸ºå•å‡»ï¼Œè¶…è¿‡åå¤„ç†ä¸ºè¿å‡»ï¼Œä¸”æ¯100msä½¿æŒ‰é”®æœ‰æ•ˆä¸€æ¬¡
 ******************************************************************/
-void C_JsKey::ReadWlanJsValue(void) {
+void C_JsKey::ReadWlanJsValue(void)
+{
 #ifdef NRF_ENABLE
 
     NRF24L01_RX_Mode();
     int i;
-    NRF24L01_RX_Mode();        // ÅäÖÃNRF24L01Îª½ÓÊÕÄ£Ê½
-    for (i = 0; i < 420; i++)  // ±ØÒªµÄÑÓÊ±
+    NRF24L01_RX_Mode();       // é…ç½®NRF24L01ä¸ºæ¥æ”¶æ¨¡å¼
+    for (i = 0; i < 420; i++) // å¿…è¦çš„å»¶æ—¶
     {
     }
     //	memcpy(tmp_buf, uart6_efr.num, 37*sizeof(uint8_t));
-    if (NRF24L01_RxPacket(tmp_buf) == 0)  // ½ÓÊÕµ½Êı
+    if (NRF24L01_RxPacket(tmp_buf) == 0) // æ¥æ”¶åˆ°æ•°
     {
         wifi_rx_flag = 0;
-        if (((tmp_buf[1] == 0x73) || (tmp_buf[1] == 0x41)) && (tmp_buf[2] == 0x5A)) {
+        if (((tmp_buf[1] == 0x73) || (tmp_buf[1] == 0x41)) && (tmp_buf[2] == 0x5A))
+        {
             uint8_t i = 0;
             usJsState = Wlan_JOYSTICK_STATE;
             usJsKey = Wlan_JOYSTICK_RESERVED;
 
-            for (i = 0; i < 16; ++i) {
-                if ((usJsKey & (1 << i)) == 0) {
-                    if (auiPressDuration[i] == 0)  // °´ÏÂºó£¬µÚÒ»´Î¶ÁÈ¡
+            for (i = 0; i < 16; ++i)
+            {
+                if ((usJsKey & (1 << i)) == 0)
+                {
+                    if (auiPressDuration[i] == 0) // æŒ‰ä¸‹åï¼Œç¬¬ä¸€æ¬¡è¯»å–
                     {
                         auiPressDuration[i] = 5;
-                        uiStartTime[i] = TIM7->CNT;  // T1TC;
+                        uiStartTime[i] = TIM7->CNT; // T1TC;
                         aucKeyPress[i] = 1;
-                    } else {
-                        uiCurTime[i] = TIM7->CNT;  // T1TC;
+                    }
+                    else
+                    {
+                        uiCurTime[i] = TIM7->CNT; // T1TC;
                         if (uiCurTime[i] - uiStartTime[i] >
-                            auiPressDuration[i] * 100000)  // µÚÒ»´ÎÎª500ms,Ö®ºó100msÒ»´Î
+                            auiPressDuration[i] * 100000) // ç¬¬ä¸€æ¬¡ä¸º500ms,ä¹‹å100msä¸€æ¬¡
                         {
                             auiPressDuration[i]++;
                             aucKeyPress[i] = 1;
-                        } else {
+                        }
+                        else
+                        {
                             aucKeyPress[i] = 0;
                         }
-                    } /*¼ì²â°´ÏÂµÄÊ±¼ä£¬ÅĞ¶ÏÊÇ·ñ´¦ÀíÎªÁ¬»÷*/
-                } else {
+                    } /*æ£€æµ‹æŒ‰ä¸‹çš„æ—¶é—´ï¼Œåˆ¤æ–­æ˜¯å¦å¤„ç†ä¸ºè¿å‡»*/
+                }
+                else
+                {
                     auiPressDuration[i] = 0;
                     uiStartTime[i] = 0;
                     uiCurTime[i] = 0;
                     aucKeyPress[i] = 0;
-                } /*¼ì²âÊÇ·ñ±»°´ÏÂ*/
+                } /*æ£€æµ‹æ˜¯å¦è¢«æŒ‰ä¸‹*/
             }
 
-            if (usJsState == 0x80)  // ºìµÆÄ£Ê½
+            if (usJsState == 0x80) // çº¢ç¯æ¨¡å¼
             {
                 usJsLeft = Wlan_JOYSTICK_LEFT;
                 usJsRight = Wlan_JOYSTICK_RIGTH;
-            } else if (usJsState == 0x41) {
+            }
+            else if (usJsState == 0x41)
+            {
                 usJsLeft = 0x8080;
                 usJsRight = 0x8080;
             }
         }
-
-    } else {
+    }
+    else
+    {
         usJsKey = 0xFFFF;
         usJsLeft = 0x8080;
         usJsRight = 0x8080;
         usJsState = 0x00;
     }
 
-    if ((tmp_buf[9] == 0xAA) && (tmp_buf[10] == 0x88)) {
+    if ((tmp_buf[9] == 0xAA) && (tmp_buf[10] == 0x88))
+    {
         tmp_buf_11 = tmp_buf[11];
     }
 #endif
 #ifndef NRF_ENABLE
     //	NRF24L01_RX_Mode();
     int i;
-    //	NRF24L01_RX_Mode();//ÅäÖÃNRF24L01Îª½ÓÊÕÄ£Ê½
-    for (i = 0; i < 420; i++)  // ±ØÒªµÄÑÓÊ±
+    //	NRF24L01_RX_Mode();//é…ç½®NRF24L01ä¸ºæ¥æ”¶æ¨¡å¼
+    for (i = 0; i < 420; i++) // å¿…è¦çš„å»¶æ—¶
     {
     }
     memcpy(tmp_buf, uart6_efr.num, USART6_RX_DATA_LEN * sizeof(uint8_t));
-    // if(NRF24L01_RxPacket(tmp_buf)==0)//½ÓÊÕµ½Êı
-    if (tmp_buf[0] != 0)  // ½ÓÊÕµ½Êı
+    // if(NRF24L01_RxPacket(tmp_buf)==0)//æ¥æ”¶åˆ°æ•°
+    if (tmp_buf[0] != 0) // æ¥æ”¶åˆ°æ•°
     {
         wifi_rx_flag = 0;
-        if (((tmp_buf[0] == 0x73) || (tmp_buf[0] == 0x41)) && (tmp_buf[1] == 0x5A)) {
+        if (((tmp_buf[0] == 0x73) || (tmp_buf[0] == 0x41)) && (tmp_buf[1] == 0x5A))
+        {
             uint8_t i = 0;
             usJsState = Wlan_JOYSTICK_STATE;
             usJsKey = Wlan_JOYSTICK_RESERVED;
@@ -159,7 +190,7 @@ void C_JsKey::ReadWlanJsValue(void) {
             //			{
             //				if((usJsKey & (1 << i)) == 0)
             //				{
-            //					if(auiPressDuration[i] == 0)    //°´ÏÂºó£¬µÚÒ»´Î¶ÁÈ¡
+            //					if(auiPressDuration[i] == 0)    //æŒ‰ä¸‹åï¼Œç¬¬ä¸€æ¬¡è¯»å–
             //					{
             //						auiPressDuration[i] = 5;
             //						uiStartTime[i] = TIM7->CNT;//T1TC;
@@ -170,7 +201,7 @@ void C_JsKey::ReadWlanJsValue(void) {
             //						uiCurTime[i] = TIM7->CNT;//T1TC;
             //						if(uiCurTime[i] - uiStartTime[i]
             //								> auiPressDuration[i] * 100000)
-            ////µÚÒ»´ÎÎª500ms,Ö®ºó100msÒ»´Î
+            ////ç¬¬ä¸€æ¬¡ä¸º500ms,ä¹‹å100msä¸€æ¬¡
             //						{
             //							auiPressDuration[i] ++;
             //							aucKeyPress[i] = 1;
@@ -179,7 +210,7 @@ void C_JsKey::ReadWlanJsValue(void) {
             //						{
             //							aucKeyPress[i] = 0;
             //						}
-            //					}/*¼ì²â°´ÏÂµÄÊ±¼ä£¬ÅĞ¶ÏÊÇ·ñ´¦ÀíÎªÁ¬»÷*/
+            //					}/*æ£€æµ‹æŒ‰ä¸‹çš„æ—¶é—´ï¼Œåˆ¤æ–­æ˜¯å¦å¤„ç†ä¸ºè¿å‡»*/
             //				}
             //				else
             //				{
@@ -187,22 +218,25 @@ void C_JsKey::ReadWlanJsValue(void) {
             //					uiStartTime[i] = 0;
             //					uiCurTime[i] = 0;
             //					aucKeyPress[i] = 0;
-            //				}/*¼ì²âÊÇ·ñ±»°´ÏÂ*/
+            //				}/*æ£€æµ‹æ˜¯å¦è¢«æŒ‰ä¸‹*/
             //			}
 
-            if (usJsState == 0x73)  // ºìµÆÄ£Ê½
+            if (usJsState == 0x73) // çº¢ç¯æ¨¡å¼
             {
-                    usJsLeft_X = Wlan_JOYSTICK_LEFT_X;
-                    usJsLeft_Y = Wlan_JOYSTICK_LEFT_Y;
-                    usJsRight = Wlan_JOYSTICK_RIGTH;
-            } else if (usJsState == 0x41) {
+                usJsLeft_X = Wlan_JOYSTICK_LEFT_X;
+                usJsLeft_Y = Wlan_JOYSTICK_LEFT_Y;
+                usJsRight = Wlan_JOYSTICK_RIGTH;
+            }
+            else if (usJsState == 0x41)
+            {
                 usJsLeft_X = 128;
                 usJsLeft_Y = 130;
                 usJsRight = 128;
             }
         }
-
-    } else {
+    }
+    else
+    {
         usJsKey = 0xFFFF;
         usJsLeft_X = 0;
         usJsLeft_Y = 0;
@@ -210,7 +244,8 @@ void C_JsKey::ReadWlanJsValue(void) {
         usJsState = 0x00;
     }
 
-    if ((tmp_buf[9] == 0xAA) && (tmp_buf[10] == 0x88)) {
+    if ((tmp_buf[9] == 0xAA) && (tmp_buf[10] == 0x88))
+    {
         tmp_buf_11 = tmp_buf[11];
     }
 #endif
@@ -222,22 +257,28 @@ static uint16_t Wlan_usKeyPre = 0;
 uint32_t uiCurTime = 0;
 uint16_t usKey = 0;
 /******************************************************************
-º¯Êı¹¦ÄÜ: WLAN¼üÅÌ¼üÖµ´¦Àíº¯Êı
+å‡½æ•°åŠŸèƒ½: WLANé”®ç›˜é”®å€¼å¤„ç†å‡½æ•°
 ******************************************************************/
-void C_JsKey::ReadWlanKeyValue(void) {
+void C_JsKey::ReadWlanKeyValue(void)
+{
     usKey = Wlan_PSKEY;
-    if (Wlan_ucKeyStatic == 0)  // ×ÔÓÉ×´Ì¬
+    if (Wlan_ucKeyStatic == 0) // è‡ªç”±çŠ¶æ€
     {
-        if (usKey != 0 && usKey != Wlan_usKeyPre) {
+        if (usKey != 0 && usKey != Wlan_usKeyPre)
+        {
             usKeyValue = usKey;
             //            Wlan_uiStartTime = TIM7->CNT;
-            Wlan_ucKeyStatic = 1;  // ÓĞÊı×´Ì¬
+            Wlan_ucKeyStatic = 1; // æœ‰æ•°çŠ¶æ€
         }
         Wlan_usKeyPre = usKey;
-    } else if (Wlan_ucKeyStatic == 1) {
+    }
+    else if (Wlan_ucKeyStatic == 1)
+    {
         usKeyValue = 0;
-        Wlan_ucKeyStatic = 2;  // µÈ´ı×´Ì¬
-    } else if (Wlan_ucKeyStatic == 2) {
+        Wlan_ucKeyStatic = 2; // ç­‰å¾…çŠ¶æ€
+    }
+    else if (Wlan_ucKeyStatic == 2)
+    {
         //        uiCurTime = TIM7->CNT;
         //        if(uiCurTime - Wlan_uiStartTime > 20000)
         //        {
@@ -246,14 +287,19 @@ void C_JsKey::ReadWlanKeyValue(void) {
     }
 }
 
-uint8_t wifi_rx_packet(void) {
-    if (wifi_rx_flag) {
+uint8_t wifi_rx_packet(void)
+{
+    if (wifi_rx_flag)
+    {
         wifi_rx_flag = 0;
         WIFI_FLAG = 0;
     }
-    if (WIFI_FLAG > 200) {
+    if (WIFI_FLAG > 200)
+    {
         return 1;
-    } else {
+    }
+    else
+    {
         return 0;
     }
 }

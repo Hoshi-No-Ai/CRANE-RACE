@@ -4,15 +4,15 @@ fp32 VisionY;
 fp32 VisionX;
 fp32 ConvertArray[2][2];
 
-// »úÆ÷ÈË·´À¡Î»ÖÃµ½Ä¿±êÎ»ÖÃµÄ¾àÀë
+// æœºå™¨äººåé¦ˆä½ç½®åˆ°ç›®æ ‡ä½ç½®çš„è·ç¦»
 Delta_2D delta_fb_des;
-// »úÆ÷ÈË·´À¡Î»ÖÃµ½arucoÂëµÄ¾àÀë£¨»úÆ÷ÈË×ø±êÏµ£©
+// æœºå™¨äººåé¦ˆä½ç½®åˆ°arucoç çš„è·ç¦»ï¼ˆæœºå™¨äººåæ ‡ç³»ï¼‰
 static Delta_2D delta_fb_aruco_r;
-// TODO: arucoÂë×ø±êÏµÏÂÄ¿±êÎ»ÖÃµÄ×ø±ê±íÊ¾£¬x,yĞÅÏ¢ÔÚºê¶¨ÒåÀïĞŞ¸Ä
-//  arucoÂëµ½»úÆ÷ÈËÄ¿±êÎ»ÖÃµÄ¾àÀë£¨arucoÂë×ø±êÏµ£©
+// TODO: arucoç åæ ‡ç³»ä¸‹ç›®æ ‡ä½ç½®çš„åæ ‡è¡¨ç¤ºï¼Œx,yä¿¡æ¯åœ¨å®å®šä¹‰é‡Œä¿®æ”¹
+//  arucoç åˆ°æœºå™¨äººç›®æ ‡ä½ç½®çš„è·ç¦»ï¼ˆarucoç åæ ‡ç³»ï¼‰
 static Delta_2D delta_aruco_des_a = {DES_ARUCO_CENTER, DES_CENTER_DES};
 
-// È¡¿ÉÀÖÊ±Ä¿±êµãµÄÎ»ÖÃ±ä»¯
+// å–å¯ä¹æ—¶ç›®æ ‡ç‚¹çš„ä½ç½®å˜åŒ–
 Delta_2D delta_des_cola_w;
 static Delta_2D delta_des_cola_r = {DELTA_COLA, 0};
 
@@ -34,7 +34,7 @@ Delta_2D Coord_transformation(float theta, Delta_2D Delta_r)
 
 bool des_base_aruco(aruco &aruco_ref)
 {
-    // TODO: ¿ÉÄÜÊÓ¾õ²ÎÊıµÄÕı¸º·½ÏòµÃµ÷Ò»ÏÂ
+    // TODO: å¯èƒ½è§†è§‰å‚æ•°çš„æ­£è´Ÿæ–¹å‘å¾—è°ƒä¸€ä¸‹
     float fpQ = 0.1 * cRobot.stPot.fpPosQ;
     float theta_w_r = -fpQ;
     float theta_w_a = -(fpQ + aruco_ref.thetaz);
@@ -51,24 +51,22 @@ bool des_base_aruco(aruco &aruco_ref)
     return aruco_ref.if_detect;
 }
 
-
-
 void delta_des_cola(int num)
 {
     Delta_2D delta_des_r;
     switch (num)
     {
     case 1:
-        delta_des_r.delta_x=delta_des_cola_r.delta_x;
-        delta_des_r.delta_y=delta_des_cola_r.delta_y;
+        delta_des_r.delta_x = delta_des_cola_r.delta_x;
+        delta_des_r.delta_y = delta_des_cola_r.delta_y;
         break;
     case 2:
-        delta_des_r.delta_x=0;
-        delta_des_r.delta_y=0;
+        delta_des_r.delta_x = 0;
+        delta_des_r.delta_y = 0;
         break;
     case 3:
-        delta_des_r.delta_x=-delta_des_cola_r.delta_x;
-        delta_des_r.delta_y=-delta_des_cola_r.delta_y;
+        delta_des_r.delta_x = -delta_des_cola_r.delta_x;
+        delta_des_r.delta_y = -delta_des_cola_r.delta_y;
         break;
     default:
         break;
@@ -76,15 +74,15 @@ void delta_des_cola(int num)
 
     float fpQ = nav.auto_path.m_point_end.m_q * RADIAN;
     float theta_w_r = fpQ;
-		
+
     delta_des_cola_w = Coord_transformation(theta_w_r, delta_des_r);
 }
 
 bool Identify_box_cola(int &target)
 {
-    if(nav.state==NAV_STOPX)
+    if (nav.state == NAV_STOPX)
     {
-        target=temp_target_detect;
+        target = temp_target_detect;
         return true;
     }
     else

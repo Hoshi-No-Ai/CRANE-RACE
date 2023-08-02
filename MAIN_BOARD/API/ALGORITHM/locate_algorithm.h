@@ -11,33 +11,33 @@
 #include "stm32f4xx.h"
 #include "tim.h"
 
-/***************************************************¶¨Î»********************************************************/
-/*Ä£ÄâÍÓÂÝ¡¢Êý×ÖÍÓÂÝÇÐ»»*/
+/***************************************************å®šä½********************************************************/
+/*æ¨¡æ‹Ÿé™€èžºã€æ•°å­—é™€èžºåˆ‡æ¢*/
 #define DigtalGyro 1
 #define AnologGyro 0
 
-/*ÍÓÂÝÒÇÏµÊý*/
+/*é™€èžºä»ªç³»æ•°*/
 #define K_ANTICLOCK 1.0237613751263902932254802831142568250758f
 #define K_CLOCK 1.0237613751263902932254802831142568250758f
 
-/*Ëæ¶¯ÂÖÏµÊý*/
-//2.3561944901923449288469825374596271631478
-//0.7853981633974483096156608458198757210492
+/*éšåŠ¨è½®ç³»æ•°*/
+// 2.3561944901923449288469825374596271631478
+// 0.7853981633974483096156608458198757210492
 #define ALPHA_A_Inc -2.410565098551039f //-0.810965294108738f//2.3561944901923449288469825374596271631478f
 #define ALPHA_A_Dec -2.410108197924082f //-0.808016683626560f//2.3561944901923449288469825374596271631478f
-#define ALPHA_B_Inc 2.386849871549865f //0.790117598576705f //-2.3561944901923449288469825374596271631478f
-#define ALPHA_B_Dec 2.385656091669817f //0.790250194252695f//-2.3561944901923449288469825374596271631478f
+#define ALPHA_B_Inc 2.386849871549865f  // 0.790117598576705f //-2.3561944901923449288469825374596271631478f
+#define ALPHA_B_Dec 2.385656091669817f  // 0.790250194252695f//-2.3561944901923449288469825374596271631478f
 
 #define FW_Len_A_Inc -0.229548363662008f //-0.222884815442030f //-0.4376413099375781414136154601985196378958f
 #define FW_Len_A_Dec -0.230235332900968f //-0.222745633406768f //-0.4376413099375781414136154601985196378958f
-#define FW_Len_B_Inc 0.228858132233363f //-0.222875462099823f //-0.4376413099375781414136154601985196378958f
-#define FW_Len_B_Dec 0.229011487586866f //-0.222404068161941f //-0.4376413099375781414136154601985196378958f
+#define FW_Len_B_Inc 0.228858132233363f  //-0.222875462099823f //-0.4376413099375781414136154601985196378958f
+#define FW_Len_B_Dec 0.229011487586866f  //-0.222404068161941f //-0.4376413099375781414136154601985196378958f
 
-/*»úÆ÷ÈËÖÐÐÄÖÁËæ¶¯ÂÖÖÐÐÄÏòÁ¿½Ç¶È(È«¾ÖY)ºÍÄ£*/
-#define FW_Rob_Len 118.18f  // Ëæ¶¯ÂÖÖÐÐÄÓë»úÆ÷ÈËÖÐÐÄµÄ¾àÀë
-#define FW_rob_Alpha 0.0f // Ëæ¶¯ÂÖ×ø±êÓë»úÆ÷ÈË×ø±êµÄ¼Ð½Ç£¨µ¥Î»£º»¡¶È£©
+/*æœºå™¨äººä¸­å¿ƒè‡³éšåŠ¨è½®ä¸­å¿ƒå‘é‡è§’åº¦(å…¨å±€Y)å’Œæ¨¡*/
+#define FW_Rob_Len 118.18f // éšåŠ¨è½®ä¸­å¿ƒä¸Žæœºå™¨äººä¸­å¿ƒçš„è·ç¦»
+#define FW_rob_Alpha 0.0f  // éšåŠ¨è½®åæ ‡ä¸Žæœºå™¨äººåæ ‡çš„å¤¹è§’ï¼ˆå•ä½ï¼šå¼§åº¦ï¼‰
 
-/* ÊÓ¾õÖØ¶¨Î»²ÎÊý */
+/* è§†è§‰é‡å®šä½å‚æ•° */
 #define POS_1_X_RECLOC -578.84f
 #define POS_1_Y_RECLOC 789.40f
 #define POS_1_Q_RECLOC -89.58f
@@ -67,11 +67,11 @@
 #define POS_END_Q_RECLOC -359.36f
 
 /*
-DT35ÏµÊý
+DT35ç³»æ•°
                 |y+
                 |dt35_y
                 |
-x+¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ªdt35_x
+x+â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”dt35_x
                 |
                 |
                 |
@@ -85,7 +85,7 @@ x+¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ªdt35_x
 #define DT35_SAVE_Y1 0.0f
 #define DT35_SAVE_Y2 0.0f
 
-// DT35ÏµÊý
+// DT35ç³»æ•°
 #define K_DT35_X1 -1.112127110963998f
 #define B_DT35_X1 -8.118602110400346f
 
@@ -98,7 +98,7 @@ x+¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ªdt35_x
 #define K_DT35_Y2 1.043767942624321f
 #define B_DT35_Y2 60.577194894797600f
 
-// ÏÖÓÃ
+// çŽ°ç”¨
 #define DIS_X1_DT35_TO_C1 109.34f // 293.275f
 #define DIS_X1_DT35_TO_C2 172.98f // 297.25f
 #define DIS_X2_DT35_TO_C1 60.96f  // 293.275f
@@ -108,7 +108,7 @@ x+¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ªdt35_x
 #define DIS_Y2_DT35_TO_C1 158.15f // 110.0f
 #define DIS_Y2_DT35_TO_C2 116.81f // 334.99f
 
-/*dt35ÓëÐý×ªÖÐÐÄµÄ¸÷¸ö¾àÀë*/
+/*dt35ä¸Žæ—‹è½¬ä¸­å¿ƒçš„å„ä¸ªè·ç¦»*/
 #define DIS_X1_DT35_TO_MID (586.55f / 2.0)
 #define DIS_X2_DT35_TO_MID (586.55f / 2.0)
 #define DIS_Y1_DT35_TO_MID 305.0f
@@ -123,7 +123,8 @@ x+¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ª¡ªdt35_x
 #define LIMIT_Y1 50.0f
 #define LIMIT_Y2 50.0f
 
-enum pos_state_e {
+enum pos_state_e
+{
     POS_1,
     POS_2,
     POS_3,
@@ -138,40 +139,40 @@ extern fp32 fpStartY;
 
 class C_ROBOT;
 
-/*Ëæ¶¯ÂÖÂëÅÌ¹ýÏß¼ÆÊý¼°Ëæ¶¯ÂÖÏà¹Ø½á¹¹Ìå*/
+/*éšåŠ¨è½®ç ç›˜è¿‡çº¿è®¡æ•°åŠéšåŠ¨è½®ç›¸å…³ç»“æž„ä½“*/
 class C_FOLLOWER_WHEEL
 {
 public:
-    int32_t m_CoderACur; // µ±Ç°ÂëÅÌA¶ÁÊý
-    int32_t m_CoderAPre; // ÉÏÒ»´ÎÂëÅÌA¶ÁÊý£¬ÅÐ¶ÏËæ¶¯ÂÖÐý×ª·½Ïò
-    int32_t m_CoderBCur; // µ±Ç°ÂëÅÌB¶ÁÊý
-    int32_t m_CoderBPre; // ÉÏÒ»´ÎÂëÅÌB¶ÁÊý
+    int32_t m_CoderACur; // å½“å‰ç ç›˜Aè¯»æ•°
+    int32_t m_CoderAPre; // ä¸Šä¸€æ¬¡ç ç›˜Aè¯»æ•°ï¼Œåˆ¤æ–­éšåŠ¨è½®æ—‹è½¬æ–¹å‘
+    int32_t m_CoderBCur; // å½“å‰ç ç›˜Bè¯»æ•°
+    int32_t m_CoderBPre; // ä¸Šä¸€æ¬¡ç ç›˜Bè¯»æ•°
 
     float degreeA;
     float degreeB;
 
-    C_VECTOR m_VectorFWCen_RobCen; // Ëæ¶¯ÂÖÖÐÐÄÓë»úÆ÷ÈËÖÐÐÄµÄÏòÁ¿£¨Ö÷ÒªÊÇyÖáÏà¶Ô½Ç¶ÈºÍ¾àÀë£©
+    C_VECTOR m_VectorFWCen_RobCen; // éšåŠ¨è½®ä¸­å¿ƒä¸Žæœºå™¨äººä¸­å¿ƒçš„å‘é‡ï¼ˆä¸»è¦æ˜¯yè½´ç›¸å¯¹è§’åº¦å’Œè·ç¦»ï¼‰
 
-    ST_POT stPot;    // Ëæ¶¯ÂÖÖÐÐÄ×ø±ê×ËÌ¬
-    ST_POT stPotPre; // Ëæ¶¯ÂÖÉÏ´ÎÖÐÐÄ×ø±ê
+    ST_POT stPot;    // éšåŠ¨è½®ä¸­å¿ƒåæ ‡å§¿æ€
+    ST_POT stPotPre; // éšåŠ¨è½®ä¸Šæ¬¡ä¸­å¿ƒåæ ‡
 
     C_FOLLOWER_WHEEL() : m_VectorFWCen_RobCen(C_VECTOR(FW_Rob_Len, FW_rob_Alpha, POLAR)){};
     ~C_FOLLOWER_WHEEL(){};
 };
 
-/*ÍÓÂÝ½á¹¹Ìå*/
+/*é™€èžºç»“æž„ä½“*/
 class C_GYRO
 {
 public:
-    //    SBÎ¬ÌØ
-    //    fp32 fpQ;       //ÍÓÂÝµ±Ç°Êý¾Ý¶ÁÊý
-    //		fp32 fpW_orgin; //ÍÓÂÝÒÇÔ­Ê¼½ÇËÙ¶È
-    //	  fp32 fpW;       //ÍÓÂÝÒÇÐ£Õýºó½ÇËÙ¶È
+    //    SBç»´ç‰¹
+    //    fp32 fpQ;       //é™€èžºå½“å‰æ•°æ®è¯»æ•°
+    //		fp32 fpW_orgin; //é™€èžºä»ªåŽŸå§‹è§’é€Ÿåº¦
+    //	  fp32 fpW;       //é™€èžºä»ªæ ¡æ­£åŽè§’é€Ÿåº¦
 
-    fp32 fpClock;     // Ë³Ê±ÕëÏµÊý
-    fp32 fpAntiClock; // ÄæÊ±ÕëÏµÊý
-    fp32 fpQ_Cur;     // ÍÓÂÝµ±Ç°Êý¾Ý¶ÁÊý
-    fp32 fpQ_Pre;     // ÍÓÂÝÉÏÒ»´ÎÊý¾Ý¶ÁÊý£¬ÅÐ¶ÏÐý×ª·½Ïò
+    fp32 fpClock;     // é¡ºæ—¶é’ˆç³»æ•°
+    fp32 fpAntiClock; // é€†æ—¶é’ˆç³»æ•°
+    fp32 fpQ_Cur;     // é™€èžºå½“å‰æ•°æ®è¯»æ•°
+    fp32 fpQ_Pre;     // é™€èžºä¸Šä¸€æ¬¡æ•°æ®è¯»æ•°ï¼Œåˆ¤æ–­æ—‹è½¬æ–¹å‘
 
     uint32_t cnt_Gyro;
     uint32_t fps_Gyro;
@@ -188,8 +189,8 @@ public:
     static fp32 get_gyro_value(void);
 };
 
-/*DT35¶¨Î»½á¹¹Ìå*/
-// ËÄ¸öDT35£¬ÔÚUP±ßÉÏÁ½¸öDT35ÑØxÖáÕýÏòÎªy1¡¢y2£»ÔÚLEFT±ßÉÏÁ½¸öDT35ÑØyÖáÕýÏòÎªx1¡¢x2
+/*DT35å®šä½ç»“æž„ä½“*/
+// å››ä¸ªDT35ï¼Œåœ¨UPè¾¹ä¸Šä¸¤ä¸ªDT35æ²¿xè½´æ­£å‘ä¸ºy1ã€y2ï¼›åœ¨LEFTè¾¹ä¸Šä¸¤ä¸ªDT35æ²¿yè½´æ­£å‘ä¸ºx1ã€x2
 struct ST_DT35
 {
     fp32 robot_x, robot_y, robot_q;
@@ -202,10 +203,10 @@ struct ST_DT35
 class C_ROBOT
 {
 public:
-    ST_POT stPot;     // »úÆ÷ÈËÖÐÐÄ×ø±ê×ËÌ¬
-    ST_POT stPotPre;  // »úÆ÷ÈËÉÏ´ÎÖÐÐÄ×ø±ê×ËÌ¬
-    ST_POT stPotFeed; // »úÆ÷ÈËÇ°À¡ÔËËãºóµÄ×ø±ê
-    ST_VELT stVelt;   // »úÆ÷ÈËÖÐÐÄÔÚÈ«³¡×ø±êÏµÏÂµÄËÙ¶È
+    ST_POT stPot;     // æœºå™¨äººä¸­å¿ƒåæ ‡å§¿æ€
+    ST_POT stPotPre;  // æœºå™¨äººä¸Šæ¬¡ä¸­å¿ƒåæ ‡å§¿æ€
+    ST_POT stPotFeed; // æœºå™¨äººå‰é¦ˆè¿ç®—åŽçš„åæ ‡
+    ST_VELT stVelt;   // æœºå™¨äººä¸­å¿ƒåœ¨å…¨åœºåæ ‡ç³»ä¸‹çš„é€Ÿåº¦
 
     C_GYRO cGyro;
     C_FOLLOWER_WHEEL cFollowoerWheel;

@@ -8,234 +8,229 @@ union FLASHSAVE
 {
 	fp32 g_fpFlashValue[MAX_FLASH_LEN];
 	u8 g_ucFlashValue[1600];
-}FlashSave;
+} FlashSave;
 
 union FLASHREAD
 {
 	fp32 fpData;
 	u8 ucData[4];
-}FlashRead;
+} FlashRead;
 
 fp32 GetOneFP32(u32 uiReadAddr)
 {
 	s32 i;
-	u8  ucTemp;
-	for(i=0;i<4;i++)
+	u8 ucTemp;
+	for (i = 0; i < 4; i++)
 	{
-		ucTemp=(u8)(*(__IO u8*)(ADDR_FLASH_SECTOR_11+(uiReadAddr<<2)+i));
+		ucTemp = (u8)(*(__IO u8 *)(ADDR_FLASH_SECTOR_11 + (uiReadAddr << 2) + i));
 		FlashRead.ucData[i] = ucTemp;
 	}
 	return FlashRead.fpData;
 }
 
-//¶ÁÈ¡Ò»¸ö16Î»Êý¾Ý
+// è¯»å–ä¸€ä¸ª16ä½æ•°æ®
 SSHORT16 GetOneShort16(u32 uiReadAddr)
 {
-	SSHORT16  ssTemp;
-	ssTemp=(SSHORT16)(*(__IO s32*)(ADDR_FLASH_SECTOR_11+(uiReadAddr<<2)));
+	SSHORT16 ssTemp;
+	ssTemp = (SSHORT16)(*(__IO s32 *)(ADDR_FLASH_SECTOR_11 + (uiReadAddr << 2)));
 	return ssTemp;
 }
 
-//¶ÁÈ¡Ò»¸ö32Î»Êý¾Ý
-s32	GetOneInt32(u32 uiReadAddr)
+// è¯»å–ä¸€ä¸ª32ä½æ•°æ®
+s32 GetOneInt32(u32 uiReadAddr)
 {
-	s32	ssTemp;
-	ssTemp=*(__IO s32*)(ADDR_FLASH_SECTOR_11+(uiReadAddr<<2));
+	s32 ssTemp;
+	ssTemp = *(__IO s32 *)(ADDR_FLASH_SECTOR_11 + (uiReadAddr << 2));
 	return ssTemp;
 }
 
-//ÏòÖ¸¶¨µØÖ·Ð´ÈëÒ»¸ö32Î»Êý¾Ý
-u8  SaveOneWord32(s32 siData,u32 uiWriteAddr)
+// å‘æŒ‡å®šåœ°å€å†™å…¥ä¸€ä¸ª32ä½æ•°æ®
+u8 SaveOneWord32(s32 siData, u32 uiWriteAddr)
 {
-   u8 ucRet = 0; 
-   u32 i=0;
-  /* Unlock the Flash to enable the flash control register access *************/ 
-  FLASH_Unlock();
-  //Ð´Ö®Ç°ÏÈ¶ÁÈ¡Êý¾Ý
-  for(i=0;i<MAX_FLASH_LEN;i++)
-  {
-  	g_siFlashValue[i]=*(__IO s32*)(ADDR_FLASH_SECTOR_11+(i<<2));
-  }
-  
-  /* Clear pending flags (if any) */  
-  FLASH_ClearFlag(FLASH_FLAG_EOP | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR | 
-                  FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR|FLASH_FLAG_PGSERR); 
-
-
-   /* Device voltage range supposed to be [2.7V to 3.6V], the operation will
-	       be done by word */ 
-   if (FLASH_EraseSector( FLASH_Sector_11, VoltageRange_3) != FLASH_COMPLETE)
-   { 
-	     /* Error occurred while sector erase. 
-	         User can add here some code to deal with this error  */
-	   	return 0;
-    }
-
-	g_siFlashValue[uiWriteAddr] =siData;
-
-	for(i=0;i<MAX_FLASH_LEN;i++)
+	u8 ucRet = 0;
+	u32 i = 0;
+	/* Unlock the Flash to enable the flash control register access *************/
+	FLASH_Unlock();
+	// å†™ä¹‹å‰å…ˆè¯»å–æ•°æ®
+	for (i = 0; i < MAX_FLASH_LEN; i++)
 	{
-		if (FLASH_ProgramWord(ADDR_FLASH_SECTOR_11+(i<<2), g_siFlashValue[i]) == FLASH_COMPLETE)
-		 {
-		     ucRet =  0x01;
-		 }  
-		 else
-		 {
-		    ucRet =  0x00;
-			g_ucFlashWrongNum++;
-		 }
+		g_siFlashValue[i] = *(__IO s32 *)(ADDR_FLASH_SECTOR_11 + (i << 2));
 	}
 
-   /* Lock the Flash to disable the flash control register access (recommended
-     to protect the FLASH memory against possible unwanted operation) *********/
-    FLASH_Lock(); 
-	g_ucFlashFlag=ucRet;
+	/* Clear pending flags (if any) */
+	FLASH_ClearFlag(FLASH_FLAG_EOP | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR |
+					FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
+
+	/* Device voltage range supposed to be [2.7V to 3.6V], the operation will
+			be done by word */
+	if (FLASH_EraseSector(FLASH_Sector_11, VoltageRange_3) != FLASH_COMPLETE)
+	{
+		/* Error occurred while sector erase.
+			User can add here some code to deal with this error  */
+		return 0;
+	}
+
+	g_siFlashValue[uiWriteAddr] = siData;
+
+	for (i = 0; i < MAX_FLASH_LEN; i++)
+	{
+		if (FLASH_ProgramWord(ADDR_FLASH_SECTOR_11 + (i << 2), g_siFlashValue[i]) == FLASH_COMPLETE)
+		{
+			ucRet = 0x01;
+		}
+		else
+		{
+			ucRet = 0x00;
+			g_ucFlashWrongNum++;
+		}
+	}
+
+	/* Lock the Flash to disable the flash control register access (recommended
+	  to protect the FLASH memory against possible unwanted operation) *********/
+	FLASH_Lock();
+	g_ucFlashFlag = ucRet;
 	return ucRet;
 }
 
-//´ÓÖ¸¶¨µØÖ·¿ªÊ¼Ð´ÈëÒ»¸ö32Î»Êý¾ÝµÄÊý×é
-u8  SaveParaWord32(u32 uiLength,u32 uiFlashAddr,s32 *p)
+// ä»ŽæŒ‡å®šåœ°å€å¼€å§‹å†™å…¥ä¸€ä¸ª32ä½æ•°æ®çš„æ•°ç»„
+u8 SaveParaWord32(u32 uiLength, u32 uiFlashAddr, s32 *p)
 {
-   u8 ucRet = 0; 
-   u32 i=0;
+	u8 ucRet = 0;
+	u32 i = 0;
 
-  /* Unlock the Flash to enable the flash control register access *************/ 
-  FLASH_Unlock();
-  //Ð´ÈëÖ®Ç°ÏÈ¶Áflash
-  for(i=0;i<MAX_FLASH_LEN;i++)
-  {
-  	g_siFlashValue[i]=*(__IO s32*)(ADDR_FLASH_SECTOR_11+(i<<2));
-  }
-  
-  /* Clear pending flags (if any) */  
-  FLASH_ClearFlag(FLASH_FLAG_EOP | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR | 
-                  FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR|FLASH_FLAG_PGSERR); 
+	/* Unlock the Flash to enable the flash control register access *************/
+	FLASH_Unlock();
+	// å†™å…¥ä¹‹å‰å…ˆè¯»flash
+	for (i = 0; i < MAX_FLASH_LEN; i++)
+	{
+		g_siFlashValue[i] = *(__IO s32 *)(ADDR_FLASH_SECTOR_11 + (i << 2));
+	}
 
+	/* Clear pending flags (if any) */
+	FLASH_ClearFlag(FLASH_FLAG_EOP | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR |
+					FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
 
-	    /* Device voltage range supposed to be [2.7V to 3.6V], the operation will
-	       be done by word */ 
-   if (FLASH_EraseSector( FLASH_Sector_11, VoltageRange_3) != FLASH_COMPLETE)
-    { 
-      /* Error occurred while sector erase. 
-         User can add here some code to deal with this error  */
-      	return 0;
-    }
+	/* Device voltage range supposed to be [2.7V to 3.6V], the operation will
+	   be done by word */
+	if (FLASH_EraseSector(FLASH_Sector_11, VoltageRange_3) != FLASH_COMPLETE)
+	{
+		/* Error occurred while sector erase.
+		   User can add here some code to deal with this error  */
+		return 0;
+	}
 
-	for(i = 0;i < uiLength; i ++ )
+	for (i = 0; i < uiLength; i++)
 	{
 		g_siFlashValue[uiFlashAddr + i] = p[i];
 	}
 
-	for(i=0;i<MAX_FLASH_LEN;i++)
+	for (i = 0; i < MAX_FLASH_LEN; i++)
 	{
-	  if (FLASH_ProgramWord(ADDR_FLASH_SECTOR_11+(i<<2), g_siFlashValue[i]) == FLASH_COMPLETE)
-	    {
-	      	
-			ucRet =  0x01;
-	    }  
-	    else
-	    {
-	      		ucRet =  0x00;
-			 g_ucFlashWrongNum++;
-	    }
+		if (FLASH_ProgramWord(ADDR_FLASH_SECTOR_11 + (i << 2), g_siFlashValue[i]) == FLASH_COMPLETE)
+		{
+
+			ucRet = 0x01;
+		}
+		else
+		{
+			ucRet = 0x00;
+			g_ucFlashWrongNum++;
+		}
 	}
 
-   /* Lock the Flash to disable the flash control register access (recommended
-     to protect the FLASH memory against possible unwanted operation) *********/
-    FLASH_Lock(); 
-	g_ucFlashFlag=ucRet;
+	/* Lock the Flash to disable the flash control register access (recommended
+	  to protect the FLASH memory against possible unwanted operation) *********/
+	FLASH_Lock();
+	g_ucFlashFlag = ucRet;
 	return ucRet;
 }
 
-//½«Êý×éÖÐµÄÊý¾ÝÈ«²¿Ð´ÈëFlash
-u8  SaveAllWord32(void)
+// å°†æ•°ç»„ä¸­çš„æ•°æ®å…¨éƒ¨å†™å…¥Flash
+u8 SaveAllWord32(void)
 {
-   u8 ucRet = 0; 
-   u32 i=0;
-  /* Unlock the Flash to enable the flash control register access *************/ 
-  FLASH_Unlock();
+	u8 ucRet = 0;
+	u32 i = 0;
+	/* Unlock the Flash to enable the flash control register access *************/
+	FLASH_Unlock();
 
- 
-  /* Clear pending flags (if any) */  
-  FLASH_ClearFlag(FLASH_FLAG_EOP | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR | 
-                  FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR|FLASH_FLAG_PGSERR); 
+	/* Clear pending flags (if any) */
+	FLASH_ClearFlag(FLASH_FLAG_EOP | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR |
+					FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
 
-
-	    /* Device voltage range supposed to be [2.7V to 3.6V], the operation will
-	       be done by word */ 
-   if (FLASH_EraseSector( FLASH_Sector_11, VoltageRange_3) != FLASH_COMPLETE)
-    { 
-      /* Error occurred while sector erase. 
-         User can add here some code to deal with this error  */
-      	return 0;
-    }
-
-	for(i=0;i<MAX_FLASH_LEN;i++)
+	/* Device voltage range supposed to be [2.7V to 3.6V], the operation will
+	   be done by word */
+	if (FLASH_EraseSector(FLASH_Sector_11, VoltageRange_3) != FLASH_COMPLETE)
 	{
-	  if (FLASH_ProgramWord(ADDR_FLASH_SECTOR_11+(i<<2), g_siFlashValue[i]) == FLASH_COMPLETE)
-	    {
-	      	
-			ucRet =  0x01;
-	    }  
-	    else
-	    {
-	      		ucRet =  0x00;
-			 g_ucFlashWrongNum++;
-	    }
+		/* Error occurred while sector erase.
+		   User can add here some code to deal with this error  */
+		return 0;
 	}
 
-   /* Lock the Flash to disable the flash control register access (recommended
-     to protect the FLASH memory against possible unwanted operation) *********/
-      FLASH_Lock(); 
-	g_ucFlashFlag=ucRet;
+	for (i = 0; i < MAX_FLASH_LEN; i++)
+	{
+		if (FLASH_ProgramWord(ADDR_FLASH_SECTOR_11 + (i << 2), g_siFlashValue[i]) == FLASH_COMPLETE)
+		{
+
+			ucRet = 0x01;
+		}
+		else
+		{
+			ucRet = 0x00;
+			g_ucFlashWrongNum++;
+		}
+	}
+
+	/* Lock the Flash to disable the flash control register access (recommended
+	  to protect the FLASH memory against possible unwanted operation) *********/
+	FLASH_Lock();
+	g_ucFlashFlag = ucRet;
 	return ucRet;
 }
 
-//´ÓÖ¸¶¨µØÖ·¿ªÊ¼Ð´ÈëÒ»¸ö32Î»¸¡µãµÄÊý×é
-u8  SaveParaFP32(u32 uiLength,u32 uiFlashAddr,fp32 *p)
+// ä»ŽæŒ‡å®šåœ°å€å¼€å§‹å†™å…¥ä¸€ä¸ª32ä½æµ®ç‚¹çš„æ•°ç»„
+u8 SaveParaFP32(u32 uiLength, u32 uiFlashAddr, fp32 *p)
 {
-   u8 ucRet = 0; 
-   u32 i=0;
+	u8 ucRet = 0;
+	u32 i = 0;
 
-  /* Unlock the Flash to enable the flash control register access *************/ 
-  FLASH_Unlock();
+	/* Unlock the Flash to enable the flash control register access *************/
+	FLASH_Unlock();
 
-  /* Clear pending flags (if any) */  
-  FLASH_ClearFlag(FLASH_FLAG_EOP | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR | 
-                  FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR|FLASH_FLAG_PGSERR); 
+	/* Clear pending flags (if any) */
+	FLASH_ClearFlag(FLASH_FLAG_EOP | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR |
+					FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
 
+	/* Device voltage range supposed to be [2.7V to 3.6V], the operation will
+	   be done by word */
+	if (FLASH_EraseSector(FLASH_Sector_11, VoltageRange_3) != FLASH_COMPLETE)
+	{
+		/* Error occurred while sector erase.
+		   User can add here some code to deal with this error  */
+		return 0;
+	}
 
-	    /* Device voltage range supposed to be [2.7V to 3.6V], the operation will
-	       be done by word */ 
-   if (FLASH_EraseSector( FLASH_Sector_11, VoltageRange_3) != FLASH_COMPLETE)
-    { 
-      /* Error occurred while sector erase. 
-         User can add here some code to deal with this error  */
-      	return 0;
-    }
-
-	for(i = 0;i < uiLength; i ++ )
+	for (i = 0; i < uiLength; i++)
 	{
 		FlashSave.g_fpFlashValue[uiFlashAddr + i] = p[i];
 	}
 
-	for(i=0;i<MAX_FLASH_LEN*4;i++)
+	for (i = 0; i < MAX_FLASH_LEN * 4; i++)
 	{
-	  if (FLASH_ProgramByte(ADDR_FLASH_SECTOR_11+i, FlashSave.g_ucFlashValue[i]) == FLASH_COMPLETE)
-	    {
-	      	
-			ucRet =  0x01;
-	    }  
-	    else
-	    {
-	      		ucRet =  0x00;
-			 g_ucFlashWrongNum++;
-	    }
+		if (FLASH_ProgramByte(ADDR_FLASH_SECTOR_11 + i, FlashSave.g_ucFlashValue[i]) == FLASH_COMPLETE)
+		{
+
+			ucRet = 0x01;
+		}
+		else
+		{
+			ucRet = 0x00;
+			g_ucFlashWrongNum++;
+		}
 	}
 
-   /* Lock the Flash to disable the flash control register access (recommended
-     to protect the FLASH memory against possible unwanted operation) *********/
-    FLASH_Lock(); 
-	g_ucFlashFlag=ucRet;
+	/* Lock the Flash to disable the flash control register access (recommended
+	  to protect the FLASH memory against possible unwanted operation) *********/
+	FLASH_Lock();
+	g_ucFlashFlag = ucRet;
 	return ucRet;
 }

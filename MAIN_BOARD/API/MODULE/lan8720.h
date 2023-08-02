@@ -2,16 +2,16 @@
 #define __LAN8720_H
 
 #include "stm32f4x7_eth.h"
-			
-#define LAN8720_PHY_ADDRESS  	0x01				//LAN8720 PHYĞ¾Æ¬µØÖ·.
 
-extern ETH_DMADESCTypeDef  *DMATxDescToSet;			//DMA·¢ËÍÃèÊö·û×·×ÙÖ¸Õë
-extern ETH_DMADESCTypeDef  *DMARxDescToGet; 		//DMA½ÓÊÕÃèÊö·û×·×ÙÖ¸Õë 
-extern ETH_DMA_Rx_Frame_infos *DMA_RX_FRAME_infos;	//DMA×îºó½ÓÊÕµ½µÄÖ¡ĞÅÏ¢Ö¸Õë
-extern __align(4) ETH_DMADESCTypeDef DMARxDscrTab[ETH_RXBUFNB];	
-extern __align(4) ETH_DMADESCTypeDef DMATxDscrTab[ETH_TXBUFNB];	
-extern __align(4) uint8_t Rx_Buff[ETH_RX_BUF_SIZE*ETH_RXBUFNB]; 	
-extern __align(4) uint8_t Tx_Buff[ETH_TX_BUF_SIZE*ETH_TXBUFNB]; 
+#define LAN8720_PHY_ADDRESS 0x01 // LAN8720 PHYèŠ¯ç‰‡åœ°å€.
+
+extern ETH_DMADESCTypeDef *DMATxDescToSet;         // DMAå‘é€æè¿°ç¬¦è¿½è¸ªæŒ‡é’ˆ
+extern ETH_DMADESCTypeDef *DMARxDescToGet;         // DMAæ¥æ”¶æè¿°ç¬¦è¿½è¸ªæŒ‡é’ˆ
+extern ETH_DMA_Rx_Frame_infos *DMA_RX_FRAME_infos; // DMAæœ€åæ¥æ”¶åˆ°çš„å¸§ä¿¡æ¯æŒ‡é’ˆ
+extern __align(4) ETH_DMADESCTypeDef DMARxDscrTab[ETH_RXBUFNB];
+extern __align(4) ETH_DMADESCTypeDef DMATxDscrTab[ETH_TXBUFNB];
+extern __align(4) uint8_t Rx_Buff[ETH_RX_BUF_SIZE * ETH_RXBUFNB];
+extern __align(4) uint8_t Tx_Buff[ETH_TX_BUF_SIZE * ETH_TXBUFNB];
 
 u8 LAN8720_Init(void);
 u8 LAN8720_Get_Speed(void);
@@ -23,5 +23,4 @@ u8 ETH_Mem_Malloc(void);
 void ETH_Mem_Free(void);
 static void ETHERNET_NVICConfiguration(void);
 
-#endif 
-
+#endif

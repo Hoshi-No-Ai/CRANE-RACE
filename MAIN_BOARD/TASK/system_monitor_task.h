@@ -6,7 +6,8 @@
 #include "stm32f4xx.h"
 #include "usart_protocol.h"
 
-enum error_type_e {
+enum error_type_e
+{
     NONE,
     CHASSIS_TURN_ERROR,
     CHASSIS_RUN_ERROR,
@@ -16,28 +17,36 @@ enum error_type_e {
     MINOR32_ERROR,
 };
 
-enum system_state_e { SYS_INIT, SYS_RUN, SYS_ERROR };
+enum system_state_e
+{
+    SYS_INIT,
+    SYS_RUN,
+    SYS_ERROR
+};
 
-enum rate_e {
+enum rate_e
+{
     CHASSIS_RU,
     CHASSIS_LU,
     CHASSIS_LD,
     CHASSIS_RD,
-    ENCODER_RUN,  // ÀÊ∂Ø¬÷
+    ENCODER_RUN, // ÈöèÂä®ËΩÆ
     REMOTE_CTRL_WIFI,
     MINOR_32,
     DT35,
     KEY
 };
 
-struct rate_monitor_t {
-    uint32_t time_base;  // ‘⁄systick÷–√øims◊‘º”“ª¥Œ
+struct rate_monitor_t
+{
+    uint32_t time_base; // Âú®systick‰∏≠ÊØèimsËá™Âä†‰∏ÄÊ¨°
     uint16_t temp_rate[14];
     uint16_t real_rate[14];
 };
 
-class C_Sys_Monitor {
-   public:
+class C_Sys_Monitor
+{
+public:
     error_type_e system_error;
     rate_monitor_t rate_monitor;
     system_state_e system_state;

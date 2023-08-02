@@ -20,7 +20,7 @@ int lift1_fps, sd_tb1_fps, sd_tb2_fps, mt3509_fps, sucker_fps;
 using _api_module_::WIFI_FLAG;
 using _navigation_::calibration_current;
 float task_time;
-/*ÏµÍ³µÎ´ğÊ±ÖÓÖĞ¶Ï*/
+/*ç³»ç»Ÿæ»´ç­”æ—¶é’Ÿä¸­æ–­*/
 void SysTick_Handler(void)
 {
     // static uint8_t div_cnt = 0;
@@ -33,12 +33,10 @@ void SysTick_Handler(void)
     if (Sys_Monitor.rate_monitor.time_base < 1000)
     {
         Sys_Monitor.rate_monitor.time_base++;
-				task_time+=0.001;
+        task_time += 0.001;
     }
     else
     {
-			
-		
         memcpy(Sys_Monitor.rate_monitor.real_rate, Sys_Monitor.rate_monitor.temp_rate,
                sizeof(Sys_Monitor.rate_monitor.temp_rate));
         memset(Sys_Monitor.rate_monitor.temp_rate, 0, sizeof(Sys_Monitor.rate_monitor.temp_rate));
@@ -70,7 +68,7 @@ void SysTick_Handler(void)
 
 float angle;
 
-/*CANµÄ½ÓÊÕÖĞ¶Ï´¦Àí*/
+/*CANçš„æ¥æ”¶ä¸­æ–­å¤„ç†*/
 static CanRxMsg RxMessage1;
 static uint16_t dt35_distance[5];
 
@@ -87,9 +85,9 @@ void CAN1_RX0_IRQHandler(void)
     OS_CRITICAL_EXIT();
 
     CAN_Receive(CAN1, CAN_FIFO0, &RxMessage1);
-    switch (RxMessage1.StdId) // µ×ÅÌ8¸öµç»ú¶¼·ÅÈëÆäÖĞ£¬±Ø²»°²È«ÇÒµôÖ¡
+    switch (RxMessage1.StdId) // åº•ç›˜8ä¸ªç”µæœºéƒ½æ”¾å…¥å…¶ä¸­ï¼Œå¿…ä¸å®‰å…¨ä¸”æ‰å¸§
     {
-    case 0x20: // µ×ÅÌ¹âµç¿ª¹Ø
+    case 0x20: // åº•ç›˜å…‰ç”µå¼€å…³
 
         break;
 
@@ -122,7 +120,7 @@ void CAN1_RX0_IRQHandler(void)
         }
         Sys_Monitor.rate_monitor.temp_rate[CHASSIS_LU]++;
         break;
-    case 0x203: // ×óÏÂĞĞ½ø
+    case 0x203: // å·¦ä¸‹è¡Œè¿›
         if (Sys_Monitor.system_state == SYS_INIT)
         {
             Omni_chassis[LEFTDOWN].m_run_motor.encoder.siDiff = 0;
@@ -137,7 +135,7 @@ void CAN1_RX0_IRQHandler(void)
         Sys_Monitor.rate_monitor.temp_rate[CHASSIS_LD]++;
         break;
 
-    case 0x204: // ÓÒÏÂ×ªÏò
+    case 0x204: // å³ä¸‹è½¬å‘
         if (Sys_Monitor.system_state == SYS_INIT)
         {
             Omni_chassis[RIGHTDOWN].m_run_motor.encoder.siDiff = 0;
@@ -173,7 +171,7 @@ void CAN1_RX0_IRQHandler(void)
     OSIntExit();
 }
 
-/*CAN2µÄ½ÓÊÕÖĞ¶Ï´¦Àí*/
+/*CAN2çš„æ¥æ”¶ä¸­æ–­å¤„ç†*/
 static CanRxMsg RxMessage2;
 void CAN2_RX0_IRQHandler(void)
 {
@@ -186,11 +184,11 @@ void CAN2_RX0_IRQHandler(void)
     OS_CRITICAL_EXIT();
 
     CAN_Receive(CAN2, CAN_FIFO0, &RxMessage2);
-    switch (RxMessage2.StdId) // µ×ÅÌ8¸öµç»ú¶¼·ÅÈëÆäÖĞ£¬±Ø²»°²È«ÇÒµôÖ¡
+    switch (RxMessage2.StdId) // åº•ç›˜8ä¸ªç”µæœºéƒ½æ”¾å…¥å…¶ä¸­ï¼Œå¿…ä¸å®‰å…¨ä¸”æ‰å¸§
     {
 
         //       		 case 0x206:
-        //					 sucker.lift_motor.encoder.Encoder_Process(sucker.lift_motor.encoder.Get_Encoder_Number(&RxMessage2), 0); //£¨´Ë´¦Ò²¼ÆËã³öÁËËÙ¶È£©
+        //					 sucker.lift_motor.encoder.Encoder_Process(sucker.lift_motor.encoder.Get_Encoder_Number(&RxMessage2), 0); //ï¼ˆæ­¤å¤„ä¹Ÿè®¡ç®—å‡ºäº†é€Ÿåº¦ï¼‰
         //					  if (Sys_Monitor.system_state == SYS_INIT)
         //						{
         //								 sucker.lift_motor.encoder.siDiff =  0;
@@ -211,7 +209,7 @@ void CAN2_RX0_IRQHandler(void)
         //            break;
         //
         //						  case 0x205:
-        //					 sucker.slide_motor.encoder.Encoder_Process(sucker.slide_motor.encoder.Get_Encoder_Number(&RxMessage2), 0); //£¨´Ë´¦Ò²¼ÆËã³öÁËËÙ¶È£©
+        //					 sucker.slide_motor.encoder.Encoder_Process(sucker.slide_motor.encoder.Get_Encoder_Number(&RxMessage2), 0); //ï¼ˆæ­¤å¤„ä¹Ÿè®¡ç®—å‡ºäº†é€Ÿåº¦ï¼‰
         //					     if (Sys_Monitor.system_state == SYS_INIT) {
         //								 sucker.slide_motor.encoder.siDiff =  0;
         //								  sucker.slide_motor.encoder.siSumValue =  0;
@@ -229,7 +227,7 @@ void CAN2_RX0_IRQHandler(void)
         //            break;
 
     case 0x201:
-        table.slide_motor1.encoder.Encoder_Process(table.slide_motor1.encoder.Get_Encoder_Number(&RxMessage2), 0); // £¨´Ë´¦Ò²¼ÆËã³öÁËËÙ¶È£©
+        table.slide_motor1.encoder.Encoder_Process(table.slide_motor1.encoder.Get_Encoder_Number(&RxMessage2), 0); // ï¼ˆæ­¤å¤„ä¹Ÿè®¡ç®—å‡ºäº†é€Ÿåº¦ï¼‰
         if (Sys_Monitor.system_state == SYS_INIT)
         {
             table.slide_motor1.encoder.siDiff = 0;
@@ -248,7 +246,7 @@ void CAN2_RX0_IRQHandler(void)
         break;
 
     case 0x202:
-        table.slide_motor2.encoder.Encoder_Process(table.slide_motor2.encoder.Get_Encoder_Number(&RxMessage2), 0); // £¨´Ë´¦Ò²¼ÆËã³öÁËËÙ¶È£©
+        table.slide_motor2.encoder.Encoder_Process(table.slide_motor2.encoder.Get_Encoder_Number(&RxMessage2), 0); // ï¼ˆæ­¤å¤„ä¹Ÿè®¡ç®—å‡ºäº†é€Ÿåº¦ï¼‰
         if (Sys_Monitor.system_state == SYS_INIT)
         {
             table.slide_motor2.encoder.siDiff = 0;
@@ -267,7 +265,7 @@ void CAN2_RX0_IRQHandler(void)
         break;
 
     case 0x203:
-        table.lift_motor1.encoder.Encoder_Process(table.lift_motor1.encoder.Get_Encoder_Number(&RxMessage2), 0); // £¨´Ë´¦Ò²¼ÆËã³öÁËËÙ¶È£©
+        table.lift_motor1.encoder.Encoder_Process(table.lift_motor1.encoder.Get_Encoder_Number(&RxMessage2), 0); // ï¼ˆæ­¤å¤„ä¹Ÿè®¡ç®—å‡ºäº†é€Ÿåº¦ï¼‰
         if (Sys_Monitor.system_state == SYS_INIT)
         {
             table.lift_motor1.encoder.siDiff = 0;
@@ -288,7 +286,7 @@ void CAN2_RX0_IRQHandler(void)
         break;
 
     case 0x204:
-        table.lift_motor2.encoder.Encoder_Process(table.lift_motor2.encoder.Get_Encoder_Number(&RxMessage2), 0); // £¨´Ë´¦Ò²¼ÆËã³öÁËËÙ¶È£©
+        table.lift_motor2.encoder.Encoder_Process(table.lift_motor2.encoder.Get_Encoder_Number(&RxMessage2), 0); // ï¼ˆæ­¤å¤„ä¹Ÿè®¡ç®—å‡ºäº†é€Ÿåº¦ï¼‰
         if (Sys_Monitor.system_state == SYS_INIT)
         {
             table.lift_motor2.encoder.siDiff = 0;
@@ -315,7 +313,7 @@ void CAN2_RX0_IRQHandler(void)
     OSIntExit();
 }
 
-/*CAN1µÄ·¢ËÍÖĞ¶Ï´¦Àí*/
+/*CAN1çš„å‘é€ä¸­æ–­å¤„ç†*/
 void CAN1_TX_IRQHandler(void)
 {
     CPU_SR cpu_sr;
@@ -326,7 +324,7 @@ void CAN1_TX_IRQHandler(void)
     OSIntExit();
 }
 
-/*CAN2µÄ·¢ËÍÖĞ¶Ï´¦Àí*/
+/*CAN2çš„å‘é€ä¸­æ–­å¤„ç†*/
 void CAN2_TX_IRQHandler(void)
 {
     CPU_SR cpu_sr;
@@ -355,7 +353,7 @@ void USART1_IRQHandler(void)
     else if (USART_GetITStatus(USART1, USART_IT_IDLE) != RESET)
     {
         USART1->SR;
-        USART1->DR; // ÏÈ¶ÁSRºó¶ÁDRÇå³şÖĞ¶Ï±êÖ¾Î»
+        USART1->DR; // å…ˆè¯»SRåè¯»DRæ¸…æ¥šä¸­æ–­æ ‡å¿—ä½
         USART_Receive(&USART1_Rcr);
         Comm1Rx_IRQ();
     }
@@ -374,13 +372,13 @@ void USART2_IRQHandler(void)
 
     if (USART_GetITStatus(USART2, USART_IT_RXNE) != RESET)
     {
-        // Êı¾İ´¦Àí
+        // æ•°æ®å¤„ç†
         USART_ClearITPendingBit(USART2, USART_IT_RXNE);
     }
     else if (USART_GetITStatus(USART2, USART_IT_IDLE) != RESET)
     {
         USART2->SR;
-        USART2->DR; // ÏÈ¶ÁSRºó¶ÁDRÇå³şÖĞ¶Ï±êÖ¾Î»
+        USART2->DR; // å…ˆè¯»SRåè¯»DRæ¸…æ¥šä¸­æ–­æ ‡å¿—ä½
         USART_Receive(&USART2_Rcr);
         Comm2Rx_IRQ();
     }
@@ -399,13 +397,13 @@ void USART3_IRQHandler(void)
 
     if (USART_GetITStatus(USART3, USART_IT_RXNE) != RESET)
     {
-        // Êı¾İ´¦Àí
+        // æ•°æ®å¤„ç†
         USART_ClearITPendingBit(USART3, USART_IT_RXNE);
     }
     else if (USART_GetITStatus(USART3, USART_IT_IDLE) != RESET)
     {
         USART3->SR;
-        USART3->DR; // ÏÈ¶ÁSRºó¶ÁDRÇå³şÖĞ¶Ï±êÖ¾Î»
+        USART3->DR; // å…ˆè¯»SRåè¯»DRæ¸…æ¥šä¸­æ–­æ ‡å¿—ä½
         USART_Receive(&USART3_Rcr);
         Comm3Rx_IRQ();
         Sys_Monitor.rate_monitor.temp_rate[MINOR_32]++;
@@ -424,17 +422,17 @@ void USART6_IRQHandler(void)
 
     if (USART_GetITStatus(USART6, USART_IT_RXNE) != RESET)
     {
-        // Êı¾İ´¦Àí
+        // æ•°æ®å¤„ç†
         USART_ClearITPendingBit(USART6, USART_IT_RXNE);
         //				USART6->SR;
-        //		USART6->DR;//ÏÈ¶ÁSRºó¶ÁDRÇå³şÖĞ¶Ï±êÖ¾Î»
+        //		USART6->DR;//å…ˆè¯»SRåè¯»DRæ¸…æ¥šä¸­æ–­æ ‡å¿—ä½
         //		USART_Receive(&USART6_Rcr);
         Comm6Rx_IRQ();
     }
     //	else if(USART_GetITStatus(USART6, USART_IT_IDLE)!= RESET)
     //	{
     //		USART6->SR;
-    //		USART6->DR;//ÏÈ¶ÁSRºó¶ÁDRÇå³şÖĞ¶Ï±êÖ¾Î»
+    //		USART6->DR;//å…ˆè¯»SRåè¯»DRæ¸…æ¥šä¸­æ–­æ ‡å¿—ä½
     //		USART_Receive(&USART6_Rcr);
     //		Comm6Rx_IRQ();
     //		test_usart6++;
@@ -448,18 +446,18 @@ void TIM7_IRQHandler(void)
     OS_CRITICAL_ENTER();
     OSIntEnter();
     OS_CRITICAL_EXIT();
-    if (TIM_GetITStatus(TIM7, TIM_IT_Update) == SET) // Òç³öÖĞ¶Ï
+    if (TIM_GetITStatus(TIM7, TIM_IT_Update) == SET) // æº¢å‡ºä¸­æ–­
     {
     }
-    TIM_ClearITPendingBit(TIM7, TIM_IT_Update); // Çå³ıÖĞ¶Ï±êÖ¾Î»
+    TIM_ClearITPendingBit(TIM7, TIM_IT_Update); // æ¸…é™¤ä¸­æ–­æ ‡å¿—ä½
     OSIntExit();
 }
 
-extern void lwip_pkt_handle(void); // ÔÚlwip_comm.cÀïÃæ¶¨Òå
-// ÒÔÌ«ÍøÖĞ¶Ï·şÎñº¯Êı
+extern void lwip_pkt_handle(void); // åœ¨lwip_comm.cé‡Œé¢å®šä¹‰
+// ä»¥å¤ªç½‘ä¸­æ–­æœåŠ¡å‡½æ•°
 void ETH_IRQHandler(void)
 {
-    while (ETH_GetRxPktSize(DMARxDescToGet) != 0) // ¼ì²âÊÇ·ñÊÕµ½Êı¾İ°ü
+    while (ETH_GetRxPktSize(DMARxDescToGet) != 0) // æ£€æµ‹æ˜¯å¦æ”¶åˆ°æ•°æ®åŒ…
     {
         lwip_pkt_handle();
     }

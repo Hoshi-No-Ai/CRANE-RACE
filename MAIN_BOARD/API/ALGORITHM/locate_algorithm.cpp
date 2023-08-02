@@ -1,29 +1,29 @@
 #include "locate_algorithm.h"
 
-/****************¶¨Î»Ê¹ÓÃ******************/
-fp32 fpPosXOffset = 0; // X·½Ïò¾ÀÆ«Á¿£¬Îð¶¯
-fp32 fpPosYOffset = 0; // Y·½Ïò¾ÀÆ«Á¿£¬Îð¶¯
-fp32 fpQOffset = 0;    // ½Ç¶ÈQ¾ÀÆ«Á¿£¬Îð¶¯
+/****************å®šä½ä½¿ç”¨******************/
+fp32 fpPosXOffset = 0; // Xæ–¹å‘çº åé‡ï¼Œå‹¿åŠ¨
+fp32 fpPosYOffset = 0; // Yæ–¹å‘çº åé‡ï¼Œå‹¿åŠ¨
+fp32 fpQOffset = 0;    // è§’åº¦Qçº åé‡ï¼Œå‹¿åŠ¨
 
-fp32 fpStartX = 0; // 5557.5f; µ×ÅÌ°ë¿í+µ¼ÂÖ
+fp32 fpStartX = 0; // 5557.5f; åº•ç›˜åŠå®½+å¯¼è½®
 fp32 fpStartY = 0; // 545.0f;
 
-fp32 cha_x; // ²åÖµÒò×Ó
+fp32 cha_x; // æ’å€¼å› å­
 
-/***************²âËÙÊ¹ÓÃ*******************/
-static fp32 afpRobot_Q[4] = {0};       // ´æ´¢»úÆ÷ÈË×ËÌ¬½Ç
-static uint32_t auiTIM2_Time[4] = {0}; // ´æ´¢TIM2¼ÆÊýÖµ
-static fp32 afpRobot_PosX[4] = {0};    // ´æ´¢»úÆ÷ÈËXÎ»×Ë
-static fp32 afpRobot_PosY[4] = {0};    // ´æ´¢»úÆ÷ÈËYÎ»×Ë
+/***************æµ‹é€Ÿä½¿ç”¨*******************/
+static fp32 afpRobot_Q[4] = {0};       // å­˜å‚¨æœºå™¨äººå§¿æ€è§’
+static uint32_t auiTIM2_Time[4] = {0}; // å­˜å‚¨TIM2è®¡æ•°å€¼
+static fp32 afpRobot_PosX[4] = {0};    // å­˜å‚¨æœºå™¨äººXä½å§¿
+static fp32 afpRobot_PosY[4] = {0};    // å­˜å‚¨æœºå™¨äººYä½å§¿
 
 C_ROBOT cRobot;
 
 /*******************************************************************************************
-º¯ÊýÃû³Æ£ºPush_Q_In()
-º¯Êý¹¦ÄÜ£º½«ÐÂµÄ½Ç¶ÈÖµ´æÈëÊý×éÖÐ
-ÊäÈë£º	  fpQ  ´ý´æÈëµÄ½Ç¶ÈÖµ
-Êä³ö£º	  ÎÞ
-±¸×¢£º
+å‡½æ•°åç§°ï¼šPush_Q_In()
+å‡½æ•°åŠŸèƒ½ï¼šå°†æ–°çš„è§’åº¦å€¼å­˜å…¥æ•°ç»„ä¸­
+è¾“å…¥ï¼š	  fpQ  å¾…å­˜å…¥çš„è§’åº¦å€¼
+è¾“å‡ºï¼š	  æ— 
+å¤‡æ³¨ï¼š
 *******************************************************************************************/
 void Push_Q_In(fp32 fpQ)
 {
@@ -35,11 +35,11 @@ void Push_Q_In(fp32 fpQ)
     afpRobot_Q[0] = fpQ;
 }
 /*******************************************************************************************
-º¯ÊýÃû³Æ£ºPush_Time_In()
-º¯Êý¹¦ÄÜ£º½«ÐÂµÄ¼ÆÊýÖµ´æÈëÊý×éÖÐ
-ÊäÈë£º	  uiT  ´ý´æÈëµÄ¼ÆÊýÖµ
-Êä³ö£º	  ÎÞ
-±¸×¢£º
+å‡½æ•°åç§°ï¼šPush_Time_In()
+å‡½æ•°åŠŸèƒ½ï¼šå°†æ–°çš„è®¡æ•°å€¼å­˜å…¥æ•°ç»„ä¸­
+è¾“å…¥ï¼š	  uiT  å¾…å­˜å…¥çš„è®¡æ•°å€¼
+è¾“å‡ºï¼š	  æ— 
+å¤‡æ³¨ï¼š
 *******************************************************************************************/
 void Push_Time_In(uint32_t uiT)
 {
@@ -51,11 +51,11 @@ void Push_Time_In(uint32_t uiT)
     auiTIM2_Time[0] = uiT;
 }
 /*******************************************************************************************
-º¯ÊýÃû³Æ£ºPush_RobotPosX_In()
-º¯Êý¹¦ÄÜ£º½«»úÆ÷ÈËÐÂµÄXÎ»×Ë´æÈëÊý×é
-ÊäÈë£º	  fpX  ´ý´æÈëµÄ¼ÆÊýÖµ
-Êä³ö£º	  ÎÞ
-±¸×¢£º
+å‡½æ•°åç§°ï¼šPush_RobotPosX_In()
+å‡½æ•°åŠŸèƒ½ï¼šå°†æœºå™¨äººæ–°çš„Xä½å§¿å­˜å…¥æ•°ç»„
+è¾“å…¥ï¼š	  fpX  å¾…å­˜å…¥çš„è®¡æ•°å€¼
+è¾“å‡ºï¼š	  æ— 
+å¤‡æ³¨ï¼š
 *******************************************************************************************/
 void Push_RobotPosX_In(fp32 fpX)
 {
@@ -67,11 +67,11 @@ void Push_RobotPosX_In(fp32 fpX)
     afpRobot_PosX[0] = fpX;
 }
 /*******************************************************************************************
-º¯ÊýÃû³Æ£ºPush_RobotPosY_In()
-º¯Êý¹¦ÄÜ£º½«»úÆ÷ÈËÐÂµÄYÎ»×Ë´æÈëÊý×é
-ÊäÈë£º	  fpX  ´ý´æÈëµÄ¼ÆÊýÖµ
-Êä³ö£º	  ÎÞ
-±¸×¢£º
+å‡½æ•°åç§°ï¼šPush_RobotPosY_In()
+å‡½æ•°åŠŸèƒ½ï¼šå°†æœºå™¨äººæ–°çš„Yä½å§¿å­˜å…¥æ•°ç»„
+è¾“å…¥ï¼š	  fpX  å¾…å­˜å…¥çš„è®¡æ•°å€¼
+è¾“å‡ºï¼š	  æ— 
+å¤‡æ³¨ï¼š
 *******************************************************************************************/
 void Push_RobotPosY_In(fp32 fpY)
 {
@@ -86,12 +86,12 @@ void Push_RobotPosY_In(fp32 fpY)
 fp32 C_GYRO::get_gyro_value(void)
 {
     static bool change_flag = 0;
-    static int32_t gyro_value[2] = {0}; // ¸ÃÊý×éÎª×îºóÁ½´ÎµÄÍÓÂÝÒÇÊýÖµ£¬È¥µôËùÓÐÖØ¸´µÄÊýÖµ
+    static int32_t gyro_value[2] = {0}; // è¯¥æ•°ç»„ä¸ºæœ€åŽä¸¤æ¬¡çš„é™€èžºä»ªæ•°å€¼ï¼ŒåŽ»æŽ‰æ‰€æœ‰é‡å¤çš„æ•°å€¼
     int32_t gyro_value_now;
 
     gyro_value_now = TestAngle2;
 
-    if (gyro_value_now != gyro_value[1]) // Èç¹ûÍÓÂÝÒÇÊý¾Ý·¢ÉúÁË±ä»¯£¬Ôò¸üÐÂ¸ÃÊý×é
+    if (gyro_value_now != gyro_value[1]) // å¦‚æžœé™€èžºä»ªæ•°æ®å‘ç”Ÿäº†å˜åŒ–ï¼Œåˆ™æ›´æ–°è¯¥æ•°ç»„
     {
         gyro_value[0] = gyro_value[1];
         gyro_value[1] = gyro_value_now;
@@ -113,17 +113,17 @@ fp32 C_GYRO::get_gyro_value(void)
 }
 
 /*******************************************************************************************
-º¯ÊýÃû³Æ£ºCalibrate_Robot_Degree()
-º¯Êý¹¦ÄÜ£ºÓÉÍÓÂÝÊý¾ÝµÃµ½»úÆ÷ÈËµÄ×ËÌ¬½Ç
-±¸×¢£º    1.º¯ÊýÖÐÉæ¼°µÄ½Ç¶Èµ¥Î»¶¼ÊÇ0.1¶È(ÒÔºóµÄº¯ÊýÖÐDegree´ú±í½Ç¶ÈÊý£¬AngleÔò´ú±í»¡¶ÈÊý)
-          2.ÄæÊ±ÕëºÍË³Ê±ÕëÐý×ª¾ùÓÐ±ê¶¨ÏµÊýÔÚÍÓÂÝÒÇµÄ½á¹¹ÌåÖÐÉùÃ÷
-          3.»úÆ÷ÈË×ËÌ¬½ÇÊÇÖ¸»úÆ÷ÈË×ø±êÏµyÖáÓëÈ«¾Ö×ø±êÏµYÖáµÄ¼Ð½Ç
-          4.Ëæ¶¯ÂÖÖÐÐÄ×ËÌ¬½ÇÊÇÖ¸»úÆ÷ÈËÖÐÐÄÖÁËæ¶¯ÂÖÖÐÐÄµÄÏòÁ¿ÓëÈ«¾Ö×ø±êÏµYÖáµÄ¼Ð½Ç
+å‡½æ•°åç§°ï¼šCalibrate_Robot_Degree()
+å‡½æ•°åŠŸèƒ½ï¼šç”±é™€èžºæ•°æ®å¾—åˆ°æœºå™¨äººçš„å§¿æ€è§’
+å¤‡æ³¨ï¼š    1.å‡½æ•°ä¸­æ¶‰åŠçš„è§’åº¦å•ä½éƒ½æ˜¯0.1åº¦(ä»¥åŽçš„å‡½æ•°ä¸­Degreeä»£è¡¨è§’åº¦æ•°ï¼ŒAngleåˆ™ä»£è¡¨å¼§åº¦æ•°)
+          2.é€†æ—¶é’ˆå’Œé¡ºæ—¶é’ˆæ—‹è½¬å‡æœ‰æ ‡å®šç³»æ•°åœ¨é™€èžºä»ªçš„ç»“æž„ä½“ä¸­å£°æ˜Ž
+          3.æœºå™¨äººå§¿æ€è§’æ˜¯æŒ‡æœºå™¨äººåæ ‡ç³»yè½´ä¸Žå…¨å±€åæ ‡ç³»Yè½´çš„å¤¹è§’
+          4.éšåŠ¨è½®ä¸­å¿ƒå§¿æ€è§’æ˜¯æŒ‡æœºå™¨äººä¸­å¿ƒè‡³éšåŠ¨è½®ä¸­å¿ƒçš„å‘é‡ä¸Žå…¨å±€åæ ‡ç³»Yè½´çš„å¤¹è§’
 *******************************************************************************************/
 static int temp_vo, temp_v, temp_q;
 void C_GYRO::Calibrate_Robot_Degree(C_ROBOT &Robot_loc)
 {
-    //    SBÎ¬ÌØ
+    //    SBç»´ç‰¹
     //    temp_vo = (int)((uart1_efr.num1[3] << 8) | uart1_efr.num1[2]);
     //    temp_v = (int)((uart1_efr.num1[5] << 8) | uart1_efr.num1[4]);
     //    temp_q = (int)((uart1_efr.num2[5] << 8) | uart1_efr.num2[4]);
@@ -133,17 +133,17 @@ void C_GYRO::Calibrate_Robot_Degree(C_ROBOT &Robot_loc)
     //    fpQ = temp_q / 32768.0f * 180.0f;
 
     fpQ_Cur = get_gyro_value();
-#if DigtalGyro // Êý×Ö
+#if DigtalGyro // æ•°å­—
 
-    if (fabs(fpQ_Cur - fpQ_Pre) > 100) // 2ms×ª10¶È£¬²»¿ÉÄÜ
+    if (fabs(fpQ_Cur - fpQ_Pre) > 100) // 2msè½¬10åº¦ï¼Œä¸å¯èƒ½
     {
         Robot_loc.stPot.fpPosQ1 += 0;
     }
-    else if (fpQ_Cur - fpQ_Pre >= 0) // ÄæÊ±Õë
+    else if (fpQ_Cur - fpQ_Pre >= 0) // é€†æ—¶é’ˆ
     {
         Robot_loc.stPot.fpPosQ1 += (fpQ_Cur - fpQ_Pre) * fpAntiClock;
     }
-    else // Ë³Ê±Õë
+    else // é¡ºæ—¶é’ˆ
     {
         Robot_loc.stPot.fpPosQ1 += (fpQ_Cur - fpQ_Pre) * fpClock;
     }
@@ -155,20 +155,20 @@ void C_GYRO::Calibrate_Robot_Degree(C_ROBOT &Robot_loc)
     }
     else
         cnt_Gyro++;
-    fpQ_Pre = fpQ_Cur; // ÍÓÂÝ½Ç¶ÈÊý¾Ý¸üÐÂ
+    fpQ_Pre = fpQ_Cur; // é™€èžºè§’åº¦æ•°æ®æ›´æ–°
 
 #endif
 
-#if AnologGyro              // Ä£Äâ
-    if (fpQ_Cur >= fpQ_Pre) // ÄæÊ±Õë
+#if AnologGyro              // æ¨¡æ‹Ÿ
+    if (fpQ_Cur >= fpQ_Pre) // é€†æ—¶é’ˆ
     {
         Robot_loc.stPot.fpPosQ1 += (fpQ_Cur - fpQ_Pre) * fpAntiClock;
     }
-    else // Ë³Ê±Õë
+    else // é¡ºæ—¶é’ˆ
     {
         Robot_loc.stPot.fpPosQ1 += (fpQ_Cur - fpQ_Pre) * fpClock;
     }
-    fpQ_Pre = fpQ_Cur; // ÍÓÂÝ½Ç¶ÈÊý¾Ý¸üÐÂ
+    fpQ_Pre = fpQ_Cur; // é™€èžºè§’åº¦æ•°æ®æ›´æ–°
 #endif
 }
 
@@ -200,7 +200,7 @@ void C_GYRO::Calibrate_Robot_Degree(C_ROBOT &Robot_loc)
 
 void C_ROBOT::Cal_Robot_Degree(void)
 {
-    //    SBÎ¬ÌØ
+    //    SBç»´ç‰¹
     //    temp_vo = (int)((uart1_efr.num1[3] << 8) | uart1_efr.num1[2]);
     //    temp_v = (int)((uart1_efr.num1[5] << 8) | uart1_efr.num1[4]);
     //    temp_q = (int)((uart1_efr.num2[5] << 8) | uart1_efr.num2[4]);
@@ -210,17 +210,17 @@ void C_ROBOT::Cal_Robot_Degree(void)
     //    fpQ = temp_q / 32768.0f * 180.0f;
 
     cGyro.fpQ_Cur = cGyro.get_gyro_value();
-#if DigtalGyro // Êý×Ö
+#if DigtalGyro // æ•°å­—
 
-    if (fabs(cGyro.fpQ_Cur - cGyro.fpQ_Pre) > 100) // 2ms×ª10¶È£¬²»¿ÉÄÜ
+    if (fabs(cGyro.fpQ_Cur - cGyro.fpQ_Pre) > 100) // 2msè½¬10åº¦ï¼Œä¸å¯èƒ½
     {
         stPot.fpPosQ1 += 0;
     }
-    else if (cGyro.fpQ_Cur - cGyro.fpQ_Pre >= 0) // ÄæÊ±Õë
+    else if (cGyro.fpQ_Cur - cGyro.fpQ_Pre >= 0) // é€†æ—¶é’ˆ
     {
         stPot.fpPosQ1 += (cGyro.fpQ_Cur - cGyro.fpQ_Pre) * cGyro.fpAntiClock;
     }
-    else // Ë³Ê±Õë
+    else // é¡ºæ—¶é’ˆ
     {
         stPot.fpPosQ1 += (cGyro.fpQ_Cur - cGyro.fpQ_Pre) * cGyro.fpClock;
     }
@@ -232,35 +232,35 @@ void C_ROBOT::Cal_Robot_Degree(void)
     }
     else
         cGyro.cnt_Gyro++;
-    cGyro.fpQ_Pre = cGyro.fpQ_Cur; // ÍÓÂÝ½Ç¶ÈÊý¾Ý¸üÐÂ
+    cGyro.fpQ_Pre = cGyro.fpQ_Cur; // é™€èžºè§’åº¦æ•°æ®æ›´æ–°
 
 #endif
 
-#if AnologGyro              // Ä£Äâ
-    if (fpQ_Cur >= fpQ_Pre) // ÄæÊ±Õë
+#if AnologGyro              // æ¨¡æ‹Ÿ
+    if (fpQ_Cur >= fpQ_Pre) // é€†æ—¶é’ˆ
     {
         Robot_loc.stPot.fpPosQ1 += (fpQ_Cur - fpQ_Pre) * fpAntiClock;
     }
-    else // Ë³Ê±Õë
+    else // é¡ºæ—¶é’ˆ
     {
         Robot_loc.stPot.fpPosQ1 += (fpQ_Cur - fpQ_Pre) * fpClock;
     }
-    fpQ_Pre = fpQ_Cur; // ÍÓÂÝ½Ç¶ÈÊý¾Ý¸üÐÂ
+    fpQ_Pre = fpQ_Cur; // é™€èžºè§’åº¦æ•°æ®æ›´æ–°
 #endif
 }
 
 /*******************************************************************************************
-º¯ÊýÃû³Æ£ºRobotLocation()
-º¯Êý¹¦ÄÜ£ºÓÉË«Ëæ¶¯ÂÖºÍÍÓÂÝÒÇÊý¾ÝµÃµ½»úÆ÷ÈËµÄ×ø±êºÍ×ËÌ¬½Ç£¨µ¥Î»£ºmm£¬0.1¡ã£©
-ÊäÈë£º	  1.Robot_loc Ö¸Ïò»úÆ÷ÈË×Ü½á¹¹ÌåµÄÖ¸Õë
-          2.pstFW	 Ö¸ÏòËæ¶¯ÂÖ×Ü½á¹¹ÌåµÄÖ¸Õë
-          3.pstGyro  Ö¸ÏòÍÓÂÝ×Ü½á¹¹ÌåµÄÖ¸Õë
-Êä³ö£º	  1.»úÆ÷ÈËÖÐÐÄÎ»×Ë£¬°üÀ¨×ø±êºÍ×ËÌ¬½Ç
-          2.Ëæ¶¯ÂÖÖÐÐÄÎ»×Ë	°üÀ¨×ø±ê
-±¸×¢£º    1.´Ëº¯ÊýÖÐµÄÔËËã¶¼ÊÇÔÚ»¡¶ÈÎªµ¥Î»µÄÇé¿öÏÂ½øÐÐµÄ
-          2.ALPHA_AÎªAËæ¶¯ÂÖÄæÊ±ÕëÐý×ªÊ±ÏßËÙ¶È·½ÏòÓë»úÆ÷ÈË¾Ö²¿×ø±êÏµyÕý·½ÏòµÄ¼Ð½Ç
-              3.ALPHA_BÎªBËæ¶¯ÂÖÄæÊ±ÕëÐý×ªÊ±ÏßËÙ¶È·½ÏòÓë»úÆ÷ÈË¾Ö²¿×ø±êÏµyÕý·½ÏòµÄ¼Ð½Ç
-          4.ÒÔÉÏÁ½¸ö½Ç¶È¾ÍÊÇ´ÓyÖáÄæÐýÎªÕý
+å‡½æ•°åç§°ï¼šRobotLocation()
+å‡½æ•°åŠŸèƒ½ï¼šç”±åŒéšåŠ¨è½®å’Œé™€èžºä»ªæ•°æ®å¾—åˆ°æœºå™¨äººçš„åæ ‡å’Œå§¿æ€è§’ï¼ˆå•ä½ï¼šmmï¼Œ0.1Â°ï¼‰
+è¾“å…¥ï¼š	  1.Robot_loc æŒ‡å‘æœºå™¨äººæ€»ç»“æž„ä½“çš„æŒ‡é’ˆ
+          2.pstFW	 æŒ‡å‘éšåŠ¨è½®æ€»ç»“æž„ä½“çš„æŒ‡é’ˆ
+          3.pstGyro  æŒ‡å‘é™€èžºæ€»ç»“æž„ä½“çš„æŒ‡é’ˆ
+è¾“å‡ºï¼š	  1.æœºå™¨äººä¸­å¿ƒä½å§¿ï¼ŒåŒ…æ‹¬åæ ‡å’Œå§¿æ€è§’
+          2.éšåŠ¨è½®ä¸­å¿ƒä½å§¿	åŒ…æ‹¬åæ ‡
+å¤‡æ³¨ï¼š    1.æ­¤å‡½æ•°ä¸­çš„è¿ç®—éƒ½æ˜¯åœ¨å¼§åº¦ä¸ºå•ä½çš„æƒ…å†µä¸‹è¿›è¡Œçš„
+          2.ALPHA_Aä¸ºAéšåŠ¨è½®é€†æ—¶é’ˆæ—‹è½¬æ—¶çº¿é€Ÿåº¦æ–¹å‘ä¸Žæœºå™¨äººå±€éƒ¨åæ ‡ç³»yæ­£æ–¹å‘çš„å¤¹è§’
+              3.ALPHA_Bä¸ºBéšåŠ¨è½®é€†æ—¶é’ˆæ—‹è½¬æ—¶çº¿é€Ÿåº¦æ–¹å‘ä¸Žæœºå™¨äººå±€éƒ¨åæ ‡ç³»yæ­£æ–¹å‘çš„å¤¹è§’
+          4.ä»¥ä¸Šä¸¤ä¸ªè§’åº¦å°±æ˜¯ä»Žyè½´é€†æ—‹ä¸ºæ­£
 *******************************************************************************************/
 void C_ROBOT::RobotLocation()
 {
@@ -270,51 +270,51 @@ void C_ROBOT::RobotLocation()
     fp32 ALPHA_B;
     fp32 ALPHA_A;
     fp32 Sin_B_A;
-    fp32 fpDeltaA, fpDeltaB;  // Ëæ¶¯ÂÖ×ß¹ýµÄ¾àÀë
-    fp32 Convert_Array[2][2]; // ¾àÀë×ª»»¾ØÕó£¬Êµ¼ÊÊÇ3*3µÄ£¬µ«ÊÇÎÒÃÇÖ»ÓÃ2*2
-    fp32 fpQ;                 // »úÆ÷ÈË×ËÌ¬½ÇÁÙÊ±±äÁ¿(µ¥Î»£º»¡¶È)
+    fp32 fpDeltaA, fpDeltaB;  // éšåŠ¨è½®èµ°è¿‡çš„è·ç¦»
+    fp32 Convert_Array[2][2]; // è·ç¦»è½¬æ¢çŸ©é˜µï¼Œå®žé™…æ˜¯3*3çš„ï¼Œä½†æ˜¯æˆ‘ä»¬åªç”¨2*2
+    fp32 fpQ;                 // æœºå™¨äººå§¿æ€è§’ä¸´æ—¶å˜é‡(å•ä½ï¼šå¼§åº¦)
 
-    /*******************»ñÈ¡½Ç¶È*********************/
-    Cal_Robot_Degree();                        // ¸østPot.fpPosQ1¸³Öµ,µ¥Î»0.1¶È
-    stPot.fpPosQ = stPot.fpPosQ1 + fpQOffset;  // µ¥Î»0.1¶È
-    fpQ = ConvertAngle(stPot.fpPosQ * RADIAN_10); // µ¥Î»:»¡¶È
+    /*******************èŽ·å–è§’åº¦*********************/
+    Cal_Robot_Degree();                           // ç»™stPot.fpPosQ1èµ‹å€¼,å•ä½0.1åº¦
+    stPot.fpPosQ = stPot.fpPosQ1 + fpQOffset;     // å•ä½0.1åº¦
+    fpQ = ConvertAngle(stPot.fpPosQ * RADIAN_10); // å•ä½:å¼§åº¦
 
-    /**************»ñÈ¡Ëæ¶¯ÂÖ·½ÏòÎ»ÒÆ****************/
+    /**************èŽ·å–éšåŠ¨è½®æ–¹å‘ä½ç§»****************/
     cFollowoerWheel.m_CoderACur = cFollowoerWheel.degreeA;
     cFollowoerWheel.m_CoderBCur = cFollowoerWheel.degreeB;
 
     if (my_intabs(cFollowoerWheel.m_CoderACur - cFollowoerWheel.m_CoderAPre) > 1000 ||
-        my_intabs(cFollowoerWheel.m_CoderBCur - cFollowoerWheel.m_CoderBPre) > 1000) // 2ms 10cm²»¿ÉÄÜ
+        my_intabs(cFollowoerWheel.m_CoderBCur - cFollowoerWheel.m_CoderBPre) > 1000) // 2ms 10cmä¸å¯èƒ½
     {
         cFollowoerWheel.m_CoderAPre = cFollowoerWheel.m_CoderACur;
         cFollowoerWheel.m_CoderBPre = cFollowoerWheel.m_CoderBCur;
         return;
     }
 
-    /*¼ÆËãËæ¶¯ÂÖ×ß¹ýµÄ¾àÀë*/
-    if (cFollowoerWheel.m_CoderACur >= cFollowoerWheel.m_CoderAPre) // AÂÖÕý×ª£¬Õý×ª±àÂëÆ÷Öµ±äÐ¡
+    /*è®¡ç®—éšåŠ¨è½®èµ°è¿‡çš„è·ç¦»*/
+    if (cFollowoerWheel.m_CoderACur >= cFollowoerWheel.m_CoderAPre) // Aè½®æ­£è½¬ï¼Œæ­£è½¬ç¼–ç å™¨å€¼å˜å°
     {
         fpDeltaA = (cFollowoerWheel.m_CoderACur - cFollowoerWheel.m_CoderAPre) * FW_Len_A_Inc;
         ALPHA_A = ALPHA_A_Inc;
     }
-    else // AÂÖ·´×ª
+    else // Aè½®åè½¬
     {
         fpDeltaA = (cFollowoerWheel.m_CoderACur - cFollowoerWheel.m_CoderAPre) * FW_Len_A_Dec;
         ALPHA_A = ALPHA_A_Dec;
     }
-    if (cFollowoerWheel.m_CoderBCur >= cFollowoerWheel.m_CoderBPre) // BÂÖÕý×ª
+    if (cFollowoerWheel.m_CoderBCur >= cFollowoerWheel.m_CoderBPre) // Bè½®æ­£è½¬
     {
         fpDeltaB = (cFollowoerWheel.m_CoderBCur - cFollowoerWheel.m_CoderBPre) * FW_Len_B_Inc;
         ALPHA_B = ALPHA_B_Inc;
     }
-    else // BÂÖ·´×ª
+    else // Bè½®åè½¬
     {
         fpDeltaB = (cFollowoerWheel.m_CoderBCur - cFollowoerWheel.m_CoderBPre) * FW_Len_B_Dec;
         ALPHA_B = ALPHA_B_Dec;
     }
 
-    /**************½âËãËæ¶¯ÂÖÖÐÐÄ×ø±ê****************/
-    Sin_B_A = sinf(ALPHA_B - ALPHA_A); // ×ª»»¾ØÕó·ÖÄ¸ÏµÊýsin(B-A)
+    /**************è§£ç®—éšåŠ¨è½®ä¸­å¿ƒåæ ‡****************/
+    Sin_B_A = sinf(ALPHA_B - ALPHA_A); // è½¬æ¢çŸ©é˜µåˆ†æ¯ç³»æ•°sin(B-A)
 
     Convert_Array[0][0] = cosf(ALPHA_B + fpQ) / Sin_B_A;
     Convert_Array[0][1] = cosf(ALPHA_A + fpQ) / Sin_B_A;
@@ -324,8 +324,8 @@ void C_ROBOT::RobotLocation()
     cFollowoerWheel.stPot.fpPosX += Convert_Array[0][0] * fpDeltaA - Convert_Array[0][1] * fpDeltaB;
     cFollowoerWheel.stPot.fpPosY += Convert_Array[1][0] * fpDeltaA - Convert_Array[1][1] * fpDeltaB;
 
-    /**************½âËã»úÆ÷ÈËÖÐÐÄ×ø±ê****************/
-    /*ÈÎºÎÎ»ÖÃ¶¼ÊÊÓÃ£¬ÆäÖÐÒª×¢ÒâFW_rob_AlphaÎª»úÆ÷ÈËÖÐÐÄÖ¸ÏòËæ¶¯ÂÖÖÐÐÄµÄÊ¸Á¿(Í¬ÑùÒªÇó´ÓyÖá¿ªÊ¼ÄæÊ±ÕëÐý×ªÎªÕý)£¬¸Ã½Ç¶È·¶Î§Îª[0£¬2*pi)*/
+    /**************è§£ç®—æœºå™¨äººä¸­å¿ƒåæ ‡****************/
+    /*ä»»ä½•ä½ç½®éƒ½é€‚ç”¨ï¼Œå…¶ä¸­è¦æ³¨æ„FW_rob_Alphaä¸ºæœºå™¨äººä¸­å¿ƒæŒ‡å‘éšåŠ¨è½®ä¸­å¿ƒçš„çŸ¢é‡(åŒæ ·è¦æ±‚ä»Žyè½´å¼€å§‹é€†æ—¶é’ˆæ—‹è½¬ä¸ºæ­£)ï¼Œè¯¥è§’åº¦èŒƒå›´ä¸º[0ï¼Œ2*pi)*/
     stPot.fpPosX =
         fpStartX + cFollowoerWheel.stPot.fpPosX -
         (-sinf(-FW_rob_Alpha) + sinf(-FW_rob_Alpha - fpQ)) * cFollowoerWheel.m_VectorFWCen_RobCen.fpLength;
@@ -352,17 +352,17 @@ void C_ROBOT::RobotLocation()
     //	stPot.fpPosY = Fpy.out;
     //
 
-    /*Ëæ¶¯ÂÖ±àÂëÆ÷Êý¾Ý±£´æ*/
+    /*éšåŠ¨è½®ç¼–ç å™¨æ•°æ®ä¿å­˜*/
     cFollowoerWheel.m_CoderAPre = cFollowoerWheel.m_CoderACur;
     cFollowoerWheel.m_CoderBPre = cFollowoerWheel.m_CoderBCur;
 }
 
 /*******************************************************************************************
-º¯ÊýÃû³Æ£ºCalibrateRobotVelt()
-º¯Êý¹¦ÄÜ£ºÐ£×¼»úÆ÷ÈËµÄËÙ¶È£¬ÓÉÇóµÃµÄ×ø±êÔöÁ¿¼ÆËã»úÆ÷ÈËÔÚÈ«¾Ö×ø±êÏµÏÂµÄËÙ¶È£¨µ¥Î»mm/s£©
-ÊäÈë£º	  1.Robot_loc Ö¸Ïò»úÆ÷ÈË×Ü½á¹¹ÌåµÄÖ¸Õë
-Êä³ö£º	  1.»úÆ÷ÈËÔÚÈ«¾Ö×ø±êÏµÏÂµÄËÙ¶È
-±¸×¢£º    1.º¯ÊýÖÐ½ÇËÙ¶ÈµÄµ¥Î»ÊÇ(0.1¶È/Ãë)
+å‡½æ•°åç§°ï¼šCalibrateRobotVelt()
+å‡½æ•°åŠŸèƒ½ï¼šæ ¡å‡†æœºå™¨äººçš„é€Ÿåº¦ï¼Œç”±æ±‚å¾—çš„åæ ‡å¢žé‡è®¡ç®—æœºå™¨äººåœ¨å…¨å±€åæ ‡ç³»ä¸‹çš„é€Ÿåº¦ï¼ˆå•ä½mm/sï¼‰
+è¾“å…¥ï¼š	  1.Robot_loc æŒ‡å‘æœºå™¨äººæ€»ç»“æž„ä½“çš„æŒ‡é’ˆ
+è¾“å‡ºï¼š	  1.æœºå™¨äººåœ¨å…¨å±€åæ ‡ç³»ä¸‹çš„é€Ÿåº¦
+å¤‡æ³¨ï¼š    1.å‡½æ•°ä¸­è§’é€Ÿåº¦çš„å•ä½æ˜¯(0.1åº¦/ç§’)
 *******************************************************************************************/
 void C_ROBOT::Cal_RobotVelt(void)
 {
@@ -370,19 +370,19 @@ void C_ROBOT::Cal_RobotVelt(void)
     static C_LPF Fvy(200, 0.002);
     static C_LPF Fw(200, 0.002);
 
-    /*´æ´¢»úÆ÷ÈË×ø±ê¡¢×ËÌ¬½Ç¡¢¼ÆÊýÆ÷¼ÆÊýÖµµÄÊý×é¸üÐÂ*/
+    /*å­˜å‚¨æœºå™¨äººåæ ‡ã€å§¿æ€è§’ã€è®¡æ•°å™¨è®¡æ•°å€¼çš„æ•°ç»„æ›´æ–°*/
     Push_Q_In(stPot.fpPosQ);
     Push_Time_In(TIM2->CNT);
     Push_RobotPosX_In(stPot.fpPosX);
     Push_RobotPosY_In(stPot.fpPosY);
 
-    /*ÂË²¨*/
+    /*æ»¤æ³¢*/
     Fvx.m_in = (afpRobot_PosX[0] - afpRobot_PosX[3]) /
-               ((auiTIM2_Time[0] - auiTIM2_Time[3]) * TIM2_BASE_TIME); // x·½ÏòËÙ¶È
+               ((auiTIM2_Time[0] - auiTIM2_Time[3]) * TIM2_BASE_TIME); // xæ–¹å‘é€Ÿåº¦
     Fvy.m_in = (afpRobot_PosY[0] - afpRobot_PosY[3]) /
-               ((auiTIM2_Time[0] - auiTIM2_Time[3]) * TIM2_BASE_TIME); // y·½ÏòËÙ¶È
+               ((auiTIM2_Time[0] - auiTIM2_Time[3]) * TIM2_BASE_TIME); // yæ–¹å‘é€Ÿåº¦
     Fw.m_in = (afpRobot_Q[0] - afpRobot_Q[3]) / ((auiTIM2_Time[0] - auiTIM2_Time[3]) * TIM2_BASE_TIME) /
-              10.0f; // ½ÇËÙ¶È£¬·½Ïò´ÓyÖáÄæ×ªÎªÕý
+              10.0f; // è§’é€Ÿåº¦ï¼Œæ–¹å‘ä»Žyè½´é€†è½¬ä¸ºæ­£
 
     Fvx.LpFilter();
     Fvy.LpFilter();
@@ -444,26 +444,25 @@ void C_ROBOT::Aruco_relocation(aruco &aruco_rec, int pos_num, bool if_q_rec)
         break;
     }
 
-    // ÊÓ¾õ·µ»Øx,yºÍ»úÆ÷ÈË×ø±êÏµ·´Ïò
+    // è§†è§‰è¿”å›žx,yå’Œæœºå™¨äººåæ ‡ç³»åå‘
     robot_x = pos_x_ref + delta_x;
     robot_y = pos_y_ref + delta_y;
-    robot_q = pos_q_ref - delta_q; // ´ý²âÊÔ£¬ÄæÊ±ÕëÓ¦¸Ã-
+    robot_q = pos_q_ref - delta_q; // å¾…æµ‹è¯•ï¼Œé€†æ—¶é’ˆåº”è¯¥-
 
     fp32 fpQ_now;
     float temp_x_aruco, temp_y_aruco;
-    
 
-    if ((int)aruco_rec.if_detect) // ·ÇñîºÏÊ±¿ÉÓÃ
+    if ((int)aruco_rec.if_detect) // éžè€¦åˆæ—¶å¯ç”¨
     {
         if (if_q_rec)
         {
-            stPot.fpPosQ1=robot_q;
+            stPot.fpPosQ1 = robot_q;
             stPot.fpPosQ = stPot.fpPosQ1 + fpQOffset;
         }
 
         temp_x_aruco = stDt35_now.robot_x;
         temp_y_aruco = stDt35_now.robot_y;
-        fpQ_now = ConvertAngle(stPot.fpPosQ * RADIAN_10); // »¡¶È
+        fpQ_now = ConvertAngle(stPot.fpPosQ * RADIAN_10); // å¼§åº¦
 
         cFollowoerWheel.stPot.fpPosX = temp_x_aruco + (-sinf(-FW_rob_Alpha) + sinf(-FW_rob_Alpha - fpQ_now)) *
                                                           cFollowoerWheel.m_VectorFWCen_RobCen.fpLength;
@@ -486,14 +485,14 @@ bool flag_x_dt35, flag_y_dt35;
 
 void C_ROBOT::DT35_relocation_new(void)
 {
-    // ËÄ¸öDT35£¬ÔÚrightdownÂÖ¶ÔÓ¦µÄ±ßÑØxÕý·½ÏòÎªy1,y2£»ÔÚupÂÖ¶ÔÓ¦µÄ±ßÑØyÕý·½ÏòÎªx2,x1
+    // å››ä¸ªDT35ï¼Œåœ¨rightdownè½®å¯¹åº”çš„è¾¹æ²¿xæ­£æ–¹å‘ä¸ºy1,y2ï¼›åœ¨upè½®å¯¹åº”çš„è¾¹æ²¿yæ­£æ–¹å‘ä¸ºx2,x1
     static fp32 fpQ_now, fpQ_save;
     stDt35_now.robot_q = stPot.fpPosQ;
     // x:4du
-    fpQ_save = ConvertAngle(stDt35_save.robot_q * RADIAN_10); // »¡¶È
-    fpQ_now = ConvertAngle(stDt35_now.robot_q * RADIAN_10);   // »¡¶È
+    fpQ_save = ConvertAngle(stDt35_save.robot_q * RADIAN_10); // å¼§åº¦
+    fpQ_now = ConvertAngle(stDt35_now.robot_q * RADIAN_10);   // å¼§åº¦
 
-    // dt35µ½Ç½µÄ¾àÀë£¬
+    // dt35åˆ°å¢™çš„è·ç¦»ï¼Œ
     stDt35_save.dt35_fix_x1 = fabs(K_DT35_X1 * stDt35_save.dt35_x1 + B_DT35_X1);
     stDt35_save.dt35_fix_x2 = fabs(K_DT35_X2 * stDt35_save.dt35_x2 + B_DT35_X2);
     stDt35_now.dt35_fix_x1 = fabs(K_DT35_X1 * stDt35_now.dt35_x1 + B_DT35_X1);
@@ -504,7 +503,7 @@ void C_ROBOT::DT35_relocation_new(void)
     stDt35_now.dt35_fix_y1 = fabs(K_DT35_Y1 * stDt35_now.dt35_y1 + B_DT35_Y1);
     stDt35_now.dt35_fix_y2 = fabs(K_DT35_Y2 * stDt35_now.dt35_y2 + B_DT35_Y2);
 
-    // dt35ËùÔÚ±ßµÄÖÐÐÄµÄx»òy¾àÀë
+    // dt35æ‰€åœ¨è¾¹çš„ä¸­å¿ƒçš„xæˆ–yè·ç¦»
 
     stDt35_save.pro_x1 = stDt35_save.dt35_fix_x1 * cosf(fpQ_save) - DIS_X1_DT35_TO_C1 * sinf(fpQ_save) +
                          DIS_X1_DT35_TO_C2 * cosf(fpQ_save);
@@ -524,7 +523,7 @@ void C_ROBOT::DT35_relocation_new(void)
     stDt35_now.pro_y2 = stDt35_now.dt35_fix_y2 * cosf(fpQ_now) - DIS_Y2_DT35_TO_C1 * sinf(fpQ_now) +
                         DIS_Y2_DT35_TO_C2 * cosf(fpQ_now);
 
-    // ×¢Òâ×ø±êÖáÕý¸º·½Ïò
+    // æ³¨æ„åæ ‡è½´æ­£è´Ÿæ–¹å‘
     stDt35_now.robot_x =
         stDt35_save.robot_x -
         (stDt35_now.pro_x1 - stDt35_save.pro_x1 + stDt35_now.pro_x2 - stDt35_save.pro_x2) / 2;
@@ -543,7 +542,7 @@ void C_ROBOT::DT35_relocation_new(void)
     flag_x_dt35 = 1;
     flag_y_dt35 = 1;
     if (fabs(stDt35_now.robot_x - stPot.fpPosX) <= LIMIT_X &&
-        fabs(stDt35_now.pro_x1 - stDt35_now.pro_x2) <= LIMIT_DIS_X) // ·ÀÖ¹½×Ô¾
+        fabs(stDt35_now.pro_x1 - stDt35_now.pro_x2) <= LIMIT_DIS_X) // é˜²æ­¢é˜¶è·ƒ
     {
         stDt35_now.robot_x = stDt35_now.robot_x;
     }
@@ -578,7 +577,7 @@ void C_ROBOT::DT35_relocation_new(void)
         flag_y_dt35 = 0;
     }
 
-    if (flag_y_dt35) // ·ÇñîºÏÊ±¿ÉÓÃ
+    if (flag_y_dt35) // éžè€¦åˆæ—¶å¯ç”¨
     {
         temp_x_dt35 = -stDt35_now.robot_y;
         cFollowoerWheel.stPot.fpPosX = temp_x_dt35 + (-sinf(-FW_rob_Alpha) + sinf(-FW_rob_Alpha - fpQ_now)) *

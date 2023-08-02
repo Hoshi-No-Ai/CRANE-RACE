@@ -7,11 +7,11 @@
 #define PI 3.1415926536f
 #define PI2 6.2831853072f
 #define PISHORT 3.14f
-#define RADIAN_10 0.00174532922f  // PI/1800£¬¶à´ÎĞèÒªÔËËã£¬¹Êµ¥¶ÀÌáÈ¡³öÀ´
+#define RADIAN_10 0.00174532922f // PI/1800ï¼Œå¤šæ¬¡éœ€è¦è¿ç®—ï¼Œæ•…å•ç‹¬æå–å‡ºæ¥
 #define RADIAN_100 0.000174532922f
 #define DEG 57.29578f
-#define DEG_10 572.9578f      // DEG*10
-#define RADIAN 0.0174532922f  // PI/180
+#define DEG_10 572.9578f     // DEG*10
+#define RADIAN 0.0174532922f // PI/180
 #define RAD10 572.9578f
 #define PI_2 1.570796326795f
 #define PI_3 1.0471975512f
@@ -27,4 +27,4 @@
 #define COS30 0.86602540378f
 #define SIN30 0.5f
 
-#endif 
+#endif

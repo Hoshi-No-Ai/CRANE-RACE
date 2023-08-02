@@ -30,41 +30,42 @@
 #define __STM32F4xx_IT_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx.h"
 
-/* Exported types ------------------------------------------------------------*/
-/* Exported constants --------------------------------------------------------*/
-/* Exported macro ------------------------------------------------------------*/
-/* Exported functions ------------------------------------------------------- */
+    /* Exported types ------------------------------------------------------------*/
+    /* Exported constants --------------------------------------------------------*/
+    /* Exported macro ------------------------------------------------------------*/
+    /* Exported functions ------------------------------------------------------- */
 
-void NMI_Handler(void);
-void HardFault_Handler(void);
-void MemManage_Handler(void);
-void BusFault_Handler(void);
-void UsageFault_Handler(void);
-void SVC_Handler(void);
-void DebugMon_Handler(void);
-void PendSV_Handler(void);
-void SysTick_Handler(void);
-void EXTI4_IRQHandler(void);
-void EXTI3_IRQHandler(void);
-void CAN2_TX_IRQHandler(void);
-void CAN2_RX0_IRQHandler(void);
-void CAN1_TX_IRQHandler(void);
-void CAN1_RX0_IRQHandler(void);
-void TIM3_IRQHandler(void);
-// void TIM2_IRQHandler(void);
+    void NMI_Handler(void);
+    void HardFault_Handler(void);
+    void MemManage_Handler(void);
+    void BusFault_Handler(void);
+    void UsageFault_Handler(void);
+    void SVC_Handler(void);
+    void DebugMon_Handler(void);
+    void PendSV_Handler(void);
+    void SysTick_Handler(void);
+    void EXTI4_IRQHandler(void);
+    void EXTI3_IRQHandler(void);
+    void CAN2_TX_IRQHandler(void);
+    void CAN2_RX0_IRQHandler(void);
+    void CAN1_TX_IRQHandler(void);
+    void CAN1_RX0_IRQHandler(void);
+    void TIM3_IRQHandler(void);
+    // void TIM2_IRQHandler(void);
 
-void USART1_IRQHandler(void);
-void USART2_IRQHandler(void);
-void USART3_IRQHandler(void);
-void UART4_IRQHandler(void);
-void USART6_IRQHandler(void);
-void ETH_IRQHandler(void);
+    void USART1_IRQHandler(void);
+    void USART2_IRQHandler(void);
+    void USART3_IRQHandler(void);
+    void UART4_IRQHandler(void);
+    void USART6_IRQHandler(void);
+    void ETH_IRQHandler(void);
 
 #ifdef __cplusplus
 }

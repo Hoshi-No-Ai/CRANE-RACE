@@ -7,7 +7,8 @@ Frame debug_frame = {
     {0x00, 0x00, 0x80, 0x7f},
 };
 
-void debug_updata(void) {
+void debug_updata(void)
+{
     static float t;
     t += 100;
     debug_frame.fdata[0] = cRobot.stVelt.fpVx;
@@ -18,7 +19,7 @@ void debug_updata(void) {
     debug_frame.fdata[4] = cRobot.stPot.fpPosY;
     debug_frame.fdata[5] = cRobot.stPot.fpPosQ;
 
-    // µ¼º½Â·¾¶Ïà¹Ø
+    // å¯¼èˆªè·¯å¾„ç›¸å…³
     debug_frame.fdata[6] = nav.expect_robot_global_velt.fpVx;
     debug_frame.fdata[7] = nav.expect_robot_global_velt.fpVy;
     debug_frame.fdata[8] = nav.expect_robot_global_velt.fpW;
@@ -33,8 +34,8 @@ void debug_updata(void) {
 
     debug_frame.fdata[15] = nav.auto_path.run_time;
 
-    // µ×ÅÌÔË¶¯µç»úÏà¹Ø
-    // ËÙ¶È»·
+    // åº•ç›˜è¿åŠ¨ç”µæœºç›¸å…³
+    // é€Ÿåº¦ç¯
     debug_frame.fdata[16] = Omni_chassis[0].m_run_motor.velt_pid.fpDes;
     debug_frame.fdata[17] = Omni_chassis[1].m_run_motor.velt_pid.fpDes;
     debug_frame.fdata[18] = Omni_chassis[2].m_run_motor.velt_pid.fpDes;
@@ -45,7 +46,7 @@ void debug_updata(void) {
     debug_frame.fdata[22] = Omni_chassis[2].m_run_motor.velt_pid.fpFB;
     debug_frame.fdata[23] = Omni_chassis[3].m_run_motor.velt_pid.fpFB;
 
-    // µçÁ÷
+    // ç”µæµ
     debug_frame.fdata[24] = Omni_chassis[0].m_run_motor.velt_pid.fpU;
     debug_frame.fdata[25] = Omni_chassis[1].m_run_motor.velt_pid.fpU;
     debug_frame.fdata[26] = Omni_chassis[2].m_run_motor.velt_pid.fpU;
@@ -61,7 +62,7 @@ void debug_updata(void) {
     debug_frame.fdata[34] = Omni_chassis[2].m_run_motor.real_current;
     debug_frame.fdata[35] = Omni_chassis[3].m_run_motor.real_current;
 
-    // µç»úµÄÖ¡ÂÊ
+    // ç”µæœºçš„å¸§ç‡
     debug_frame.fdata[40] = Sys_Monitor.rate_monitor.real_rate[0];
     debug_frame.fdata[41] = Sys_Monitor.rate_monitor.real_rate[1];
     debug_frame.fdata[42] = Sys_Monitor.rate_monitor.real_rate[2];

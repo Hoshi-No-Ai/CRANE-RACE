@@ -13,7 +13,8 @@
 
 #define ARM_DEBUG_SIZE 60
 
-struct Frame {
+struct Frame
+{
     fp32 fdata[ARM_DEBUG_SIZE];
     char tail[4];
 };

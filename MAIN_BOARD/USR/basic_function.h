@@ -8,13 +8,13 @@
 union float2char
 {
 	uint8_t char_num[4];
-	fp32 float_num;	
+	fp32 float_num;
 };
 
 union s16tochar
 {
 	uint8_t char_num[2];
-	s16 s16_num;	
+	s16 s16_num;
 };
 
 extern void delay_ms(int t);

@@ -1,130 +1,127 @@
 #ifndef __nrf_H__
-#define __nrf_H__	 		  
+#define __nrf_H__
 
 #include "stm32f4xx.h"
 #include "spi.h"
 #include "led.h"
 
-//////////////////////////////////////////////////////////////////////////////////	 
-//Î»´ø²Ù×÷,ÊµÏÖ51ÀàËÆµÄGPIO¿ØÖÆ¹¦ÄÜ
-//¾ßÌåÊµÏÖË¼Ïë,²Î¿¼<<CM3È¨ÍşÖ¸ÄÏ>>µÚÎåÕÂ(87Ò³~92Ò³).M4Í¬M3ÀàËÆ,Ö»ÊÇ¼Ä´æÆ÷µØÖ·±äÁË.
-//IO¿Ú²Ù×÷ºê¶¨Òå
-#define BITBAND(addr, bitnum) ((addr & 0xF0000000)+0x2000000+((addr &0xFFFFF)<<5)+(bitnum<<2)) 
-#define MEM_ADDR(addr)  *((volatile unsigned long  *)(addr)) 
-#define BIT_ADDR(addr, bitnum)   MEM_ADDR(BITBAND(addr, bitnum)) 
-//IO¿ÚµØÖ·Ó³Éä
-#define GPIOA_ODR_Addr    (GPIOA_BASE+20) //0x40020014
-#define GPIOB_ODR_Addr    (GPIOB_BASE+20) //0x40020414 
-#define GPIOC_ODR_Addr    (GPIOC_BASE+20) //0x40020814 
-#define GPIOD_ODR_Addr    (GPIOD_BASE+20) //0x40020C14 
-#define GPIOE_ODR_Addr    (GPIOE_BASE+20) //0x40021014 
-#define GPIOF_ODR_Addr    (GPIOF_BASE+20) //0x40021414    
-#define GPIOG_ODR_Addr    (GPIOG_BASE+20) //0x40021814   
-#define GPIOH_ODR_Addr    (GPIOH_BASE+20) //0x40021C14    
-#define GPIOI_ODR_Addr    (GPIOI_BASE+20) //0x40022014     
+//////////////////////////////////////////////////////////////////////////////////
+// ä½å¸¦æ“ä½œ,å®ç°51ç±»ä¼¼çš„GPIOæ§åˆ¶åŠŸèƒ½
+// å…·ä½“å®ç°æ€æƒ³,å‚è€ƒ<<CM3æƒå¨æŒ‡å—>>ç¬¬äº”ç« (87é¡µ~92é¡µ).M4åŒM3ç±»ä¼¼,åªæ˜¯å¯„å­˜å™¨åœ°å€å˜äº†.
+// IOå£æ“ä½œå®å®šä¹‰
+#define BITBAND(addr, bitnum) ((addr & 0xF0000000) + 0x2000000 + ((addr & 0xFFFFF) << 5) + (bitnum << 2))
+#define MEM_ADDR(addr) *((volatile unsigned long *)(addr))
+#define BIT_ADDR(addr, bitnum) MEM_ADDR(BITBAND(addr, bitnum))
+// IOå£åœ°å€æ˜ å°„
+#define GPIOA_ODR_Addr (GPIOA_BASE + 20) // 0x40020014
+#define GPIOB_ODR_Addr (GPIOB_BASE + 20) // 0x40020414
+#define GPIOC_ODR_Addr (GPIOC_BASE + 20) // 0x40020814
+#define GPIOD_ODR_Addr (GPIOD_BASE + 20) // 0x40020C14
+#define GPIOE_ODR_Addr (GPIOE_BASE + 20) // 0x40021014
+#define GPIOF_ODR_Addr (GPIOF_BASE + 20) // 0x40021414
+#define GPIOG_ODR_Addr (GPIOG_BASE + 20) // 0x40021814
+#define GPIOH_ODR_Addr (GPIOH_BASE + 20) // 0x40021C14
+#define GPIOI_ODR_Addr (GPIOI_BASE + 20) // 0x40022014
 
-#define GPIOA_IDR_Addr    (GPIOA_BASE+16) //0x40020010 
-#define GPIOB_IDR_Addr    (GPIOB_BASE+16) //0x40020410 
-#define GPIOC_IDR_Addr    (GPIOC_BASE+16) //0x40020810 
-#define GPIOD_IDR_Addr    (GPIOD_BASE+16) //0x40020C10 
-#define GPIOE_IDR_Addr    (GPIOE_BASE+16) //0x40021010 
-#define GPIOF_IDR_Addr    (GPIOF_BASE+16) //0x40021410 
-#define GPIOG_IDR_Addr    (GPIOG_BASE+16) //0x40021810 
-#define GPIOH_IDR_Addr    (GPIOH_BASE+16) //0x40021C10 
-#define GPIOI_IDR_Addr    (GPIOI_BASE+16) //0x40022010 
- 
-//IO¿Ú²Ù×÷,Ö»¶Ôµ¥Ò»µÄIO¿Ú!
-//È·±£nµÄÖµĞ¡ÓÚ16!
-#define PAout(n)   BIT_ADDR(GPIOA_ODR_Addr,n)  //Êä³ö 
-#define PAin(n)    BIT_ADDR(GPIOA_IDR_Addr,n)  //ÊäÈë 
+#define GPIOA_IDR_Addr (GPIOA_BASE + 16) // 0x40020010
+#define GPIOB_IDR_Addr (GPIOB_BASE + 16) // 0x40020410
+#define GPIOC_IDR_Addr (GPIOC_BASE + 16) // 0x40020810
+#define GPIOD_IDR_Addr (GPIOD_BASE + 16) // 0x40020C10
+#define GPIOE_IDR_Addr (GPIOE_BASE + 16) // 0x40021010
+#define GPIOF_IDR_Addr (GPIOF_BASE + 16) // 0x40021410
+#define GPIOG_IDR_Addr (GPIOG_BASE + 16) // 0x40021810
+#define GPIOH_IDR_Addr (GPIOH_BASE + 16) // 0x40021C10
+#define GPIOI_IDR_Addr (GPIOI_BASE + 16) // 0x40022010
 
-#define PBout(n)   BIT_ADDR(GPIOB_ODR_Addr,n)  //Êä³ö 
-#define PBin(n)    BIT_ADDR(GPIOB_IDR_Addr,n)  //ÊäÈë 
+// IOå£æ“ä½œ,åªå¯¹å•ä¸€çš„IOå£!
+// ç¡®ä¿nçš„å€¼å°äº16!
+#define PAout(n) BIT_ADDR(GPIOA_ODR_Addr, n) // è¾“å‡º
+#define PAin(n) BIT_ADDR(GPIOA_IDR_Addr, n)  // è¾“å…¥
 
-#define PCout(n)   BIT_ADDR(GPIOC_ODR_Addr,n)  //Êä³ö 
-#define PCin(n)    BIT_ADDR(GPIOC_IDR_Addr,n)  //ÊäÈë 
+#define PBout(n) BIT_ADDR(GPIOB_ODR_Addr, n) // è¾“å‡º
+#define PBin(n) BIT_ADDR(GPIOB_IDR_Addr, n)  // è¾“å…¥
 
-#define PDout(n)   BIT_ADDR(GPIOD_ODR_Addr,n)  //Êä³ö 
-#define PDin(n)    BIT_ADDR(GPIOD_IDR_Addr,n)  //ÊäÈë 
+#define PCout(n) BIT_ADDR(GPIOC_ODR_Addr, n) // è¾“å‡º
+#define PCin(n) BIT_ADDR(GPIOC_IDR_Addr, n)  // è¾“å…¥
 
-#define PEout(n)   BIT_ADDR(GPIOE_ODR_Addr,n)  //Êä³ö 
-#define PEin(n)    BIT_ADDR(GPIOE_IDR_Addr,n)  //ÊäÈë
+#define PDout(n) BIT_ADDR(GPIOD_ODR_Addr, n) // è¾“å‡º
+#define PDin(n) BIT_ADDR(GPIOD_IDR_Addr, n)  // è¾“å…¥
 
-#define PFout(n)   BIT_ADDR(GPIOF_ODR_Addr,n)  //Êä³ö 
-#define PFin(n)    BIT_ADDR(GPIOF_IDR_Addr,n)  //ÊäÈë
+#define PEout(n) BIT_ADDR(GPIOE_ODR_Addr, n) // è¾“å‡º
+#define PEin(n) BIT_ADDR(GPIOE_IDR_Addr, n)  // è¾“å…¥
 
-#define PGout(n)   BIT_ADDR(GPIOG_ODR_Addr,n)  //Êä³ö 
-#define PGin(n)    BIT_ADDR(GPIOG_IDR_Addr,n)  //ÊäÈë
+#define PFout(n) BIT_ADDR(GPIOF_ODR_Addr, n) // è¾“å‡º
+#define PFin(n) BIT_ADDR(GPIOF_IDR_Addr, n)  // è¾“å…¥
 
-#define PHout(n)   BIT_ADDR(GPIOH_ODR_Addr,n)  //Êä³ö 
-#define PHin(n)    BIT_ADDR(GPIOH_IDR_Addr,n)  //ÊäÈë
+#define PGout(n) BIT_ADDR(GPIOG_ODR_Addr, n) // è¾“å‡º
+#define PGin(n) BIT_ADDR(GPIOG_IDR_Addr, n)  // è¾“å…¥
 
-#define PIout(n)   BIT_ADDR(GPIOI_ODR_Addr,n)  //Êä³ö 
-#define PIin(n)    BIT_ADDR(GPIOI_IDR_Addr,n)  //ÊäÈë								  
-								  
-								  
-								  
-////////////////////////////////////////////////////////////////////////////////// 
+#define PHout(n) BIT_ADDR(GPIOH_ODR_Addr, n) // è¾“å‡º
+#define PHin(n) BIT_ADDR(GPIOH_IDR_Addr, n)  // è¾“å…¥
+
+#define PIout(n) BIT_ADDR(GPIOI_ODR_Addr, n) // è¾“å‡º
+#define PIin(n) BIT_ADDR(GPIOI_IDR_Addr, n)  // è¾“å…¥
+
+//////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-//NRF24L01¼Ä´æÆ÷²Ù×÷ÃüÁî
-#define NRF_READ_REG    0x00  //¶ÁÅäÖÃ¼Ä´æÆ÷,µÍ5Î»Îª¼Ä´æÆ÷µØÖ·
-#define NRF_WRITE_REG   0x20  //Ğ´ÅäÖÃ¼Ä´æÆ÷,µÍ5Î»Îª¼Ä´æÆ÷µØÖ·
-#define RD_RX_PLOAD     0x61  //¶ÁRXÓĞĞ§Êı¾İ,1~32×Ö½Ú
-#define WR_TX_PLOAD     0xA0  //Ğ´TXÓĞĞ§Êı¾İ,1~32×Ö½Ú
-#define FLUSH_TX        0xE1  //Çå³ıTX FIFO¼Ä´æÆ÷.·¢ÉäÄ£Ê½ÏÂÓÃ
-#define FLUSH_RX        0xE2  //Çå³ıRX FIFO¼Ä´æÆ÷.½ÓÊÕÄ£Ê½ÏÂÓÃ
-#define REUSE_TX_PL     0xE3  //ÖØĞÂÊ¹ÓÃÉÏÒ»°üÊı¾İ,CEÎª¸ß,Êı¾İ°ü±»²»¶Ï·¢ËÍ.
-#define NOP             0xFF  //¿Õ²Ù×÷,¿ÉÒÔÓÃÀ´¶Á×´Ì¬¼Ä´æÆ÷	 
-//SPI(NRF24L01)¼Ä´æÆ÷µØÖ·
-#define CONFIG          0x00  //ÅäÖÃ¼Ä´æÆ÷µØÖ·;bit0:1½ÓÊÕÄ£Ê½,0·¢ÉäÄ£Ê½;bit1:µçÑ¡Ôñ;bit2:CRCÄ£Ê½;bit3:CRCÊ¹ÄÜ;
-                              //bit4:ÖĞ¶ÏMAX_RT(´ïµ½×î´óÖØ·¢´ÎÊıÖĞ¶Ï)Ê¹ÄÜ;bit5:ÖĞ¶ÏTX_DSÊ¹ÄÜ;bit6:ÖĞ¶ÏRX_DRÊ¹ÄÜ
-#define EN_AA           0x01  //Ê¹ÄÜ×Ô¶¯Ó¦´ğ¹¦ÄÜ  bit0~5,¶ÔÓ¦Í¨µÀ0~5
-#define EN_RXADDR       0x02  //½ÓÊÕµØÖ·ÔÊĞí,bit0~5,¶ÔÓ¦Í¨µÀ0~5
-#define SETUP_AW        0x03  //ÉèÖÃµØÖ·¿í¶È(ËùÓĞÊı¾İÍ¨µÀ):bit1,0:00,3×Ö½Ú;01,4×Ö½Ú;02,5×Ö½Ú;
-#define SETUP_RETR      0x04  //½¨Á¢×Ô¶¯ÖØ·¢;bit3:0,×Ô¶¯ÖØ·¢¼ÆÊıÆ÷;bit7:4,×Ô¶¯ÖØ·¢ÑÓÊ± 250*x+86us
-#define RF_CH           0x05  //RFÍ¨µÀ,bit6:0,¹¤×÷Í¨µÀÆµÂÊ;
-#define RF_SETUP        0x06  //RF¼Ä´æÆ÷;bit3:´«ÊäËÙÂÊ(0:1Mbps,1:2Mbps);bit2:1,·¢Éä¹¦ÂÊ;bit0:µÍÔëÉù·Å´óÆ÷ÔöÒæ
-#define STATUS          0x07  //×´Ì¬¼Ä´æÆ÷;bit0:TX FIFOÂú±êÖ¾;bit3:1,½ÓÊÕÊı¾İÍ¨µÀºÅ(×î´ó:6);bit4,´ïµ½×î¶à´ÎÖØ·¢
-                              //bit5:Êı¾İ·¢ËÍÍê³ÉÖĞ¶Ï;bit6:½ÓÊÕÊı¾İÖĞ¶Ï;
-#define MAX_TX  		0x10  //´ïµ½×î´ó·¢ËÍ´ÎÊıÖĞ¶Ï
-#define TX_OK   		0x20  //TX·¢ËÍÍê³ÉÖĞ¶Ï
-#define RX_OK   		0x40  //½ÓÊÕµ½Êı¾İÖĞ¶Ï
+// NRF24L01å¯„å­˜å™¨æ“ä½œå‘½ä»¤
+#define NRF_READ_REG 0x00  // è¯»é…ç½®å¯„å­˜å™¨,ä½5ä½ä¸ºå¯„å­˜å™¨åœ°å€
+#define NRF_WRITE_REG 0x20 // å†™é…ç½®å¯„å­˜å™¨,ä½5ä½ä¸ºå¯„å­˜å™¨åœ°å€
+#define RD_RX_PLOAD 0x61   // è¯»RXæœ‰æ•ˆæ•°æ®,1~32å­—èŠ‚
+#define WR_TX_PLOAD 0xA0   // å†™TXæœ‰æ•ˆæ•°æ®,1~32å­—èŠ‚
+#define FLUSH_TX 0xE1      // æ¸…é™¤TX FIFOå¯„å­˜å™¨.å‘å°„æ¨¡å¼ä¸‹ç”¨
+#define FLUSH_RX 0xE2      // æ¸…é™¤RX FIFOå¯„å­˜å™¨.æ¥æ”¶æ¨¡å¼ä¸‹ç”¨
+#define REUSE_TX_PL 0xE3   // é‡æ–°ä½¿ç”¨ä¸Šä¸€åŒ…æ•°æ®,CEä¸ºé«˜,æ•°æ®åŒ…è¢«ä¸æ–­å‘é€.
+#define NOP 0xFF           // ç©ºæ“ä½œ,å¯ä»¥ç”¨æ¥è¯»çŠ¶æ€å¯„å­˜å™¨
+// SPI(NRF24L01)å¯„å­˜å™¨åœ°å€
+#define CONFIG 0x00 // é…ç½®å¯„å­˜å™¨åœ°å€;bit0:1æ¥æ”¶æ¨¡å¼,0å‘å°„æ¨¡å¼;bit1:ç”µé€‰æ‹©;bit2:CRCæ¨¡å¼;bit3:CRCä½¿èƒ½;
+                    // bit4:ä¸­æ–­MAX_RT(è¾¾åˆ°æœ€å¤§é‡å‘æ¬¡æ•°ä¸­æ–­)ä½¿èƒ½;bit5:ä¸­æ–­TX_DSä½¿èƒ½;bit6:ä¸­æ–­RX_DRä½¿èƒ½
+#define EN_AA 0x01      // ä½¿èƒ½è‡ªåŠ¨åº”ç­”åŠŸèƒ½  bit0~5,å¯¹åº”é€šé“0~5
+#define EN_RXADDR 0x02  // æ¥æ”¶åœ°å€å…è®¸,bit0~5,å¯¹åº”é€šé“0~5
+#define SETUP_AW 0x03   // è®¾ç½®åœ°å€å®½åº¦(æ‰€æœ‰æ•°æ®é€šé“):bit1,0:00,3å­—èŠ‚;01,4å­—èŠ‚;02,5å­—èŠ‚;
+#define SETUP_RETR 0x04 // å»ºç«‹è‡ªåŠ¨é‡å‘;bit3:0,è‡ªåŠ¨é‡å‘è®¡æ•°å™¨;bit7:4,è‡ªåŠ¨é‡å‘å»¶æ—¶ 250*x+86us
+#define RF_CH 0x05      // RFé€šé“,bit6:0,å·¥ä½œé€šé“é¢‘ç‡;
+#define RF_SETUP 0x06   // RFå¯„å­˜å™¨;bit3:ä¼ è¾“é€Ÿç‡(0:1Mbps,1:2Mbps);bit2:1,å‘å°„åŠŸç‡;bit0:ä½å™ªå£°æ”¾å¤§å™¨å¢ç›Š
+#define STATUS 0x07     // çŠ¶æ€å¯„å­˜å™¨;bit0:TX FIFOæ»¡æ ‡å¿—;bit3:1,æ¥æ”¶æ•°æ®é€šé“å·(æœ€å¤§:6);bit4,è¾¾åˆ°æœ€å¤šæ¬¡é‡å‘
+                    // bit5:æ•°æ®å‘é€å®Œæˆä¸­æ–­;bit6:æ¥æ”¶æ•°æ®ä¸­æ–­;
+#define MAX_TX 0x10 // è¾¾åˆ°æœ€å¤§å‘é€æ¬¡æ•°ä¸­æ–­
+#define TX_OK 0x20  // TXå‘é€å®Œæˆä¸­æ–­
+#define RX_OK 0x40  // æ¥æ”¶åˆ°æ•°æ®ä¸­æ–­
 
-#define OBSERVE_TX      0x08  //·¢ËÍ¼ì²â¼Ä´æÆ÷,bit7:4,Êı¾İ°ü¶ªÊ§¼ÆÊıÆ÷;bit3:0,ÖØ·¢¼ÆÊıÆ÷
-#define CD              0x09  //ÔØ²¨¼ì²â¼Ä´æÆ÷,bit0,ÔØ²¨¼ì²â;
-#define RX_ADDR_P0      0x0A  //Êı¾İÍ¨µÀ0½ÓÊÕµØÖ·,×î´ó³¤¶È5¸ö×Ö½Ú,µÍ×Ö½ÚÔÚÇ°
-#define RX_ADDR_P1      0x0B  //Êı¾İÍ¨µÀ1½ÓÊÕµØÖ·,×î´ó³¤¶È5¸ö×Ö½Ú,µÍ×Ö½ÚÔÚÇ°
-#define RX_ADDR_P2      0x0C  //Êı¾İÍ¨µÀ2½ÓÊÕµØÖ·,×îµÍ×Ö½Ú¿ÉÉèÖÃ,¸ß×Ö½Ú,±ØĞëÍ¬RX_ADDR_P1[39:8]ÏàµÈ;
-#define RX_ADDR_P3      0x0D  //Êı¾İÍ¨µÀ3½ÓÊÕµØÖ·,×îµÍ×Ö½Ú¿ÉÉèÖÃ,¸ß×Ö½Ú,±ØĞëÍ¬RX_ADDR_P1[39:8]ÏàµÈ;
-#define RX_ADDR_P4      0x0E  //Êı¾İÍ¨µÀ4½ÓÊÕµØÖ·,×îµÍ×Ö½Ú¿ÉÉèÖÃ,¸ß×Ö½Ú,±ØĞëÍ¬RX_ADDR_P1[39:8]ÏàµÈ;
-#define RX_ADDR_P5      0x0F  //Êı¾İÍ¨µÀ5½ÓÊÕµØÖ·,×îµÍ×Ö½Ú¿ÉÉèÖÃ,¸ß×Ö½Ú,±ØĞëÍ¬RX_ADDR_P1[39:8]ÏàµÈ;
-#define TX_ADDR         0x10  //·¢ËÍµØÖ·(µÍ×Ö½ÚÔÚÇ°),ShockBurstTMÄ£Ê½ÏÂ,RX_ADDR_P0Óë´ËµØÖ·ÏàµÈ
-#define RX_PW_P0        0x11  //½ÓÊÕÊı¾İÍ¨µÀ0ÓĞĞ§Êı¾İ¿í¶È(1~32×Ö½Ú),ÉèÖÃÎª0Ôò·Ç·¨
-#define RX_PW_P1        0x12  //½ÓÊÕÊı¾İÍ¨µÀ1ÓĞĞ§Êı¾İ¿í¶È(1~32×Ö½Ú),ÉèÖÃÎª0Ôò·Ç·¨
-#define RX_PW_P2        0x13  //½ÓÊÕÊı¾İÍ¨µÀ2ÓĞĞ§Êı¾İ¿í¶È(1~32×Ö½Ú),ÉèÖÃÎª0Ôò·Ç·¨
-#define RX_PW_P3        0x14  //½ÓÊÕÊı¾İÍ¨µÀ3ÓĞĞ§Êı¾İ¿í¶È(1~32×Ö½Ú),ÉèÖÃÎª0Ôò·Ç·¨
-#define RX_PW_P4        0x15  //½ÓÊÕÊı¾İÍ¨µÀ4ÓĞĞ§Êı¾İ¿í¶È(1~32×Ö½Ú),ÉèÖÃÎª0Ôò·Ç·¨
-#define RX_PW_P5        0x16  //½ÓÊÕÊı¾İÍ¨µÀ5ÓĞĞ§Êı¾İ¿í¶È(1~32×Ö½Ú),ÉèÖÃÎª0Ôò·Ç·¨
-#define NRF_FIFO_STATUS 0x17  //FIFO×´Ì¬¼Ä´æÆ÷;bit0,RX FIFO¼Ä´æÆ÷¿Õ±êÖ¾;bit1,RX FIFOÂú±êÖ¾;bit2,3,±£Áô
-                              //bit4,TX FIFO¿Õ±êÖ¾;bit5,TX FIFOÂú±êÖ¾;bit6,1,Ñ­»··¢ËÍÉÏÒ»Êı¾İ°ü.0,²»Ñ­»·;
+#define OBSERVE_TX 0x08      // å‘é€æ£€æµ‹å¯„å­˜å™¨,bit7:4,æ•°æ®åŒ…ä¸¢å¤±è®¡æ•°å™¨;bit3:0,é‡å‘è®¡æ•°å™¨
+#define CD 0x09              // è½½æ³¢æ£€æµ‹å¯„å­˜å™¨,bit0,è½½æ³¢æ£€æµ‹;
+#define RX_ADDR_P0 0x0A      // æ•°æ®é€šé“0æ¥æ”¶åœ°å€,æœ€å¤§é•¿åº¦5ä¸ªå­—èŠ‚,ä½å­—èŠ‚åœ¨å‰
+#define RX_ADDR_P1 0x0B      // æ•°æ®é€šé“1æ¥æ”¶åœ°å€,æœ€å¤§é•¿åº¦5ä¸ªå­—èŠ‚,ä½å­—èŠ‚åœ¨å‰
+#define RX_ADDR_P2 0x0C      // æ•°æ®é€šé“2æ¥æ”¶åœ°å€,æœ€ä½å­—èŠ‚å¯è®¾ç½®,é«˜å­—èŠ‚,å¿…é¡»åŒRX_ADDR_P1[39:8]ç›¸ç­‰;
+#define RX_ADDR_P3 0x0D      // æ•°æ®é€šé“3æ¥æ”¶åœ°å€,æœ€ä½å­—èŠ‚å¯è®¾ç½®,é«˜å­—èŠ‚,å¿…é¡»åŒRX_ADDR_P1[39:8]ç›¸ç­‰;
+#define RX_ADDR_P4 0x0E      // æ•°æ®é€šé“4æ¥æ”¶åœ°å€,æœ€ä½å­—èŠ‚å¯è®¾ç½®,é«˜å­—èŠ‚,å¿…é¡»åŒRX_ADDR_P1[39:8]ç›¸ç­‰;
+#define RX_ADDR_P5 0x0F      // æ•°æ®é€šé“5æ¥æ”¶åœ°å€,æœ€ä½å­—èŠ‚å¯è®¾ç½®,é«˜å­—èŠ‚,å¿…é¡»åŒRX_ADDR_P1[39:8]ç›¸ç­‰;
+#define TX_ADDR 0x10         // å‘é€åœ°å€(ä½å­—èŠ‚åœ¨å‰),ShockBurstTMæ¨¡å¼ä¸‹,RX_ADDR_P0ä¸æ­¤åœ°å€ç›¸ç­‰
+#define RX_PW_P0 0x11        // æ¥æ”¶æ•°æ®é€šé“0æœ‰æ•ˆæ•°æ®å®½åº¦(1~32å­—èŠ‚),è®¾ç½®ä¸º0åˆ™éæ³•
+#define RX_PW_P1 0x12        // æ¥æ”¶æ•°æ®é€šé“1æœ‰æ•ˆæ•°æ®å®½åº¦(1~32å­—èŠ‚),è®¾ç½®ä¸º0åˆ™éæ³•
+#define RX_PW_P2 0x13        // æ¥æ”¶æ•°æ®é€šé“2æœ‰æ•ˆæ•°æ®å®½åº¦(1~32å­—èŠ‚),è®¾ç½®ä¸º0åˆ™éæ³•
+#define RX_PW_P3 0x14        // æ¥æ”¶æ•°æ®é€šé“3æœ‰æ•ˆæ•°æ®å®½åº¦(1~32å­—èŠ‚),è®¾ç½®ä¸º0åˆ™éæ³•
+#define RX_PW_P4 0x15        // æ¥æ”¶æ•°æ®é€šé“4æœ‰æ•ˆæ•°æ®å®½åº¦(1~32å­—èŠ‚),è®¾ç½®ä¸º0åˆ™éæ³•
+#define RX_PW_P5 0x16        // æ¥æ”¶æ•°æ®é€šé“5æœ‰æ•ˆæ•°æ®å®½åº¦(1~32å­—èŠ‚),è®¾ç½®ä¸º0åˆ™éæ³•
+#define NRF_FIFO_STATUS 0x17 // FIFOçŠ¶æ€å¯„å­˜å™¨;bit0,RX FIFOå¯„å­˜å™¨ç©ºæ ‡å¿—;bit1,RX FIFOæ»¡æ ‡å¿—;bit2,3,ä¿ç•™
+                             // bit4,TX FIFOç©ºæ ‡å¿—;bit5,TX FIFOæ»¡æ ‡å¿—;bit6,1,å¾ªç¯å‘é€ä¸Šä¸€æ•°æ®åŒ….0,ä¸å¾ªç¯;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
-//24L01²Ù×÷Ïß
-//#define NRF24L01_CE   PGout(6) 	//24L01Æ¬Ñ¡ĞÅºÅ
-//#define NRF24L01_CSN  PGout(7) 	//SPIÆ¬Ñ¡ĞÅºÅ	   
-//#define NRF24L01_IRQ  PGin(8)  	//IRQÖ÷»úÊı¾İÊäÈë
-#define NRF24L01_CE   PGout(0) 	//24L01Æ¬Ñ¡ĞÅºÅ
-#define NRF24L01_CSN  PGout(1) 	//SPIÆ¬Ñ¡ĞÅºÅ	   
-#define NRF24L01_IRQ  PGout(2)  	//IRQÖ÷»úÊı¾İÊäÈë
+// 24L01æ“ä½œçº¿
+// #define NRF24L01_CE   PGout(6) 	//24L01ç‰‡é€‰ä¿¡å·
+// #define NRF24L01_CSN  PGout(7) 	//SPIç‰‡é€‰ä¿¡å·
+// #define NRF24L01_IRQ  PGin(8)  	//IRQä¸»æœºæ•°æ®è¾“å…¥
+#define NRF24L01_CE PGout(0)  // 24L01ç‰‡é€‰ä¿¡å·
+#define NRF24L01_CSN PGout(1) // SPIç‰‡é€‰ä¿¡å·
+#define NRF24L01_IRQ PGout(2) // IRQä¸»æœºæ•°æ®è¾“å…¥
 
+// 24L01å‘é€æ¥æ”¶æ•°æ®å®½åº¦å®šä¹‰
+#define TX_ADR_WIDTH 5    // 5å­—èŠ‚çš„åœ°å€å®½åº¦
+#define RX_ADR_WIDTH 5    // 5å­—èŠ‚çš„åœ°å€å®½åº¦
+#define TX_PLOAD_WIDTH 32 // 32å­—èŠ‚çš„ç”¨æˆ·æ•°æ®å®½åº¦
+#define RX_PLOAD_WIDTH 32 // 32å­—èŠ‚çš„ç”¨æˆ·æ•°æ®å®½åº¦
 
-//24L01·¢ËÍ½ÓÊÕÊı¾İ¿í¶È¶¨Òå
-#define TX_ADR_WIDTH    5   	//5×Ö½ÚµÄµØÖ·¿í¶È
-#define RX_ADR_WIDTH    5   	//5×Ö½ÚµÄµØÖ·¿í¶È
-#define TX_PLOAD_WIDTH  32  	//32×Ö½ÚµÄÓÃ»§Êı¾İ¿í¶È
-#define RX_PLOAD_WIDTH  32  	//32×Ö½ÚµÄÓÃ»§Êı¾İ¿í¶È
-
-/*Á½³µÍ¨ĞÅËùÓÃID*/
+/*ä¸¤è½¦é€šä¿¡æ‰€ç”¨ID*/
 #define CAN_Rx_ID1 0x1F0
 #define CAN_Rx_ID2 0x1F1
 #define CAN_Rx_ID3 0x1F2
@@ -133,20 +130,20 @@
 #define CAN_Tx_ID2 0x1F5
 #define CAN_Tx_ID3 0x1F6
 #define CAN_Tx_ID4 0x1F7
-									   	   
-#define  L1  PAout(10)
 
-void NRF24L01_Init(void);//³õÊ¼»¯
-void NRF24L01_RX_Mode(void);//ÅäÖÃÎª½ÓÊÕÄ£Ê½
-void NRF24L01_TX_Mode(void);//ÅäÖÃÎª·¢ËÍÄ£Ê½
-void NRF24L01_Send_message(uint32_t StdID, int16_t data1, int16_t data2, int16_t data3, int16_t data4);//ÎŞÏßÄ£¿é·¢ËÍÊı¾İ
-void NRF24L01_Clear_message(void);//ÇåÁãÎŞÏßÄ£¿éÓëÖ÷¿ØÍ¨Ñ¶µÄÊı¾İ
-uint8_t NRF24L01_Write_Buf(uint8_t reg, uint8_t *pBuf, uint8_t u8s);//Ğ´Êı¾İÇø
-uint8_t NRF24L01_Read_Buf(uint8_t reg, uint8_t *pBuf, uint8_t u8s);//¶ÁÊı¾İÇø		  
-uint8_t NRF24L01_Read_Reg(uint8_t reg);			//¶Á¼Ä´æÆ÷
-uint8_t NRF24L01_Write_Reg(uint8_t reg, uint8_t value);//Ğ´¼Ä´æÆ÷
-uint8_t NRF24L01_Check(void);//¼ì²é24L01ÊÇ·ñ´æÔÚ
-uint8_t NRF24L01_TxPacket(uint8_t *txbuf);//·¢ËÍÒ»¸ö°üµÄÊı¾İ
-uint8_t NRF24L01_RxPacket(uint8_t *rxbuf);//½ÓÊÕÒ»¸ö°üµÄÊı¾İ
+#define L1 PAout(10)
+
+void NRF24L01_Init(void);                                                                               // åˆå§‹åŒ–
+void NRF24L01_RX_Mode(void);                                                                            // é…ç½®ä¸ºæ¥æ”¶æ¨¡å¼
+void NRF24L01_TX_Mode(void);                                                                            // é…ç½®ä¸ºå‘é€æ¨¡å¼
+void NRF24L01_Send_message(uint32_t StdID, int16_t data1, int16_t data2, int16_t data3, int16_t data4); // æ— çº¿æ¨¡å—å‘é€æ•°æ®
+void NRF24L01_Clear_message(void);                                                                      // æ¸…é›¶æ— çº¿æ¨¡å—ä¸ä¸»æ§é€šè®¯çš„æ•°æ®
+uint8_t NRF24L01_Write_Buf(uint8_t reg, uint8_t *pBuf, uint8_t u8s);                                    // å†™æ•°æ®åŒº
+uint8_t NRF24L01_Read_Buf(uint8_t reg, uint8_t *pBuf, uint8_t u8s);                                     // è¯»æ•°æ®åŒº
+uint8_t NRF24L01_Read_Reg(uint8_t reg);                                                                 // è¯»å¯„å­˜å™¨
+uint8_t NRF24L01_Write_Reg(uint8_t reg, uint8_t value);                                                 // å†™å¯„å­˜å™¨
+uint8_t NRF24L01_Check(void);                                                                           // æ£€æŸ¥24L01æ˜¯å¦å­˜åœ¨
+uint8_t NRF24L01_TxPacket(uint8_t *txbuf);                                                              // å‘é€ä¸€ä¸ªåŒ…çš„æ•°æ®
+uint8_t NRF24L01_RxPacket(uint8_t *rxbuf);                                                              // æ¥æ”¶ä¸€ä¸ªåŒ…çš„æ•°æ®
 
 #endif

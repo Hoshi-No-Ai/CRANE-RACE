@@ -30,6 +30,6 @@ static void wifi_rxdata_update(void)
 void lcd_display(void)
 {
     wifi_rxdata_update();
-    memcpy(uart6_remote_ctrl_eft.num, uart6_tx_buf, 4 * 26 * sizeof(uint8_t)); // 要随着上面发送的变量数量改变
+    memcpy(uart6_remote_ctrl_eft.num, uart6_tx_buf, 4 * 26 * sizeof(uint8_t)); // 瑕侀殢鐫�涓婇潰鍙戦�佺殑鍙橀噺鏁伴噺鏀瑰彉
     USART6_DMA_Tx(REMOTE_CTRL);
 }

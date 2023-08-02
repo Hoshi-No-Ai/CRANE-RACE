@@ -3,10 +3,10 @@
 
 #include "stm32f4xx.h"
 
-#define USART_REC_LEN 200  //定义最大接收字节数 200
+#define USART_REC_LEN 200 // 瀹氫箟鏈�澶ф帴鏀跺瓧鑺傛暟 200
 
-//#define USART1_RXDMA_LEN 22
-//#define USART1_RXMB_LEN 22
+// #define USART1_RXDMA_LEN 22
+// #define USART1_RXMB_LEN 22
 #define USART1_RXDMA_LEN 8
 #define USART1_RXMB_LEN 8
 #define USART1_TXDMA_LEN 48
@@ -21,7 +21,7 @@
 #define USART3_RX_STREAM DMA1_Stream1
 #define USART3_TX_STREAM DMA1_Stream3
 
-/*串口6通信缓冲长度*/
+/*涓插彛6閫氫俊缂撳啿闀垮害*/
 #define USART6_RXDMA_LEN 40
 #define USART6_RXMB_LEN 40
 #define USART6_TXDMA_LEN 48

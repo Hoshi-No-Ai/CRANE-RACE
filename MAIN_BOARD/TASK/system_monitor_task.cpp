@@ -3,7 +3,7 @@
 C_Sys_Monitor Sys_Monitor;
 
 void C_Sys_Monitor::motor_detection(void) {
-    for (int i = 0; i < 4; ++i)  // µç»úÖ¡ÂÊ¼ì²â
+    for (int i = 0; i < 4; ++i)  // ç”µæœºå¸§çŽ‡æ£€æµ‹
     {
         if (rate_monitor.real_rate[i] < 900 || rate_monitor.real_rate[i] > 1100) {
             system_error = CHASSIS_RUN_ERROR;

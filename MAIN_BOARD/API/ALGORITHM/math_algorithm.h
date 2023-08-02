@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------
-°æÈ¨ÉùÃ÷£ºHITCRT(¹ş¹¤´ó¾º¼¼»úÆ÷ÈË¶Ó)
-ÎÄ¼şÃû£ºmath_algorithm.h
-×î½üĞŞ¸ÄÈÕÆÚ£º2022.10.14
-°æ±¾£º1.0
+ç‰ˆæƒå£°æ˜ï¼šHITCRT(å“ˆå·¥å¤§ç«æŠ€æœºå™¨äººé˜Ÿ)
+æ–‡ä»¶åï¼šmath_algorithm.h
+æœ€è¿‘ä¿®æ”¹æ—¥æœŸï¼š2022.10.14
+ç‰ˆæœ¬ï¼š1.0
 ---------------------------------------------------------------------*/
 #ifndef __MATH_ALGORITHM_H__
 #define __MATH_ALGORITHM_H__
@@ -12,54 +12,60 @@
 #include "movement_info.h"
 #include "stm32f4xx.h"
 
-/*µã×ø±ê*/
-struct stPoint {
+/*ç‚¹åæ ‡*/
+struct stPoint
+{
     fp32 x;
     fp32 y;
 };
 
-struct stDT35 {
+struct stDT35
+{
     fp32 x1;
     fp32 y1;
     fp32 x2;
     fp32 y2;
 };
 
-struct ANGLE {
+struct ANGLE
+{
     fp32 s;
     fp32 e;
 };
 
-struct T_fasedown {
-    fp32 t11;         //¼ÓËÙÊ±¼ä
-    fp32 t1;          //¼õËÙÊ±¼ä
-    ST_VELT Accup;    //¼ÓËÙ¼ÓËÙ¶È
-    ST_VELT Accdown;  //¼õËÙ¼ÓËÙ¶È
-    ST_VELT VIN;      //¿ªÊ¼¼õËÙÊ±µÄ³õËÙ¶È
-};                    //¼õËÙ½á¹¹Ìå£¬ÏÈ¼ÓËÙÔÙ¼õËÙ
+struct T_fasedown
+{
+    fp32 t11;        // åŠ é€Ÿæ—¶é—´
+    fp32 t1;         // å‡é€Ÿæ—¶é—´
+    ST_VELT Accup;   // åŠ é€ŸåŠ é€Ÿåº¦
+    ST_VELT Accdown; // å‡é€ŸåŠ é€Ÿåº¦
+    ST_VELT VIN;     // å¼€å§‹å‡é€Ÿæ—¶çš„åˆé€Ÿåº¦
+};                   // å‡é€Ÿç»“æ„ä½“ï¼Œå…ˆåŠ é€Ÿå†å‡é€Ÿ
 
-/*2021¼ÆËãÂ·¾¶ÓÃ*/
-struct point_t {
+/*2021è®¡ç®—è·¯å¾„ç”¨*/
+struct point_t
+{
     fp32 x, y;
 };
 
-struct line_t {
-    fp32 A, B, C;  // Ax + By + C = 0
+struct line_t
+{
+    fp32 A, B, C; // Ax + By + C = 0
 };
 
-int32_t Round(fp32 fpValue);     //¸¡µãÊıËÄÉáÎåÈë×ª»»ÎªÕûĞÍÊıº¯Êı
-fp32 ConvertAngle(fp32 fpAngA);  //½«½Ç¶È×ª»»ÎªÈ«¾Ö×ø±êÏµµÄº½Ïò½Ç·¶Î§[-PI,PI)(µ¥Î»£º»¡¶È)
-int16_t ConvertDeg(int16_t fpDegA);  //½«½Ç¶È×ª»»ÎªÈ«¾Ö×ø±êÏµµÄº½Ïò½Ç·¶Î§[-1800,1800)(µ¥Î»£º0.1¡ã)
+int32_t Round(fp32 fpValue);        // æµ®ç‚¹æ•°å››èˆäº”å…¥è½¬æ¢ä¸ºæ•´å‹æ•°å‡½æ•°
+fp32 ConvertAngle(fp32 fpAngA);     // å°†è§’åº¦è½¬æ¢ä¸ºå…¨å±€åæ ‡ç³»çš„èˆªå‘è§’èŒƒå›´[-PI,PI)(å•ä½ï¼šå¼§åº¦)
+int16_t ConvertDeg(int16_t fpDegA); // å°†è§’åº¦è½¬æ¢ä¸ºå…¨å±€åæ ‡ç³»çš„èˆªå‘è§’èŒƒå›´[-1800,1800)(å•ä½ï¼š0.1Â°)
 void ramp_signal(float &Output, float DesValue, float Step);
 int32_t Clip(int32_t siValue, int32_t siMin,
-             int32_t siMax);  //ÕûĞÍÏ÷²¨º¯Êı£¬È¥³ı³¬³ö×î´óÖµÓë×îĞ¡ÖµÖ®¼äµÄÖµ£¬´úÖ®ÒÔ×î´ó»ò×îĞ¡Öµ
+             int32_t siMax); // æ•´å‹å‰Šæ³¢å‡½æ•°ï¼Œå»é™¤è¶…å‡ºæœ€å¤§å€¼ä¸æœ€å°å€¼ä¹‹é—´çš„å€¼ï¼Œä»£ä¹‹ä»¥æœ€å¤§æˆ–æœ€å°å€¼
 uint8_t ClipChar(uint8_t ucValue, uint8_t ucMin, uint8_t ucMax);
 fp32 ClipFloat(fp32 fpValue, fp32 fpMin,
-               fp32 fpMax);  //¸¡µãÊıÏ÷²¨º¯Êı£¬È¥³ı³¬³ö×î´óÖµÓë×îĞ¡ÖµÖ®¼äµÄÖµ£¬´úÖ®ÒÔ×î´ó»ò×îĞ¡Öµ
-fp32 Fabs(fp32 fpNum);                               //¼ÆËã¾ø¶ÔÖµº¯Êı
-uint16_t crc16(uint8_t *pucData, uint8_t ucLength);  //¶Ô¹Ì¶¨³¤¶ÈµÄÊı×éÉú³ÉCRCĞ£ÑéÂë
-uint8_t sum8(uint8_t *data, uint8_t length);         //ÇóºÍº¯Êı
-void us_delay(uint32_t uiTime);                      //ÑÓÊ±us
+               fp32 fpMax);                         // æµ®ç‚¹æ•°å‰Šæ³¢å‡½æ•°ï¼Œå»é™¤è¶…å‡ºæœ€å¤§å€¼ä¸æœ€å°å€¼ä¹‹é—´çš„å€¼ï¼Œä»£ä¹‹ä»¥æœ€å¤§æˆ–æœ€å°å€¼
+fp32 Fabs(fp32 fpNum);                              // è®¡ç®—ç»å¯¹å€¼å‡½æ•°
+uint16_t crc16(uint8_t *pucData, uint8_t ucLength); // å¯¹å›ºå®šé•¿åº¦çš„æ•°ç»„ç”ŸæˆCRCæ ¡éªŒç 
+uint8_t sum8(uint8_t *data, uint8_t length);        // æ±‚å’Œå‡½æ•°
+void us_delay(uint32_t uiTime);                     // å»¶æ—¶us
 
 stPoint tangentdot(stPoint ptCenter, stPoint ptOutside, fp32 Radious, int mode);
 fp32 SLine(stPoint p1, stPoint p2);

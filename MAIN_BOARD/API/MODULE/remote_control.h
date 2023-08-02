@@ -9,38 +9,39 @@
 #include "stm32f4xx.h"
 #include "usart_protocol.h"
 
-//µ±ÊÖ±úÎªºìµÆÄ£Ê½Ê±Wlan_JOYSTICK_STATEÖµÎª0x73£¬·ñÔòÎª0x41
+// å½“æ‰‹æŸ„ä¸ºçº¢ç¯æ¨¡å¼æ—¶Wlan_JOYSTICK_STATEå€¼ä¸º0x73ï¼Œå¦åˆ™ä¸º0x41
 
-// qrpucp:È¥µôÁË±äÁ¿Ç°µÄvolatile
-#define Wlan_JOYSTICK_RESERVED 		(((uint16_t)tmp_buf[3])<<8|tmp_buf[4])
-#define Wlan_JOYSTICK_LEFT_X		tmp_buf[5]
-#define Wlan_JOYSTICK_LEFT_Y    tmp_buf[6]
-#define Wlan_JOYSTICK_RIGTH 		tmp_buf[7]
-#define Wlan_JOYSTICK_STATE 		tmp_buf[0]
+// qrpucp:å»æ‰äº†å˜é‡å‰çš„volatile
+#define Wlan_JOYSTICK_RESERVED (((uint16_t)tmp_buf[3]) << 8 | tmp_buf[4])
+#define Wlan_JOYSTICK_LEFT_X tmp_buf[5]
+#define Wlan_JOYSTICK_LEFT_Y tmp_buf[6]
+#define Wlan_JOYSTICK_RIGTH tmp_buf[7]
+#define Wlan_JOYSTICK_STATE tmp_buf[0]
 
-#define Wlan_PSKEY 	            tmp_buf_11
-#define	 JS_MID_POS_X 128//Ò¡¸ËÖĞ¼äÖµ     
-#define  JS_MID_POS_Y 130
+#define Wlan_PSKEY tmp_buf_11
+#define JS_MID_POS_X 128 // æ‘‡æ†ä¸­é—´å€¼
+#define JS_MID_POS_Y 130
 
-//#define NRF_ENABLE //Ê¹ÓÃNRFÊ±½â×¢ÊÍ
+// #define NRF_ENABLE //ä½¿ç”¨NRFæ—¶è§£æ³¨é‡Š
 
-class C_JsKey {
-	public:
+class C_JsKey
+{
+public:
     uint16_t usJsKey;
-    uint8_t aucKeyPress[16];        //Îª1Ê±£¬±íÊ¾°´¼ü°´ÏÂÓĞĞ§
-    uint32_t auiPressDuration[16];  //°´ÏÂ³ÖĞøÊ±¼äÓë¸ÃÖµ±È½Ï£¬ÅĞ¶ÏÊÇ·ñÎªÁ¬»÷
+    uint8_t aucKeyPress[16];       // ä¸º1æ—¶ï¼Œè¡¨ç¤ºæŒ‰é”®æŒ‰ä¸‹æœ‰æ•ˆ
+    uint32_t auiPressDuration[16]; // æŒ‰ä¸‹æŒç»­æ—¶é—´ä¸è¯¥å€¼æ¯”è¾ƒï¼Œåˆ¤æ–­æ˜¯å¦ä¸ºè¿å‡»
     uint32_t uiStartTime[16];
     uint32_t uiCurTime[16];
     uint16_t usJsState;
-	  uint16_t usJsLeft_X;
-	 uint16_t usJsLeft_Y;
+    uint16_t usJsLeft_X;
+    uint16_t usJsLeft_Y;
     uint16_t usJsRight;
 
-    uint16_t usKeyValue;  //´æ¼üÅÌµÄ16Î»Öµ
+    uint16_t usKeyValue; // å­˜é”®ç›˜çš„16ä½å€¼
 
-    uint8_t G_SPEED;  //ËÀÇø
-    float M_SPEED;    //ÏŞ·ù
-    float W_reduce;   //½ÇËÙ¶ÈµÄËõĞ¡±¶Êı
+    uint8_t G_SPEED; // æ­»åŒº
+    float M_SPEED;   // é™å¹…
+    float W_reduce;  // è§’é€Ÿåº¦çš„ç¼©å°å€æ•°
 
     int coordinate_mode;
 
@@ -48,8 +49,8 @@ class C_JsKey {
     ~C_JsKey(){};
 
     void CalSpeed(C_NAV &p_nav);
-    void ReadWlanJsValue(void);   //´¦ÀíÊÖ±ú·¢À´µÄÊı¾İ
-    void ReadWlanKeyValue(void);  //´¦Àí¼üÅÌ·¢À´µÄÊı¾İ
+    void ReadWlanJsValue(void);  // å¤„ç†æ‰‹æŸ„å‘æ¥çš„æ•°æ®
+    void ReadWlanKeyValue(void); // å¤„ç†é”®ç›˜å‘æ¥çš„æ•°æ®
 };
 
 extern C_JsKey JsKey;

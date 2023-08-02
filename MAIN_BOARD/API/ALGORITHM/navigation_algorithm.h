@@ -19,15 +19,15 @@
 enum nav_state_e
 {
     NAV_INIT,
-    NAV_MANUAL, // �ֶ�����
+    NAV_MANUAL,
     NAV_NEW_MANUAL,
-    NAV_AUTO_PATH, // �Զ�·������
+    NAV_AUTO_PATH,
     NAV_PATHPLANNING,
     NAV_OFF,
     NAV_STOP,
     NAV_LOCK,
-    NAV_CALIBRATION_1, // �ܿ�������������������ٶ�ϵ��
-    NAV_CALIBRATION_2, // �������ٶȣ��������ٶ�ϵ��
+    NAV_CALIBRATION_1,
+    NAV_CALIBRATION_2,
     NAV_STOPX
 };
 

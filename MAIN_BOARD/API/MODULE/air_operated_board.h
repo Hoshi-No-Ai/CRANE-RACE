@@ -10,22 +10,23 @@
 // using _api_module_::g_usSwitch;
 // using _api_module_::g_usSwitchPre;
 
-//Æø¶¯°åÓĞ¹Øºê¶¨Òå
+// æ°”åŠ¨æ¿æœ‰å…³å®å®šä¹‰
 #define CAN_SWITCH_ID 0x20
 #define CAN_AIR_ID 0x30
 #define CAN_AIR_ID_reply 0x32
 #define CAN_SERVO_ID 0x40
 
-// PWMÍ¨µÀ¿ØÖÆº­µÀ»ò¶æ»úµÄ±êÖ¾
+// PWMé€šé“æ§åˆ¶æ¶µé“æˆ–èˆµæœºçš„æ ‡å¿—
 #define Servo_Ctrl_Flag 0x01
 #define DutedFan_Ctrl_Flag 0x02
 
-class C_AirOperation {
-   public:
-    uint32_t uiAirValve;     //Æø¸×ÓĞ¹ØÈ«¾Ö±äÁ¿
-    uint32_t uiAirValvePre;  //Æø¸×ÉÏÒ»´Î×´Ì¬
-    uint16_t usSwitch;       //¿ª¹ØÓĞ¹ØÈ«¾Ö±äÁ¿
-    uint16_t usSwitchPre;    //±£´æÉÏÒ»Ê±¿Ì¿ª¹ØÖµ
+class C_AirOperation
+{
+public:
+    uint32_t uiAirValve;    // æ°”ç¼¸æœ‰å…³å…¨å±€å˜é‡
+    uint32_t uiAirValvePre; // æ°”ç¼¸ä¸Šä¸€æ¬¡çŠ¶æ€
+    uint16_t usSwitch;      // å¼€å…³æœ‰å…³å…¨å±€å˜é‡
+    uint16_t usSwitchPre;   // ä¿å­˜ä¸Šä¸€æ—¶åˆ»å¼€å…³å€¼
     int Can_x;
 
     C_AirOperation() : Can_x(2){};
@@ -34,10 +35,10 @@ class C_AirOperation {
 
     void SendAirMsgByCan(void);
     void Send_LED_Mode(uint8_t mode);
-    void SendServoMsgByCan(uint8_t chan, uint8_t value);  //Í¨¹ıCAN·¢ËÍ¶æ»úµÄÕ¼¿Õ±È
+    void SendServoMsgByCan(uint8_t chan, uint8_t value); // é€šè¿‡CANå‘é€èˆµæœºçš„å ç©ºæ¯”
     void SendServoMsgByCan_Plus(s16 value1, s16 value2, s16 value3, s16 value4);
 
-    //Æø¶¯°åÓĞ¹Ø³ÉÔ±º¯Êı
+    // æ°”åŠ¨æ¿æœ‰å…³æˆå‘˜å‡½æ•°
     void open_value(int channel);
     void close_value(int channel);
     void change_value(int channel);
@@ -46,12 +47,13 @@ class C_AirOperation {
     uint32_t get_value_value() { return uiAirValve; }
     void set_value_value(uint32_t value);
 
-    //¿ª¹ØÓĞ¹Ø³ÉÔ±º¯Êı
+    // å¼€å…³æœ‰å…³æˆå‘˜å‡½æ•°
     void UpdateSwitchValue(CanRxMsg &RxMsg) { usSwitch = (uint16_t)RxMsg.Data[0]; }
     void Update_Switch(CanRxMsg &RxMsg);
     bool is_switch_on(int channel) { return (usSwitch & (0x0001 << channel)); }
     bool is_switch_off(int channel) { return (!(usSwitch & (0x0001 << channel))); }
-    bool is_switch_change(int channel) {
+    bool is_switch_change(int channel)
+    {
         return ((usSwitch & (1 << channel)) != (usSwitchPre & (1 << channel)));
     }
     uint16_t get_switch_value() { return uiAirValve; }

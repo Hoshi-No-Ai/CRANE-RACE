@@ -1,11 +1,11 @@
 #include "navigation_task.h"
 
+using _action_::flag_stop_wait;
 using _api_module_::flag_tuoluo;
 using _navigation_::calibration_current;
 using _navigation_::vision_enable;
 using _navigation_::vision_true;
 using _remote_ctrl_::manual_enable;
-using _action_::flag_stop_wait;
 
 int stop_wait_time;
 
@@ -27,7 +27,7 @@ void navigation(void)
         nav.disable_omni_chassis();
         break;
 
-    case NAV_STOP: // ËøËÀ×´Ì¬ÏÂÔË¶¯µç»ú¸ÄÓÃË«»·
+    case NAV_STOP: // é”æ­»çŠ¶æ€ä¸‹è¿åŠ¨ç”µæœºæ”¹ç”¨åŒç¯
         nav.stop_omni_chassis();
         break;
 
@@ -46,26 +46,26 @@ void navigation(void)
         nav.auto_path.velt_pid.y.fpFB = cRobot.stVelt.fpVy;
         nav.auto_path.velt_pid.w.fpFB = cRobot.stVelt.fpW;
 
-        // ¹æ»®À´×ÔÂ·¾¶
+        // è§„åˆ’æ¥è‡ªè·¯å¾„
         nav.auto_path.pos_pid.x.fpKp = 10.0f;
         nav.auto_path.pos_pid.y.fpKp = 10.0f;
         nav.auto_path.pos_pid.w.fpKp = 20.0f;
-				
-				if(flag_stop_wait)
-				{
-					stop_wait_time++;
-					if(stop_wait_time>500)
-					{
-						flag_stop_wait=0;
-						stop_wait_time=0;
-					}
-				}
+
+        if (flag_stop_wait)
+        {
+            stop_wait_time++;
+            if (stop_wait_time > 500)
+            {
+                flag_stop_wait = 0;
+                stop_wait_time = 0;
+            }
+        }
 
         if (vision_true)
         {
             nav.auto_path.pos_pid.x.fpDes = nav.auto_path.pos_pid.x.fpFB + delta_fb_des.delta_x;
             nav.auto_path.pos_pid.y.fpDes = nav.auto_path.pos_pid.y.fpFB + delta_fb_des.delta_y;
-            // TODO:ÊÓ¾õĞÅºÅ¼Ó¼õ²»ÒªĞ´·´ÁË
+            // TODO:è§†è§‰ä¿¡å·åŠ å‡ä¸è¦å†™åäº†
             nav.auto_path.pos_pid.w.fpDes = nav.auto_path.pos_pid.w.fpFB + aruco_fdb.thetaz;
             if (this_target == 1)
             {
@@ -150,7 +150,7 @@ void navigation(void)
         nav.auto_path.velt_pid.y.fpFB = cRobot.stVelt.fpVy;
         nav.auto_path.velt_pid.w.fpFB = cRobot.stVelt.fpW;
 
-        // ¹æ»®À´×ÔÂ·¾¶
+        // è§„åˆ’æ¥è‡ªè·¯å¾„
 
         if (!nav.auto_path.Path_Choose())
         {
@@ -160,11 +160,11 @@ void navigation(void)
         nav.auto_path.pos_pid.x.fpKp = 5.0f;
         nav.auto_path.pos_pid.y.fpKp = 5.0f;
         nav.auto_path.pos_pid.w.fpKp = 5.0f;
-				
-				if(target_num.cola==3)
-				{
-					nav.auto_path.pos_pid.w.fpKp = 4.0f;
-				}
+
+        if (target_num.cola == 3)
+        {
+            nav.auto_path.pos_pid.w.fpKp = 4.0f;
+        }
 
         nav.auto_path.basic_velt.fpW *= RADIAN;
         nav.auto_path.pos_pid.w.fpFB *= RADIAN;
@@ -194,7 +194,7 @@ void navigation(void)
 
         break;
 
-    /*±ê¶¨¸÷¸öÂÖ×ÓµÄÖ±Ïß¼ÓËÙ¶ÈÏµÊı*/
+    /*æ ‡å®šå„ä¸ªè½®å­çš„ç›´çº¿åŠ é€Ÿåº¦ç³»æ•°*/
     case NAV_CALIBRATION_1:
         for (int i = 0; i < 4; i++)
         {
@@ -202,7 +202,7 @@ void navigation(void)
             Omni_chassis[i].m_run_motor.feed_forward_current = WITHOUT_FORWARD;
         }
 
-        /*¸ù¾İÊµ¼ÊÒª×ßµÄ·½Ïòµ÷Õû*/
+        /*æ ¹æ®å®é™…è¦èµ°çš„æ–¹å‘è°ƒæ•´*/
         for (int i; i < 4; i++)
         {
             Omni_chassis[i].m_run_motor.velt_pid.fpU = calibration_current;
@@ -214,7 +214,7 @@ void navigation(void)
         }
         break;
 
-    /*±ê¶¨¸÷¸öÂÖ×ÓµÄĞı×ª¼ÓËÙ¶ÈÏµÊı*/
+    /*æ ‡å®šå„ä¸ªè½®å­çš„æ—‹è½¬åŠ é€Ÿåº¦ç³»æ•°*/
     case NAV_CALIBRATION_2:
         for (int i = 0; i < 4; i++)
         {

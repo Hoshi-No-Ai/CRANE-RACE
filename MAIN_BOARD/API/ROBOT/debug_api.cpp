@@ -1,8 +1,6 @@
 #include "debug_api.h"
 
-u16 g_ucSavePit = 0;//FLASH�洢λ
-u16 g_ucReadPit = 0;//FLASH��ȡλ
-UN_SAVE unSave;//�洢�ṹ��
-UN_READ	unRead;//��ȡ�ṹ��
-
-
+u16 g_ucSavePit = 0; // FLASH存储位
+u16 g_ucReadPit = 0; // FLASH读取位
+UN_SAVE unSave;      // 存储结构体
+UN_READ unRead;      // 读取结构体

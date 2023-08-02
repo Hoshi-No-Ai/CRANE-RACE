@@ -3,17 +3,18 @@
 
 #include "basic_type.h"
 
-//������RC��ͨ�˲���·�Ƶ�ԭ��
-//�Ƶ������ݺ���1/(1+RCS),RC=ʱ�䳣������1/RCΪ��ֹƵ��
-//�ٶԴ��ݺ�������z�任�������Ƶ�����ɢ��һ���˲���ʽ
-//����m_off_freqΪ��ֹƵ�ʣ�m_samp_timΪ��������
-class C_LPF {
-   public:
+// 可以用RC低通滤波电路推导原理
+// 推导出传递函数1/(1+RCS),RC=时间常数，故1/RC为截止频率
+// 再对传递函数进行z变换，即可推导出离散的一阶滤波公式
+// 其中m_off_freq为截止频率，m_samp_tim为采样周期
+class C_LPF
+{
+public:
     fp32 m_preout;
     fp32 m_out;
     fp32 m_in;
-    fp32 m_off_freq;  //Ȩ��
-    fp32 m_samp_tim;  //��������
+    fp32 m_off_freq; // 权重
+    fp32 m_samp_tim; // 采样步长
 
     C_LPF(){};
     ~C_LPF(){};

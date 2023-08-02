@@ -3,69 +3,82 @@
 class C_AirOperation AirOperation(2);
 
 /********************************************************************************************************
-Æø¶¯°åÓĞ¹Øº¯Êı
+æ°”åŠ¨æ¿æœ‰å…³å‡½æ•°
 *********************************************************************************************************/
 /**************************************************************
-º¯Êı¹¦ÄÜ: Í¨¹ıCAN·¢ËÍÆø¸×µÄ±äÁ¿
-ÊäÈë: pAir Òª¿ØÖÆµÄÆø¸×ID
-Êä³ö£ºÎŞ
-±¸×¢: Ğ¡Æø¶¯°å0-15£¬´óÆø¶¯°å16-23£¬¶ÔÓ¦Î»ÖÁ1Îª´ò¿ªÆø¸×
+å‡½æ•°åŠŸèƒ½: é€šè¿‡CANå‘é€æ°”ç¼¸çš„å˜é‡
+è¾“å…¥: pAir è¦æ§åˆ¶çš„æ°”ç¼¸ID
+è¾“å‡ºï¼šæ— 
+å¤‡æ³¨: å°æ°”åŠ¨æ¿0-15ï¼Œå¤§æ°”åŠ¨æ¿16-23ï¼Œå¯¹åº”ä½è‡³1ä¸ºæ‰“å¼€æ°”ç¼¸
 ***************************************************************/
-void C_AirOperation::SendAirMsgByCan(void) {
+void C_AirOperation::SendAirMsgByCan(void)
+{
     static CanTxMsg TxMessage = {CAN_AIR_ID, 0x00, CAN_ID_STD, CAN_RTR_DATA, 4, 0, 0, 0, 0, 0, 0, 0, 0};
-    *((uint32_t *)TxMessage.Data) = uiAirValve;  //´ïµ½ÀàËÆmemcpyµÄĞ§¹û
+    *((uint32_t *)TxMessage.Data) = uiAirValve; // è¾¾åˆ°ç±»ä¼¼memcpyçš„æ•ˆæœ
 
-    if (Can_x == 1) {
+    if (Can_x == 1)
+    {
         CAN_Transmit(CAN1, &TxMessage);
-    } else if (Can_x == 2) {
+    }
+    else if (Can_x == 2)
+    {
         CAN_Transmit(CAN2, &TxMessage);
     }
 }
 
 /**************************************************************
-º¯ÊıÃû:Send_LED_Mode(uint8_t mode)
-º¯Êı¹¦ÄÜ: È«²ÊLED¿ØÖÆ
-ÊäÈë: mode LEDÉÁË¸Ä£Ê½
-Êä³ö£ºÎŞ
-±¸×¢: mode :0-3    3:red  2:green 1:blue  0:Ä¬ÈÏºôÎüµÆ
+å‡½æ•°å:Send_LED_Mode(uint8_t mode)
+å‡½æ•°åŠŸèƒ½: å…¨å½©LEDæ§åˆ¶
+è¾“å…¥: mode LEDé—ªçƒæ¨¡å¼
+è¾“å‡ºï¼šæ— 
+å¤‡æ³¨: mode :0-3    3:red  2:green 1:blue  0:é»˜è®¤å‘¼å¸ç¯
 ***************************************************************/
-void C_AirOperation::Send_LED_Mode(uint8_t mode) {
+void C_AirOperation::Send_LED_Mode(uint8_t mode)
+{
     static CanTxMsg TxMessage = {0x50, 0x00, CAN_ID_STD, CAN_RTR_DATA, 1, 0, 0, 0, 0, 0, 0, 0, 0};
     TxMessage.Data[0] = mode;
 
-    if (Can_x == 1) {
+    if (Can_x == 1)
+    {
         CAN_Transmit(CAN1, &TxMessage);
-    } else if (Can_x == 2) {
+    }
+    else if (Can_x == 2)
+    {
         CAN_Transmit(CAN2, &TxMessage);
     }
 }
 
 /**************************************************************
-º¯Êı¹¦ÄÜ: Í¨¹ıCAN·¢ËÍ¶æ»úµÄ±äÁ¿
-ÊäÈë: chan Òª¿ØÖÆµÄ¶æ»úID
-      value ¶æ»úĞÅºÅµÄÊıÖµ
-Êä³ö£ºÎŞ
-±¸×¢:
+å‡½æ•°åŠŸèƒ½: é€šè¿‡CANå‘é€èˆµæœºçš„å˜é‡
+è¾“å…¥: chan è¦æ§åˆ¶çš„èˆµæœºID
+      value èˆµæœºä¿¡å·çš„æ•°å€¼
+è¾“å‡ºï¼šæ— 
+å¤‡æ³¨:
 ***************************************************************/
-void C_AirOperation::SendServoMsgByCan(uint8_t chan, uint8_t value) {
+void C_AirOperation::SendServoMsgByCan(uint8_t chan, uint8_t value)
+{
     static CanTxMsg TxMessage = {CAN_SERVO_ID, 0x00, CAN_ID_STD, CAN_RTR_DATA, 3, 0, 0, 0, 0, 0, 0, 0, 0};
     static uint8_t s_aucLastPwm[4] = {150, 150, 150, 150};
-    if (s_aucLastPwm[chan] != value)  //Öµ¸Ä±äÊ±²Å·¢ËÍ
+    if (s_aucLastPwm[chan] != value) // å€¼æ”¹å˜æ—¶æ‰å‘é€
     {
         s_aucLastPwm[chan] = value;
         TxMessage.Data[0] = 0;
         TxMessage.Data[1] = chan;
         TxMessage.Data[2] = value;
 
-        if (Can_x == 1) {
+        if (Can_x == 1)
+        {
             CAN_Transmit(CAN1, &TxMessage);
-        } else if (Can_x == 2) {
+        }
+        else if (Can_x == 2)
+        {
             CAN_Transmit(CAN2, &TxMessage);
         }
     }
 }
 
-void C_AirOperation::SendServoMsgByCan_Plus(s16 value1, s16 value2, s16 value3, s16 value4) {
+void C_AirOperation::SendServoMsgByCan_Plus(s16 value1, s16 value2, s16 value3, s16 value4)
+{
     static CanTxMsg TxMessage = {CAN_SERVO_ID, 0x00, CAN_ID_STD, CAN_RTR_DATA, 8, 0, 0, 0, 0, 0, 0, 0, 0};
 
     memcpy(TxMessage.Data, &value1, 2 * sizeof(uint8_t));
@@ -73,34 +86,42 @@ void C_AirOperation::SendServoMsgByCan_Plus(s16 value1, s16 value2, s16 value3, 
     memcpy(TxMessage.Data + 4, &value3, 2 * sizeof(uint8_t));
     memcpy(TxMessage.Data + 6, &value4, 2 * sizeof(uint8_t));
 
-    if (Can_x == 1) {
+    if (Can_x == 1)
+    {
         CAN_Transmit(CAN1, &TxMessage);
-    } else if (Can_x == 2) {
+    }
+    else if (Can_x == 2)
+    {
         CAN_Transmit(CAN2, &TxMessage);
     }
 }
 
-void C_AirOperation::open_value(int channel) {
+void C_AirOperation::open_value(int channel)
+{
     uiAirValve |= (0x01 << (channel - 1));
     SendAirMsgByCan();
 }
 
-void C_AirOperation::close_value(int channel) {
+void C_AirOperation::close_value(int channel)
+{
     uiAirValve &= (~(0x01 << (channel - 1)));
     SendAirMsgByCan();
 }
 
-void C_AirOperation::change_value(int channel) {
+void C_AirOperation::change_value(int channel)
+{
     uiAirValve ^= ((uint32_t)(0x01 << (channel - 1)));
     SendAirMsgByCan();
 }
 
-void C_AirOperation::set_value_value(uint32_t value) {
+void C_AirOperation::set_value_value(uint32_t value)
+{
     uiAirValve = value;
     SendAirMsgByCan();
 }
 
-void C_AirOperation::Update_Switch(CanRxMsg &RxMsg) {
+void C_AirOperation::Update_Switch(CanRxMsg &RxMsg)
+{
     usSwitchPre = usSwitch;
     UpdateSwitchValue(RxMsg);
 }

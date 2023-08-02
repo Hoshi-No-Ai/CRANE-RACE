@@ -4,7 +4,7 @@ using _api_module_::calculate_flag;
 using _api_module_::f_g_error;
 using _api_module_::flag_tuoluo;
 
-// ´®¿Ú1£ºÍÓÂİÒÇ
+// ä¸²å£1ï¼šé™€èºä»ª
 double temp;
 
 fp32 k_gyro = -0.0125;
@@ -18,7 +18,7 @@ void Comm1Rx_IRQ(void)
         RATE = (UA1RxMailbox[2] << 24) | (UA1RxMailbox[1] << 8) | (UA1RxMailbox[3] << 16);
         RATE = RATE / 256;
         GyroData = ((double)RATE) *
-                   2.980232238769531e-003; // GyroData = ((double )RATE)  * 2.5 / 8388608;ÍÓÂİÒÇ½âËã
+                   2.980232238769531e-003; // GyroData = ((double )RATE)  * 2.5 / 8388608;é™€èºä»ªè§£ç®—
         gyroGz = GyroData - f_g_error;
         GyroLPF.input = gyroGz;
         Butterworth50HzLPF(&GyroLPF);
@@ -87,32 +87,32 @@ uint8_t uart1_data_buf1[UART1_RX_DATA_LEN1];
 uint8_t uart1_data_buf2[UART1_RX_DATA_LEN2];
 // void Comm1Rx_IRQ(void)
 //{
-//     static unsigned char Comm1_Rx_Status = RX_FREE; // ³õÊ¼×´Ì¬
-//     static unsigned char ucPit = 0;                 // Êı¾İ×Ö½Ú¼ÆÊı
-//     unsigned char i = 0;                            // ¼ÆÊı±äÁ¿£¬±éÀúÕû¸öDMAÊı×é
+//     static unsigned char Comm1_Rx_Status = RX_FREE; // åˆå§‹çŠ¶æ€
+//     static unsigned char ucPit = 0;                 // æ•°æ®å­—èŠ‚è®¡æ•°
+//     unsigned char i = 0;                            // è®¡æ•°å˜é‡ï¼Œéå†æ•´ä¸ªDMAæ•°ç»„
 
 //   for (i = 0; i < UART1_RX_DATA_LEN1 + 2 + UART1_RX_DATA_LEN2 + 2;
-//        ++i) // ±éÀúÊı×é£¬Êı×é´óĞ¡i¸Ä±ä¸ù¾İUSART1_RXMB_LEN´óĞ¡±ä»¯
+//        ++i) // éå†æ•°ç»„ï¼Œæ•°ç»„å¤§å°iæ”¹å˜æ ¹æ®USART1_RXMB_LENå¤§å°å˜åŒ–
 //   {
-//       ucData1 = UA1RxMailbox[i]; // È¡³öÒ»¸ö×Ö½Ú
+//       ucData1 = UA1RxMailbox[i]; // å–å‡ºä¸€ä¸ªå­—èŠ‚
 //				// ucData1 = USART_ReceiveData(USART1);
-//        /*********************************×´Ì¬»ú½âÎöÊı¾İ°ü************************************/
+//        /*********************************çŠ¶æ€æœºè§£ææ•°æ®åŒ…************************************/
 //        switch (Comm1_Rx_Status)
 //        {
 //        case RX_FREE:
 //            if (ucData1 == uart1_efr.start11)
 //            {
-//                Comm1_Rx_Status = RX_START_1; // ×ÔÓÉ×´Ì¬ÏÂ½Óµ½0x55ÈÏÎª¿ªÊ¼
+//                Comm1_Rx_Status = RX_START_1; // è‡ªç”±çŠ¶æ€ä¸‹æ¥åˆ°0x55è®¤ä¸ºå¼€å§‹
 //            }
 //            break;
 
 //        case RX_START_1:
-//            //½ÇËÙ¶È
+//            //è§’é€Ÿåº¦
 //            if (ucData1 == uart1_efr.start12)
 //            {
 //                Comm1_Rx_Status = RX_DATAS_1;
 //            }
-//            //½Ç¶È
+//            //è§’åº¦
 //            else if (ucData1 == uart1_efr.start22)
 //            {
 //                Comm1_Rx_Status = RX_DATAS_2;
@@ -124,12 +124,12 @@ uint8_t uart1_data_buf2[UART1_RX_DATA_LEN2];
 //            break;
 
 //        case RX_DATAS_1:
-//            if (ucPit < uart1_efr.datanum1) // Èç¹ûÃ»¹»Êı£¬´æ
+//            if (ucPit < uart1_efr.datanum1) // å¦‚æœæ²¡å¤Ÿæ•°ï¼Œå­˜
 //            {
 //                *(uart1_data_buf1 + ucPit) = ucData1;
 //                ucPit++;
 //            }
-//            if (ucPit == uart1_efr.datanum1) // ¹»ÊıÁËÅĞ¶Ï0x00
+//            if (ucPit == uart1_efr.datanum1) // å¤Ÿæ•°äº†åˆ¤æ–­0x00
 //            {
 //                ucPit = 0;
 
@@ -146,12 +146,12 @@ uint8_t uart1_data_buf2[UART1_RX_DATA_LEN2];
 //            break;
 
 //        case RX_DATAS_2:
-//            if (ucPit < uart1_efr.datanum2) // Èç¹ûÃ»¹»Êı£¬´æ
+//            if (ucPit < uart1_efr.datanum2) // å¦‚æœæ²¡å¤Ÿæ•°ï¼Œå­˜
 //            {
 //                *(uart1_data_buf2 + ucPit) = ucData1;
 //                ucPit++;
 //            }
-//            if(ucPit == uart1_efr.datanum2) // ¹»ÊıÁËÅĞ¶Ï0x00
+//            if(ucPit == uart1_efr.datanum2) // å¤Ÿæ•°äº†åˆ¤æ–­0x00
 //            {
 //                ucPit = 0;
 
@@ -175,10 +175,10 @@ uint8_t uart1_data_buf2[UART1_RX_DATA_LEN2];
 //}
 
 /*
-uart2:Á½Ö÷¿Ø¼äÍ¨Ñ¶
-Êı¾İ°ü¸ñÊ½£º0x55 0x22 DATALEN ×´Ì¬Î»[0] Ö¸ÁîÎ»[1] Êı¾İÎ»[2-9] 0x01 0xAA
-×´Ì¬Î»£º1Õı³££¬0³ö´í
-Ö¸ÁîÎ»£º1¼ñ¼ı£¬2¼ñ¼ı¸´Î»£¬3µİ¼ı£¬4µİ¼ı¸´Î»£¬5¸ÉÈÅÆô¶¯£¬6¸ÉÈÅÍ£Ö¹
+uart2:ä¸¤ä¸»æ§é—´é€šè®¯
+æ•°æ®åŒ…æ ¼å¼ï¼š0x55 0x22 DATALEN çŠ¶æ€ä½[0] æŒ‡ä»¤ä½[1] æ•°æ®ä½[2-9] 0x01 0xAA
+çŠ¶æ€ä½ï¼š1æ­£å¸¸ï¼Œ0å‡ºé”™
+æŒ‡ä»¤ä½ï¼š1æ¡ç®­ï¼Œ2æ¡ç®­å¤ä½ï¼Œ3é€’ç®­ï¼Œ4é€’ç®­å¤ä½ï¼Œ5å¹²æ‰°å¯åŠ¨ï¼Œ6å¹²æ‰°åœæ­¢
 */
 
 uart3_tx_protocol_t uart3_eft = {0x55, 0x22, UART3_TX_DATA_LEN, {0}, 0x01, 0xAA};
@@ -187,26 +187,26 @@ uart3_rx_protocol_t uart3_efr = {0x55, 0x22, UART3_RX_DATA_LEN, {0}, 0x01, 0xAA}
 
 // int count_test;
 
-void USART3_DMA_Tx(void) // ´®¿Ú2 DMA·¢ËÍº¯Êı
+void USART3_DMA_Tx(void) // ä¸²å£2 DMAå‘é€å‡½æ•°
 {
     DMA_ClearITPendingBit(
         USART3_TX_STREAM,
-        DMA_IT_TCIF3 /*DMA_IT_TCIF6*/); // ºÍstream¶ÔÓ¦
-                                        ////¿ªÆôDMA_Mode_Normal,¼´±ãÃ»ÓĞÊ¹ÓÃÍê³ÉÖĞ¶ÏÒ²ÒªÈí¼şÇå³ı£¬·ñÔòÖ»·¢Ò»´Î
+        DMA_IT_TCIF3 /*DMA_IT_TCIF6*/); // å’Œstreamå¯¹åº”
+                                        ////å¼€å¯DMA_Mode_Normal,å³ä¾¿æ²¡æœ‰ä½¿ç”¨å®Œæˆä¸­æ–­ä¹Ÿè¦è½¯ä»¶æ¸…é™¤ï¼Œå¦åˆ™åªå‘ä¸€æ¬¡
 
-    DMA_Cmd(USART3_TX_STREAM, DISABLE); // ÉèÖÃµ±Ç°¼ÆÊıÖµÇ°ÏÈ½ûÓÃDMA
+    DMA_Cmd(USART3_TX_STREAM, DISABLE); // è®¾ç½®å½“å‰è®¡æ•°å€¼å‰å…ˆç¦ç”¨DMA
     uart3_eft.tail1 = 0x01;
     uart3_eft.tail2 = 0xAA;
-    USART3_TX_STREAM->M0AR = (uint32_t)&uart3_eft; // ÉèÖÃµ±Ç°´ı·¢Êı¾İ»ùµØÖ·:Memory0 tARget
+    USART3_TX_STREAM->M0AR = (uint32_t)&uart3_eft; // è®¾ç½®å½“å‰å¾…å‘æ•°æ®åŸºåœ°å€:Memory0 tARget
     USART3_TX_STREAM->NDTR =
-        (uint32_t)sizeof(uart3_eft); // ÉèÖÃµ±Ç°´ı·¢µÄÊı¾İµÄÊıÁ¿:Number of Data units to be TRansferred
+        (uint32_t)sizeof(uart3_eft); // è®¾ç½®å½“å‰å¾…å‘çš„æ•°æ®çš„æ•°é‡:Number of Data units to be TRansferred
     DMA_Cmd(USART3_TX_STREAM, ENABLE);
     while (/*count_test=*/DMA_GetCurrDataCounter(USART3_TX_STREAM))
         ;
 }
 
 uint8_t ucData3;
-/*´®¿Ú2Ïà¹ØµÄ»º´æÇø*/
+/*ä¸²å£2ç›¸å…³çš„ç¼“å­˜åŒº*/
 uint8_t uart3_data_buf[UART3_RX_DATA_LEN];
 int dist_1, dist_2;
 int dist_1_buff[5];
@@ -216,22 +216,22 @@ int temp_target_detect;
 extern float pre_motor_sucker;
 extern float velt_sucker;
 extern float cal_distance_by_sensor;
-void Comm3Rx_IRQ(void) // ´®¿Ú2µçÁ÷DMA½ÓÊÕº¯Êı
+void Comm3Rx_IRQ(void) // ä¸²å£2ç”µæµDMAæ¥æ”¶å‡½æ•°
 {
-    static unsigned char Comm3_Rx_Status = RX_FREE; // ³õÊ¼×´Ì¬
-    static unsigned char ucPit = 0;                 // Êı¾İ×Ö½Ú¼ÆÊı
-    unsigned char i = 0;                            // ¼ÆÊı±äÁ¿£¬±éÀúÕû¸öDMAÊı×é
+    static unsigned char Comm3_Rx_Status = RX_FREE; // åˆå§‹çŠ¶æ€
+    static unsigned char ucPit = 0;                 // æ•°æ®å­—èŠ‚è®¡æ•°
+    unsigned char i = 0;                            // è®¡æ•°å˜é‡ï¼Œéå†æ•´ä¸ªDMAæ•°ç»„
 
-    for (i = 0; i < UART3_RX_DATA_LEN + 5; ++i) // ±éÀúÊı×é£¬Êı×é´óĞ¡i¸Ä±ä¸ù¾İUSART1_RXMB_LEN´óĞ¡±ä»¯
+    for (i = 0; i < UART3_RX_DATA_LEN + 5; ++i) // éå†æ•°ç»„ï¼Œæ•°ç»„å¤§å°iæ”¹å˜æ ¹æ®USART1_RXMB_LENå¤§å°å˜åŒ–
     {
-        ucData3 = UA3RxMailbox[i]; // È¡³öÒ»¸ö×Ö½Ú
-        /*********************************×´Ì¬»ú½âÎöÊı¾İ°ü************************************/
+        ucData3 = UA3RxMailbox[i]; // å–å‡ºä¸€ä¸ªå­—èŠ‚
+        /*********************************çŠ¶æ€æœºè§£ææ•°æ®åŒ…************************************/
         switch (Comm3_Rx_Status)
         {
         case RX_FREE:
             if (ucData3 == uart3_efr.start1)
             {
-                Comm3_Rx_Status = RX_START_1; // ×ÔÓÉ×´Ì¬ÏÂ½Óµ½0x55ÈÏÎª¿ªÊ¼
+                Comm3_Rx_Status = RX_START_1; // è‡ªç”±çŠ¶æ€ä¸‹æ¥åˆ°0x55è®¤ä¸ºå¼€å§‹
             }
             break;
 
@@ -258,27 +258,27 @@ void Comm3Rx_IRQ(void) // ´®¿Ú2µçÁ÷DMA½ÓÊÕº¯Êı
             break;
 
         case RX_DATAS:
-            if (ucPit < uart3_efr.datanum) // Èç¹ûÃ»¹»Êı£¬´æ
+            if (ucPit < uart3_efr.datanum) // å¦‚æœæ²¡å¤Ÿæ•°ï¼Œå­˜
             {
                 *(uart3_data_buf + ucPit) = ucData3;
                 ucPit++;
             }
-            else // ¹»ÊıÁËÅĞ¶Ï0x00
+            else // å¤Ÿæ•°äº†åˆ¤æ–­0x00
             {
                 ucPit = 0;
                 if (ucData3 == uart3_efr.tail1)
                 {
                     Comm3_Rx_Status = RX_TAIL_1;
-									pre_motor_sucker = sucker.lift_motor.pos_pid.fpFB;
+                    pre_motor_sucker = sucker.lift_motor.pos_pid.fpFB;
                     memcpy(&sucker.slide_motor.pos_pid.fpFB, uart3_efr.num, 4);
                     memcpy(&sucker.lift_motor.pos_pid.fpFB, &uart3_efr.num[4], 4);
-									 velt_sucker =(sucker.lift_motor.pos_pid.fpFB- pre_motor_sucker)/0.001;
+                    velt_sucker = (sucker.lift_motor.pos_pid.fpFB - pre_motor_sucker) / 0.001;
 
                     memcpy(&dist_1, &uart3_efr.num[8], 4);
-								
+
                     memcpy(&dist_2, &uart3_efr.num[12], 4);
-										dist_1 +=128;
-									dist_2 +=42;
+                    dist_1 += 128;
+                    dist_2 += 42;
 
                     if (dist_1 > 250 || dist_2 > 250)
                     {
@@ -287,9 +287,11 @@ void Comm3Rx_IRQ(void) // ´®¿Ú2µçÁ÷DMA½ÓÊÕº¯Êı
                     else
                     {
                         temp_target_detect = 1;
-											cal_distance_by_sensor = 0.1047*(dist_1+dist_2)/2-20.33;
-											if(cal_distance_by_sensor>0)cal_distance_by_sensor = 0;
-											if(cal_distance_by_sensor<-10)cal_distance_by_sensor = -12;
+                        cal_distance_by_sensor = 0.1047 * (dist_1 + dist_2) / 2 - 20.33;
+                        if (cal_distance_by_sensor > 0)
+                            cal_distance_by_sensor = 0;
+                        if (cal_distance_by_sensor < -10)
+                            cal_distance_by_sensor = -12;
                     }
                 }
                 else
@@ -301,7 +303,7 @@ void Comm3Rx_IRQ(void) // ´®¿Ú2µçÁ÷DMA½ÓÊÕº¯Êı
 
         case RX_TAIL_1:
         {
-            if (ucData3 == uart3_efr.tail2) // Èç¹û½Óµ½ÁË0xAA£¬Êı¾İÓĞĞ§
+            if (ucData3 == uart3_efr.tail2) // å¦‚æœæ¥åˆ°äº†0xAAï¼Œæ•°æ®æœ‰æ•ˆ
             {
                 memcpy(uart3_efr.num, uart3_data_buf, UART3_RX_DATA_LEN);
             }
@@ -321,12 +323,12 @@ uart6_tx_robot_t uart6_robot_eft = {0xAA, 0xFE, 0x55, 0xFF, ROBOT, {0}, 0x01, 0x
 rx_protocol_t uart6_efr = {0x55, 0x22, REMOTE_CTRL, USART6_RX_DATA_LEN, {0}, {0}, 0xBB, 0xAA};
 
 uint8_t robot_socket_num = 0XFF, remote_ctrl_socket_num = 0xFF, temp_socket_num;
-void USART6_DMA_Tx(wifi_rx_id_e device) // ´®¿Ú2 DMA·¢ËÍº¯Êı
+void USART6_DMA_Tx(wifi_rx_id_e device) // ä¸²å£2 DMAå‘é€å‡½æ•°
 {
     DMA_ClearITPendingBit(
         USART6_TX_STREAM,
-        DMA_IT_TCIF6);                  // ¿ªÆôDMA_Mode_Normal,¼´±ãÃ»ÓĞÊ¹ÓÃÍê³ÉÖĞ¶ÏÒ²ÒªÈí¼şÇå³ı£¬·ñÔòÖ»·¢Ò»´Î
-    DMA_Cmd(USART6_TX_STREAM, DISABLE); // ÉèÖÃµ±Ç°¼ÆÊıÖµÇ°ÏÈ½ûÓÃDMA
+        DMA_IT_TCIF6);                  // å¼€å¯DMA_Mode_Normal,å³ä¾¿æ²¡æœ‰ä½¿ç”¨å®Œæˆä¸­æ–­ä¹Ÿè¦è½¯ä»¶æ¸…é™¤ï¼Œå¦åˆ™åªå‘ä¸€æ¬¡
+    DMA_Cmd(USART6_TX_STREAM, DISABLE); // è®¾ç½®å½“å‰è®¡æ•°å€¼å‰å…ˆç¦ç”¨DMA
     if (device == REMOTE_CTRL)
     {
         uart6_remote_ctrl_eft.ID = REMOTE_CTRL;
@@ -350,24 +352,24 @@ void USART6_DMA_Tx(wifi_rx_id_e device) // ´®¿Ú2 DMA·¢ËÍº¯Êı
 }
 
 uint8_t ucData6;
-/*´®¿Ú4Ïà¹ØµÄ»º´æÇø*/
+/*ä¸²å£4ç›¸å…³çš„ç¼“å­˜åŒº*/
 uint8_t rx_rate;
 uint8_t real_rx_rate;
 u8 RX_COUNT = 0;
 uint8_t uart6_data_buf[USART6_RX_DATA_LEN];
-void Comm6Rx_IRQ(void) // ´®¿Ú2µçÁ÷DMA½ÓÊÕº¯Êı
+void Comm6Rx_IRQ(void) // ä¸²å£2ç”µæµDMAæ¥æ”¶å‡½æ•°
 {
-    static unsigned char Comm6_Rx_Status = RX_FREE; // ³õÊ¼×´Ì¬
-                                                    // ¼ÆÊı±äÁ¿£¬±éÀúÕû¸öDMAÊı×é
-    ucData6 = USART_ReceiveData(USART6);            // È¡³öÒ»¸ö×Ö½Ú
+    static unsigned char Comm6_Rx_Status = RX_FREE; // åˆå§‹çŠ¶æ€
+                                                    // è®¡æ•°å˜é‡ï¼Œéå†æ•´ä¸ªDMAæ•°ç»„
+    ucData6 = USART_ReceiveData(USART6);            // å–å‡ºä¸€ä¸ªå­—èŠ‚
 
-    /*********************************×´Ì¬»ú½âÎöÊı¾İ°ü************************************/
+    /*********************************çŠ¶æ€æœºè§£ææ•°æ®åŒ…************************************/
     switch (Comm6_Rx_Status)
     {
     case RX_FREE:
         if (ucData6 == uart6_efr.start1)
         {
-            Comm6_Rx_Status = RX_START_1; // ×ÔÓÉ×´Ì¬ÏÂ½Óµ½0x55ÈÏÎª¿ªÊ¼
+            Comm6_Rx_Status = RX_START_1; // è‡ªç”±çŠ¶æ€ä¸‹æ¥åˆ°0x55è®¤ä¸ºå¼€å§‹
         }
         break;
 
@@ -419,7 +421,7 @@ void Comm6Rx_IRQ(void) // ´®¿Ú2µçÁ÷DMA½ÓÊÕº¯Êı
 
     case RX_TAIL_1:
     {
-        if (ucData6 == uart6_efr.tail2) // Èç¹û½Óµ½ÁË0xAA£¬Êı¾İÓĞĞ§
+        if (ucData6 == uart6_efr.tail2) // å¦‚æœæ¥åˆ°äº†0xAAï¼Œæ•°æ®æœ‰æ•ˆ
         {
             memcpy(uart6_efr.num, uart6_data_buf, RX_COUNT);
         }
@@ -475,7 +477,7 @@ uint16_t USART_Receive(USART_RX_TypeDef *USARTx)
 uart2_tx_protocol_t uart2_eft = {0x55,
                                  0x00,
                                  0x09,
-                                 UART2_TX_DATA_LEN, // ÏÖÔÚÊÇ1
+                                 UART2_TX_DATA_LEN, // ç°åœ¨æ˜¯1
                                  {0},
                                  0x00,
                                  0xAA};
@@ -496,36 +498,36 @@ void UART2_DMA_Tx(void)
 {
     DMA_ClearITPendingBit(
         USART2_TX_STREAM,
-        DMA_IT_TCIF6); // ¿ªÆôDMA_Mode_Normal,¼´±ãÃ»ÓĞÊ¹ÓÃÍê³ÉÖĞ¶ÏÒ²ÒªÈí¼şÇå³ı£¬·ñÔòÖ»·¢Ò»´Î
+        DMA_IT_TCIF6); // å¼€å¯DMA_Mode_Normal,å³ä¾¿æ²¡æœ‰ä½¿ç”¨å®Œæˆä¸­æ–­ä¹Ÿè¦è½¯ä»¶æ¸…é™¤ï¼Œå¦åˆ™åªå‘ä¸€æ¬¡
 
-    DMA_Cmd(USART2_TX_STREAM, DISABLE); // ÉèÖÃµ±Ç°¼ÆÊıÖµÇ°ÏÈ½ûÓÃDMA
+    DMA_Cmd(USART2_TX_STREAM, DISABLE); // è®¾ç½®å½“å‰è®¡æ•°å€¼å‰å…ˆç¦ç”¨DMA
     uart2_eft.tail1 = 0x00;
     uart2_eft.tail2 = 0xAA;
-    USART2_TX_STREAM->M0AR = (uint32_t)&uart2_eft; // ÉèÖÃµ±Ç°´ı·¢Êı¾İ»ùµØÖ·:Memory0 tARget
+    USART2_TX_STREAM->M0AR = (uint32_t)&uart2_eft; // è®¾ç½®å½“å‰å¾…å‘æ•°æ®åŸºåœ°å€:Memory0 tARget
     USART2_TX_STREAM->NDTR =
-        (uint32_t)sizeof(uart2_eft); // ÉèÖÃµ±Ç°´ı·¢µÄÊı¾İµÄÊıÁ¿:Number of Data units to be TRansferred
+        (uint32_t)sizeof(uart2_eft); // è®¾ç½®å½“å‰å¾…å‘çš„æ•°æ®çš„æ•°é‡:Number of Data units to be TRansferred
     DMA_Cmd(USART2_TX_STREAM, ENABLE);
     while (DMA_GetCurrDataCounter(USART2_TX_STREAM))
         ;
 }
 
-void Comm2Rx_IRQ(void) // ´®¿Ú6 DMA½ÓÊÕº¯Êı
+void Comm2Rx_IRQ(void) // ä¸²å£6 DMAæ¥æ”¶å‡½æ•°
 {
-    static unsigned char Comm2_Rx_Status = RX_FREE; // ³õÊ¼×´Ì¬
-    static unsigned char ucPit = 0;                 // Êı¾İ×Ö½Ú¼ÆÊı
+    static unsigned char Comm2_Rx_Status = RX_FREE; // åˆå§‹çŠ¶æ€
+    static unsigned char ucPit = 0;                 // æ•°æ®å­—èŠ‚è®¡æ•°
     static unsigned char ucdt35 = 0;
-    unsigned char i = 0; // ¼ÆÊı±äÁ¿£¬±éÀúÕû¸öDMAÊı×é
+    unsigned char i = 0; // è®¡æ•°å˜é‡ï¼Œéå†æ•´ä¸ªDMAæ•°ç»„
     usart2_cnt++;
-    for (i = 0; i < UART2_RX_DATA_LEN + 6; ++i) // ±éÀúÊı×é£¬Êı×é´óĞ¡i¸Ä±ä¸ù¾İUSART1_RXMB_LEN´óĞ¡±ä»¯
+    for (i = 0; i < UART2_RX_DATA_LEN + 6; ++i) // éå†æ•°ç»„ï¼Œæ•°ç»„å¤§å°iæ”¹å˜æ ¹æ®USART1_RXMB_LENå¤§å°å˜åŒ–
     {
-        ucData2 = UA2RxMailbox[i]; // È¡³öÒ»¸ö×Ö½Ú
-        /*********************************×´Ì¬»ú½âÎöÊı¾İ°ü************************************/
+        ucData2 = UA2RxMailbox[i]; // å–å‡ºä¸€ä¸ªå­—èŠ‚
+        /*********************************çŠ¶æ€æœºè§£ææ•°æ®åŒ…************************************/
         switch (Comm2_Rx_Status)
         {
         case RX_FREE:
             if (ucData2 == uart2_efr.start1)
             {
-                Comm2_Rx_Status = RX_START_1; // ×ÔÓÉ×´Ì¬ÏÂ½Óµ½0x55ÈÏÎª¿ªÊ¼
+                Comm2_Rx_Status = RX_START_1; // è‡ªç”±çŠ¶æ€ä¸‹æ¥åˆ°0x55è®¤ä¸ºå¼€å§‹
             }
             break;
 
@@ -561,12 +563,12 @@ void Comm2Rx_IRQ(void) // ´®¿Ú6 DMA½ÓÊÕº¯Êı
             }
             break;
         case RX_DATAS:
-            if (ucPit < uart2_efr.datanum) // Èç¹ûÃ»¹»Êı£¬´æ
+            if (ucPit < uart2_efr.datanum) // å¦‚æœæ²¡å¤Ÿæ•°ï¼Œå­˜
             {
                 *(uart2_data_buf + ucPit) = ucData2;
                 ucPit++;
             }
-            else // ¹»ÊıÁËÅĞ¶Ï0x00
+            else // å¤Ÿæ•°äº†åˆ¤æ–­0x00
             {
                 ucPit = 0;
                 if (ucData2 == uart2_efr.tail1)
@@ -581,7 +583,7 @@ void Comm2Rx_IRQ(void) // ´®¿Ú6 DMA½ÓÊÕº¯Êı
             break;
 
         case RX_TAIL_1:
-            if (ucData2 == uart2_efr.tail2) // Èç¹û½Óµ½ÁË0xAA£¬Êı¾İÓĞĞ§
+            if (ucData2 == uart2_efr.tail2) // å¦‚æœæ¥åˆ°äº†0xAAï¼Œæ•°æ®æœ‰æ•ˆ
             {
                 memcpy(uart2_efr.num, uart2_data_buf, UART2_RX_DATA_LEN);
                 memcpy(&aruco_fdb, uart2_efr.num, 4 * 7);

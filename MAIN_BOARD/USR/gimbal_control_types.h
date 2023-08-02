@@ -3,30 +3,30 @@
 
 #include "basic_type.h"
 
-#define Cali_Rol_Coe 	1
-#define Cali_Pit_Coe 	1
-#define Cali_Yaw_Coe 	1
+#define Cali_Rol_Coe 1
+#define Cali_Pit_Coe 1
+#define Cali_Yaw_Coe 1
 
 #define Cali_Rol_CoeA 1
 #define Cali_Pit_CoeA 1
 #define Cali_Yaw_CoeA 1
 
-#define mat         arm_matrix_instance_f32
-#define mat_init    arm_mat_init_f32
-#define mat_add     arm_mat_add_f32
-#define mat_sub     arm_mat_sub_f32
-#define mat_mult    arm_mat_mult_f32
-#define mat_trans   arm_mat_trans_f32
-#define mat_inv     arm_mat_inverse_f32
+#define mat arm_matrix_instance_f32
+#define mat_init arm_mat_init_f32
+#define mat_add arm_mat_add_f32
+#define mat_sub arm_mat_sub_f32
+#define mat_mult arm_mat_mult_f32
+#define mat_trans arm_mat_trans_f32
+#define mat_inv arm_mat_inverse_f32
 
 #define Main_Buf_Length 18
 
-//typedef struct
+// typedef struct
 //{
-//    float raw_value;
-//    float filtered_value[2];
-//    mat xhat, xhatminus, z, A, H, AT, HT, Q, R, P, Pminus, K;
-//} kalman_filter_t;
+//     float raw_value;
+//     float filtered_value[2];
+//     mat xhat, xhatminus, z, A, H, AT, HT, Q, R, P, Pminus, K;
+// } kalman_filter_t;
 
 typedef struct
 {
@@ -52,7 +52,7 @@ typedef struct
 {
     float raw_value;
     float filtered_value[2];
-    float xhat_data[2], xhatminus_data[2], z_data[2],Pminus_data[4], K_data[4];
+    float xhat_data[2], xhatminus_data[2], z_data[2], Pminus_data[4], K_data[4];
     float P_data[4];
     float AT_data[4], HT_data[4];
     float A_data[4];
@@ -61,32 +61,32 @@ typedef struct
     float R_data[4];
 } kalman_filter_init_t;
 
-/*PID¿ØÖÆÆ÷½á¹¹Ìå*/
+/*PIDæŽ§åˆ¶å™¨ç»“æž„ä½“*/
 typedef struct
 {
-    FP32 fpDes;//¿ØÖÆ±äÁ¿Ä¿±êÖµ
-    FP32 fpFB;//¿ØÖÆ±äÁ¿·´À¡Öµ
+    FP32 fpDes; // æŽ§åˆ¶å˜é‡ç›®æ ‡å€¼
+    FP32 fpFB;  // æŽ§åˆ¶å˜é‡åé¦ˆå€¼
 
-    FP32 fpKp;//±ÈÀýÏµÊýKp
-    FP32 fpKi;//»ý·ÖÏµÊýKi
-    FP32 fpKd;//Î¢·ÖÏµÊýKd
+    FP32 fpKp; // æ¯”ä¾‹ç³»æ•°Kp
+    FP32 fpKi; // ç§¯åˆ†ç³»æ•°Ki
+    FP32 fpKd; // å¾®åˆ†ç³»æ•°Kd
 
-    FP32 fpUp;//±ÈÀýÊä³ö
-    FP32 fpUi;//»ý·ÖÊä³ö
-    FP32 fpUd;//Î¢·ÖÊä³ö
+    FP32 fpUp; // æ¯”ä¾‹è¾“å‡º
+    FP32 fpUi; // ç§¯åˆ†è¾“å‡º
+    FP32 fpUd; // å¾®åˆ†è¾“å‡º
 
-    FP32 fpE;//±¾´ÎÆ«²î
-    FP32 fpPreE;//ÉÏ´ÎÆ«²î
-    FP32 fpSumE;//×ÜÆ«²î
-    FP32 fpU;//±¾´ÎPIDÔËËã½á¹û
+    FP32 fpE;    // æœ¬æ¬¡åå·®
+    FP32 fpPreE; // ä¸Šæ¬¡åå·®
+    FP32 fpSumE; // æ€»åå·®
+    FP32 fpU;    // æœ¬æ¬¡PIDè¿ç®—ç»“æžœ
 
-    FP32 fpUMax;//PIDÔËËãºóÊä³ö×î´óÖµ¼°×öÓöÏÞÏ÷ÈõÊ±µÄÉÏÏÞÖµ
-    FP32 fpEpMax;//±ÈÀýÏîÊä³ö×î´óÖµ
-    FP32 fpEiMax;//»ý·ÖÏîÊä³ö×î´óÖµ
-    FP32 fpEdMax;//Î¢·ÖÏîÊä³ö×î´óÖµ
-    FP32 fpEMin;//»ý·ÖÉÏÏÞ
+    FP32 fpUMax;  // PIDè¿ç®—åŽè¾“å‡ºæœ€å¤§å€¼åŠåšé‡é™å‰Šå¼±æ—¶çš„ä¸Šé™å€¼
+    FP32 fpEpMax; // æ¯”ä¾‹é¡¹è¾“å‡ºæœ€å¤§å€¼
+    FP32 fpEiMax; // ç§¯åˆ†é¡¹è¾“å‡ºæœ€å¤§å€¼
+    FP32 fpEdMax; // å¾®åˆ†é¡¹è¾“å‡ºæœ€å¤§å€¼
+    FP32 fpEMin;  // ç§¯åˆ†ä¸Šé™
 
-    FP32 fpDt;//¿ØÖÆÖÜÆÚ
+    FP32 fpDt; // æŽ§åˆ¶å‘¨æœŸ
 } ST_PID;
 
 typedef struct
@@ -104,33 +104,33 @@ typedef struct
 typedef union
 {
     STMAINDATA stMainData;
-    UCHAR8 Main_Buf[Main_Buf_Length];				//#define Main_Buf_Length 18
+    UCHAR8 Main_Buf[Main_Buf_Length]; // #define Main_Buf_Length 18
 } MAIN_SEND_DATA;
 
-//Ð¡ÍÓÂÝÊý¾Ý´¦Àí½á¹¹Ìå
+// å°é™€èžºæ•°æ®å¤„ç†ç»“æž„ä½“
 typedef struct
 {
     struct
     {
-        u8 head[2];             //2
-        u8 id;                  //1
-        u8 num;                 //1
-        float PitchPos_FB;      //4
-        float YawPos_FB;        //4
-        float BenjaminPos_FB;   //4
-        u8 tail[2];             //2
-    } Send;                     //total:18
+        u8 head[2];           // 2
+        u8 id;                // 1
+        u8 num;               // 1
+        float PitchPos_FB;    // 4
+        float YawPos_FB;      // 4
+        float BenjaminPos_FB; // 4
+        u8 tail[2];           // 2
+    } Send;                   // total:18
 
     struct
     {
-        u8 head[2];             //2
-        u8 id;                  //1
-        u8 num;                 //1
-        float PitchPos_Des;     //4
-        float YawPos_Des;       //4
-        float ShooterPos_Des;   //4
-        u8 tail[2];             //2
-    } Receive;                  //total:18
+        u8 head[2];           // 2
+        u8 id;                // 1
+        u8 num;               // 1
+        float PitchPos_Des;   // 4
+        float YawPos_Des;     // 4
+        float ShooterPos_Des; // 4
+        u8 tail[2];           // 2
+    } Receive;                // total:18
 } ST_MAINCONTROL;
 
 typedef enum
@@ -154,16 +154,16 @@ typedef struct
     FunctionalState emSampleState;
 } ST_IDTFY_CTRL;
 
-/*µç»úÂëÅÌ½á¹¹Ìå*/
+/*ç”µæœºç ç›˜ç»“æž„ä½“*/
 typedef struct
 {
-    SINT32 siRawValue;//±¾´Î±àÂëÆ÷µÄÔ­Ê¼Öµ
-    SINT32 siPreRawValue;//ÉÏÒ»´Î±àÂëÆ÷µÄÔ­Ê¼Öµ
-    SINT32 siDiff;//±àÂëÆ÷Á½´ÎÔ­Ê¼ÖµµÄ²îÖµ
-    SINT32 siSumValue;//±àÂëÆ÷ÀÛ¼ÓÖµ
-    SINT32 siGearRatio;//µç»ú¼õËÙÆ÷¼õËÙ±È
-    SINT32 siNumber;//±àÂëÆ÷ÏßÊý
-    FP32   fpSpeed;//µç»ú¼õËÙÆ÷Êä³öÖá×ªËÙ£¬µ¥Î»£ºr/min
+    SINT32 siRawValue;    // æœ¬æ¬¡ç¼–ç å™¨çš„åŽŸå§‹å€¼
+    SINT32 siPreRawValue; // ä¸Šä¸€æ¬¡ç¼–ç å™¨çš„åŽŸå§‹å€¼
+    SINT32 siDiff;        // ç¼–ç å™¨ä¸¤æ¬¡åŽŸå§‹å€¼çš„å·®å€¼
+    SINT32 siSumValue;    // ç¼–ç å™¨ç´¯åŠ å€¼
+    SINT32 siGearRatio;   // ç”µæœºå‡é€Ÿå™¨å‡é€Ÿæ¯”
+    SINT32 siNumber;      // ç¼–ç å™¨çº¿æ•°
+    FP32 fpSpeed;         // ç”µæœºå‡é€Ÿå™¨è¾“å‡ºè½´è½¬é€Ÿï¼Œå•ä½ï¼šr/min
 } ST_ENCODER;
 
 typedef struct
@@ -176,49 +176,48 @@ typedef struct
     FP32 Input;
 } IDTFY_DATA;
 
-//typedef struct
+// typedef struct
 //{
-//    USART_TypeDef* USARTx;
-//    DMA_Stream_TypeDef* DMAy_Streamx;
-//    UCHAR8* pMailbox;
-//    __IO UCHAR8* pDMAbuf;
-//    USHORT16 MbLen;
-//    USHORT16 DMALen;
-//    USHORT16 rxConter;
-//    USHORT16 rxBufferPtr;
-//    USHORT16 rxSize;
-//} USART_RX_TypeDef;
+//     USART_TypeDef* USARTx;
+//     DMA_Stream_TypeDef* DMAy_Streamx;
+//     UCHAR8* pMailbox;
+//     __IO UCHAR8* pDMAbuf;
+//     USHORT16 MbLen;
+//     USHORT16 DMALen;
+//     USHORT16 rxConter;
+//     USHORT16 rxBufferPtr;
+//     USHORT16 rxSize;
+// } USART_RX_TypeDef;
 
-//typedef struct
+// typedef struct
 //{
-//    USART_TypeDef* USARTx;
-//    DMA_Stream_TypeDef* DMAy_Streamx;
-//    UCHAR8* pMailbox;
-//    __IO UCHAR8* pDMAbuf;
-//    USHORT16 MbLen;
-//    USHORT16 DMALen;
-//} USART_TX_TypeDef;
+//     USART_TypeDef* USARTx;
+//     DMA_Stream_TypeDef* DMAy_Streamx;
+//     UCHAR8* pMailbox;
+//     __IO UCHAR8* pDMAbuf;
+//     USHORT16 MbLen;
+//     USHORT16 DMALen;
+// } USART_TX_TypeDef;
 
-//typedef struct
+// typedef struct
 //{
-//    float preout;
-//    float out;
-//    float in;
-//    float off_freq;
-//    float samp_tim;
-//} ST_LPF;
+//     float preout;
+//     float out;
+//     float in;
+//     float off_freq;
+//     float samp_tim;
+// } ST_LPF;
 
-//typedef struct
+// typedef struct
 //{
-//    FP32 x1;
-//    FP32 x2;
-//    FP32 x;
-//    FP32 r;
-//    float h;
-//    FP32 T;
-//    FP32 aim;
-//} TD;
-
+//     FP32 x1;
+//     FP32 x2;
+//     FP32 x;
+//     FP32 r;
+//     float h;
+//     FP32 T;
+//     FP32 aim;
+// } TD;
 
 enum
 {
@@ -231,7 +230,6 @@ enum
     TEM,
     MPU_ITEMS,
 };
-
 
 enum
 {
@@ -248,7 +246,7 @@ enum
 
 enum
 {
-    m1=0,
+    m1 = 0,
     m2,
     m3,
     m4,
@@ -284,10 +282,10 @@ enum
 
 typedef struct
 {
-    float q0;//q0;
-    float q1;//q1;
-    float q2;//q2;
-    float q3;//q3;
+    float q0; // q0;
+    float q1; // q1;
+    float q2; // q2;
+    float q3; // q3;
 
     float gkp;
     float gki;
@@ -303,51 +301,49 @@ typedef struct
     float rol;
     float pit;
     float yaw;
-} _imu_st ;
+} _imu_st;
 
+#define USART5_RX_STREAM DMA1_Stream0
+#define USART3_RX_STREAM DMA1_Stream1
+#define UART4_RX_STREAM DMA1_Stream2
+#define USART3_TX_STREAM DMA1_Stream3
+#define UART4_TX_STREAM DMA1_Stream4
+#define USART2_RX_STREAM DMA1_Stream5
+#define USART2_TX_STREAM DMA1_Stream6
+#define USART5_TX_STREAM DMA1_Stream7
+#define UART8_TX_STREAM DMA1_Stream0
+#define UART7_TX_STREAM DMA1_Stream1
+#define UART7_RX_STREAM DMA1_Stream3
+#define UART8_RX_STREAM DMA1_Stream6
+#define USART6_RX_STREAM DMA2_Stream1
+#define USART1_RX_STREAM DMA2_Stream5
+#define USART6_TX_STREAM DMA2_Stream6
+#define USART1_TX_STREAM DMA2_Stream7
 
+#define USART5_RX_CHANNEL DMA_Channel_4
+#define USART3_RX_CHANNEL DMA_Channel_4
+#define UART4_RX_CHANNEL DMA_Channel_4
+#define USART3_TX_CHANNEL DMA_Channel_4
+#define UART4_TX_CHANNEL DMA_Channel_4
+#define USART2_RX_CHANNEL DMA_Channel_4
+#define USART2_TX_CHANNEL DMA_Channel_4
+#define USART5_TX_CHANNEL DMA_Channel_4
+#define UART8_TX_CHANNEL DMA_Channel_5
+#define UART7_TX_CHANNEL DMA_Channel_5
+#define UART7_RX_CHANNEL DMA_Channel_5
+#define UART8_RX_CHANNEL DMA_Channel_5
+#define USART1_TX_CHANNEL DMA_Channel_4
+#define USART1_RX_CHANNEL DMA_Channel_4
+#define USART6_TX_CHANNEL DMA_Channel_5
+#define USART6_RX_CHANNEL DMA_Channel_5
 
-#define USART5_RX_STREAM        DMA1_Stream0
-#define USART3_RX_STREAM        DMA1_Stream1
-#define UART4_RX_STREAM         DMA1_Stream2
-#define USART3_TX_STREAM        DMA1_Stream3
-#define UART4_TX_STREAM         DMA1_Stream4
-#define USART2_RX_STREAM        DMA1_Stream5
-#define USART2_TX_STREAM        DMA1_Stream6
-#define USART5_TX_STREAM        DMA1_Stream7
-#define UART8_TX_STREAM         DMA1_Stream0
-#define UART7_TX_STREAM         DMA1_Stream1
-#define UART7_RX_STREAM         DMA1_Stream3
-#define UART8_RX_STREAM         DMA1_Stream6
-#define USART6_RX_STREAM        DMA2_Stream1
-#define USART1_RX_STREAM        DMA2_Stream5
-#define USART6_TX_STREAM        DMA2_Stream6
-#define USART1_TX_STREAM        DMA2_Stream7
+/*ä¸²å£1é€šä¿¡ç¼“å†²é•¿åº¦*/
+#define USART3_TXDMA_LEN 40
+#define USART3_TXMB_LEN 20
 
-#define USART5_RX_CHANNEL       DMA_Channel_4
-#define USART3_RX_CHANNEL       DMA_Channel_4
-#define UART4_RX_CHANNEL        DMA_Channel_4
-#define USART3_TX_CHANNEL       DMA_Channel_4
-#define UART4_TX_CHANNEL        DMA_Channel_4
-#define USART2_RX_CHANNEL       DMA_Channel_4
-#define USART2_TX_CHANNEL       DMA_Channel_4
-#define USART5_TX_CHANNEL       DMA_Channel_4
-#define UART8_TX_CHANNEL        DMA_Channel_5
-#define UART7_TX_CHANNEL        DMA_Channel_5
-#define UART7_RX_CHANNEL        DMA_Channel_5
-#define UART8_RX_CHANNEL        DMA_Channel_5
-#define USART1_TX_CHANNEL       DMA_Channel_4
-#define USART1_RX_CHANNEL       DMA_Channel_4
-#define USART6_TX_CHANNEL       DMA_Channel_5
-#define USART6_RX_CHANNEL       DMA_Channel_5
+#define USART3_RXDMA_LEN 40
+#define USART3_RXMB_LEN 20
 
-/*´®¿Ú1Í¨ÐÅ»º³å³¤¶È*/
-#define USART3_TXDMA_LEN           40
-#define USART3_TXMB_LEN            20
-
-#define USART3_RXDMA_LEN           40
-#define USART3_RXMB_LEN            20
-
-#define RC_ON (system_monitor.USART4_fps>950)
+#define RC_ON (system_monitor.USART4_fps > 950)
 
 #endif

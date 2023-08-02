@@ -1,10 +1,10 @@
 #include "read_remote_ctrl_task.h"
 #include "action_task.h"
 
+using _action_::figure_out_object;
 using _navigation_::calibration_current;
 using _remote_ctrl_::auto_enable;
 using _remote_ctrl_::manual_enable;
-using _action_::figure_out_object;
 
 keyboard_mode_e keyboard_mode = DEBUG;
 
@@ -171,10 +171,10 @@ void Key_Deal(void)
                 calibration_current = 16000;
             }
         }
-				else if (keyboard_mode == ACTION)
-				{
-					init_motor=1;
-				}
+        else if (keyboard_mode == ACTION)
+        {
+            init_motor = 1;
+        }
     }
     else if (PRESS_KEY_1_5)
     {
@@ -294,7 +294,7 @@ void Key_Deal(void)
         if (keyboard_mode == ACTION)
         {
             action_pattern = ACTION_INIT;
-						auto_enable = 1;
+            auto_enable = 1;
         }
     }
     else if (PRESS_KEY_3_3)
@@ -316,7 +316,7 @@ void Key_Deal(void)
         if (keyboard_mode == ACTION)
         {
             this_target = 1;
-            figure_out_object=1;
+            figure_out_object = 1;
         }
     }
     else if (PRESS_KEY_3_6)
@@ -324,7 +324,7 @@ void Key_Deal(void)
         if (keyboard_mode == ACTION)
         {
             this_target = 2;
-            figure_out_object=1;
+            figure_out_object = 1;
         }
     }
     else if (PRESS_KEY_4_1)
@@ -349,11 +349,11 @@ void Key_Deal(void)
     }
     else if (PRESS_KEY_4_6)
     {
-//        target_num.box++;
-//        if (target_num.box > 3)
-//        {
-//            target_num.box = 1;
-//        }
-			test_enable=1;
+        //        target_num.box++;
+        //        if (target_num.box > 3)
+        //        {
+        //            target_num.box = 1;
+        //        }
+        test_enable = 1;
     }
 }

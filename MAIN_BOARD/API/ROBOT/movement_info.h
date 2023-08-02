@@ -5,44 +5,49 @@
 #include "global_math.h"
 #include "math.h"
 
-/*×ø±ê±ê¶¨½á¹¹Ìå*/
-struct ST_POS {
-    fp32 X;  // ºá×ø±êX£¨µ¥Î»£ºmm£©
-    fp32 Y;  // Êú×ø±êY£¨µ¥Î»£ºmm£©
-    fp32 Q;  // º½Ïò½ÇQ£¨µ¥Î»£º0.1¶È£©
+/*åæ ‡æ ‡å®šç»“æž„ä½“*/
+struct ST_POS
+{
+    fp32 X; // æ¨ªåæ ‡Xï¼ˆå•ä½ï¼šmmï¼‰
+    fp32 Y; // ç«–åæ ‡Yï¼ˆå•ä½ï¼šmmï¼‰
+    fp32 Q; // èˆªå‘è§’Qï¼ˆå•ä½ï¼š0.1åº¦ï¼‰
 };
 
-/*×ø±ê×ËÌ¬½á¹¹Ìå*/
-struct ST_POT {
-    fp32 fpPosX;  // ºá×ø±êX£¨µ¥Î»£ºmm£©
-    fp32 fpPosY;  // Êú×ø±êY£¨µ¥Î»£ºmm£©
-    fp32 fpPosQ;  // º½Ïò½ÇQ£¨µ¥Î»£º¶È£©
+/*åæ ‡å§¿æ€ç»“æž„ä½“*/
+struct ST_POT
+{
+    fp32 fpPosX; // æ¨ªåæ ‡Xï¼ˆå•ä½ï¼šmmï¼‰
+    fp32 fpPosY; // ç«–åæ ‡Yï¼ˆå•ä½ï¼šmmï¼‰
+    fp32 fpPosQ; // èˆªå‘è§’Qï¼ˆå•ä½ï¼šåº¦ï¼‰
     fp32 fpPosX1;
     fp32 fpPosY1;
     fp32 fpPosQ1;
 };
 
-/*ËÙ¶È½á¹¹Ìå*/
-struct ST_VELT {
-    fp32 fpVx;  // £Ø·½ÏòËÙ¶È£¨µ¥Î»mm/s£©
-    fp32 fpVy;  // Y·½ÏòËÙ¶È£¨µ¥Î»£ºmm/s£©
-    fp32 fpW;   // ½ÇËÙ¶È£¨µ¥Î»0.1¶È/s£©
+/*é€Ÿåº¦ç»“æž„ä½“*/
+struct ST_VELT
+{
+    fp32 fpVx; // ï¼¸æ–¹å‘é€Ÿåº¦ï¼ˆå•ä½mm/sï¼‰
+    fp32 fpVy; // Yæ–¹å‘é€Ÿåº¦ï¼ˆå•ä½ï¼šmm/sï¼‰
+    fp32 fpW;  // è§’é€Ÿåº¦ï¼ˆå•ä½0.1åº¦/sï¼‰
 };
 
-enum COORDINATE {
-    CARTESIAN,  // µÑ¿¨¶û×ø±êÏµ
-    POLAR       // ¼«×ø±êÏµ
+enum COORDINATE
+{
+    CARTESIAN, // ç¬›å¡å°”åæ ‡ç³»
+    POLAR      // æžåæ ‡ç³»
 };
 
-/*ÏòÁ¿ÓÐ¹Ø½á¹¹Ìå*/
-class C_VECTOR {
-   public:
-    fp32 fpVx;        // X·½Ïò²î
-    fp32 fpVy;        // Y·½Ïò²î
-    fp32 fpW;         // Ðý×ªËÙ¶È
-    fp32 fpLength;    // ÏòÁ¿³¤¶È£¨µ¥Î»mm£©
-    fp32 fpthetha;    // ÏòÁ¿ÓëXÖá½Ç¶È£¨µ¥Î»:»¡¶È£©
-    COORDINATE type;  // ×ø±êÏµÀàÐÍ
+/*å‘é‡æœ‰å…³ç»“æž„ä½“*/
+class C_VECTOR
+{
+public:
+    fp32 fpVx;       // Xæ–¹å‘å·®
+    fp32 fpVy;       // Yæ–¹å‘å·®
+    fp32 fpW;        // æ—‹è½¬é€Ÿåº¦
+    fp32 fpLength;   // å‘é‡é•¿åº¦ï¼ˆå•ä½mmï¼‰
+    fp32 fpthetha;   // å‘é‡ä¸ŽXè½´è§’åº¦ï¼ˆå•ä½:å¼§åº¦ï¼‰
+    COORDINATE type; // åæ ‡ç³»ç±»åž‹
 
     void CalAngle(void);
     void CalLength(void);
@@ -61,11 +66,11 @@ class C_VECTOR {
     static C_VECTOR Vector_cross(C_VECTOR &r, fp32 w);
 
     fp32 CalRadialProjection(const C_VECTOR &stAim,
-                             const C_VECTOR &stBase);  // ¼ÆËãÒ»ÏòÁ¿ÔÚ»ù×¼ÏòÁ¿·¨Ïò·½ÏòÍ¶Ó°
-    fp32 CalNormalProjection(const C_VECTOR &stAim, const C_VECTOR &stBase);  // ¼ÆËãÒ»ÏòÁ¿ÔÚ»ù×¼ÏòÁ¿·½ÏòÍ¶Ó°
+                             const C_VECTOR &stBase);                        // è®¡ç®—ä¸€å‘é‡åœ¨åŸºå‡†å‘é‡æ³•å‘æ–¹å‘æŠ•å½±
+    fp32 CalNormalProjection(const C_VECTOR &stAim, const C_VECTOR &stBase); // è®¡ç®—ä¸€å‘é‡åœ¨åŸºå‡†å‘é‡æ–¹å‘æŠ•å½±
 
     static void Concert_coorindnate(C_VECTOR &global, C_VECTOR &local,
-                                    fp32 fpQ);  // ½«È«¾Ö×ø±êÏµ×ª»¯Îª±¾µØ×ø±êÏµ
+                                    fp32 fpQ); // å°†å…¨å±€åæ ‡ç³»è½¬åŒ–ä¸ºæœ¬åœ°åæ ‡ç³»
 };
 
 #endif

@@ -6,7 +6,7 @@
 
 // PC7 	CSB1
 // PB12 	CSB2
-// PC9	PS£®πÃ∂®Œ™GND£©
+// PC9	PSÔºàÂõ∫ÂÆö‰∏∫GNDÔºâ
 
 #define Open_SPIx_CS_PIN GPIO_Pin_1
 #define Open_SPIx_CS_PORT GPIOG
@@ -41,15 +41,15 @@
 #define CS_H GPIO_SetBits(Open_SPIx_CS_PORT, Open_SPIx_CS_PIN)
 #define CS_L GPIO_ResetBits(Open_SPIx_CS_PORT, Open_SPIx_CS_PIN)
 
-//#define  GYRO_CS_H    GPIO_SetBits(Open_SPIx_CSB2_PORT, Open_SPIx_CSB2_PIN)//GPIOB   GPIO_Pin_12
-//#define  GYRO_CS_L    GPIO_ResetBits(Open_SPIx_CSB2_PORT, Open_SPIx_CSB2_PIN)//GPIOB   GPIO_Pin_12
+// #define  GYRO_CS_H    GPIO_SetBits(Open_SPIx_CSB2_PORT, Open_SPIx_CSB2_PIN)//GPIOB   GPIO_Pin_12
+// #define  GYRO_CS_L    GPIO_ResetBits(Open_SPIx_CSB2_PORT, Open_SPIx_CSB2_PIN)//GPIOB   GPIO_Pin_12
 
-//#define  ACC_CS_H    GPIO_SetBits(Open_SPIx_CSB1_PORT, Open_SPIx_CSB1_PIN)//GPIOC  GPIO_Pin_8
-//#define  ACC_CS_L    GPIO_ResetBits(Open_SPIx_CSB1_PORT, Open_SPIx_CSB1_PIN)//GPIOC  GPIO_Pin_8
+// #define  ACC_CS_H    GPIO_SetBits(Open_SPIx_CSB1_PORT, Open_SPIx_CSB1_PIN)//GPIOC  GPIO_Pin_8
+// #define  ACC_CS_L    GPIO_ResetBits(Open_SPIx_CSB1_PORT, Open_SPIx_CSB1_PIN)//GPIOC  GPIO_Pin_8
 
-void SPI1_Init(void);                       //≥ı ºªØSPI1ø⁄
-void SPI1_SetSpeed(uint8_t SpeedSet);       //…Ë÷√SPI1ÀŸ∂»
-uint8_t SPI1_ReadWriteByte(uint8_t TxData); // SPI1◊‹œﬂ∂¡–¥“ª∏ˆ◊÷Ω⁄
+void SPI1_Init(void);                       // ÂàùÂßãÂåñSPI1Âè£
+void SPI1_SetSpeed(uint8_t SpeedSet);       // ËÆæÁΩÆSPI1ÈÄüÂ∫¶
+uint8_t SPI1_ReadWriteByte(uint8_t TxData); // SPI1ÊÄªÁ∫øËØªÂÜô‰∏Ä‰∏™Â≠óËäÇ
 
 // void SPI2_Configuration(void);
 // USHORT16 spi2_read_write_byte(USHORT16 txc);

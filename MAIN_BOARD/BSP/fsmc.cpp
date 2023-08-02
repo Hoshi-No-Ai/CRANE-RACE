@@ -5,7 +5,7 @@ void FSMC_Configuration(void)
 	FSMC_NORSRAMInitTypeDef FSMC_NORSRAMInitStructure;
 	FSMC_NORSRAMTimingInitTypeDef FSMC_NORSRAMTimingInitStructure;
 	GPIO_InitTypeDef GPIO_InitStructure;
-	//将所有的相关IO设置成为复用功能
+	//灏嗘墍鏈夌殑鐩稿叧IO璁剧疆鎴愪负澶嶇敤鍔熻兘
 	//PE7--PE15<->D4--D12	PD8--PD10<->D13--D15	PD0--PD1<->D2--D3
 	//PD3<->CLK	PD4<->NOE	PD5<->NWE PD6<->NWAIT	PD7<->NE1	PB7<->NL							
 	//PE0<->NBL0	PE1<->NBL1	
@@ -23,9 +23,9 @@ void FSMC_Configuration(void)
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 |
 								  GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 |
 								  GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;//复用功能
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;//澶嶇敤鍔熻兘
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;//推挽
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;//鎺ㄦ尳
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_Init(GPIOE, &GPIO_InitStructure);
 
@@ -48,18 +48,18 @@ void FSMC_Configuration(void)
 								   GPIO_Pin_7 |GPIO_Pin_8 | GPIO_Pin_9 | 
 								   GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12|
 								    GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;//复用功能
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;//澶嶇敤鍔熻兘
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;//推挽
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;//鎺ㄦ尳
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_Init(GPIOD, &GPIO_InitStructure);
 
 
 
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;//复用功能
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;//澶嶇敤鍔熻兘
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;//推挽
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;//鎺ㄦ尳
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_Init(GPIOF, &GPIO_InitStructure);
 
@@ -68,9 +68,9 @@ void FSMC_Configuration(void)
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 |GPIO_Pin_1 | GPIO_Pin_2 |
 								  GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5/* |
 								   GPIO_Pin_6*/;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;//复用功能
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;//澶嶇敤鍔熻兘
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;//推挽
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;//鎺ㄦ尳
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_Init(GPIOG, &GPIO_InitStructure);
 

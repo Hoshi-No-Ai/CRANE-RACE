@@ -9,36 +9,37 @@
 #include "math_algorithm.h"
 #include "stm32f4xx.h"
 
-class C_PID {
-   public:
-    fp32 fpDes;  //¿ØÖÆ±äÁ¿Ä¿±êÖµ
-    fp32 fpFB;   //¿ØÖÆ±äÁ¿·´À¡Öµ
+class C_PID
+{
+public:
+    fp32 fpDes; // æŽ§åˆ¶å˜é‡ç›®æ ‡å€¼
+    fp32 fpFB;  // æŽ§åˆ¶å˜é‡åé¦ˆå€¼
 
-    fp32 fpKp;  //±ÈÀýÏµÊýKp
-    fp32 fpKi;  //»ý·ÖÏµÊýKi
-    fp32 fpKd;  //Î¢·ÖÏµÊýKd
+    fp32 fpKp; // æ¯”ä¾‹ç³»æ•°Kp
+    fp32 fpKi; // ç§¯åˆ†ç³»æ•°Ki
+    fp32 fpKd; // å¾®åˆ†ç³»æ•°Kd
 
-    fp32 fpE;     //±¾´ÎÆ«²î
-    fp32 fpPreE;  //ÉÏ´ÎÆ«²î
-    fp32 fpSumE;  //×ÜÆ«²î
+    fp32 fpE;    // æœ¬æ¬¡åå·®
+    fp32 fpPreE; // ä¸Šæ¬¡åå·®
+    fp32 fpSumE; // æ€»åå·®
     fp32 fpInput;
     fp32 fpInputpre;
     fp32 fpOutput;
     fp32 fpOutputpre;
-    fp32 fpEpMax;    //±ÈÀýÏîÊä³ö×î´óÖµ
-    fp32 fpEiMax;    //»ý·ÖÏîÊä³ö×î´óÖµ
-    fp32 fpEdMax;    //Î¢·ÖÏîÊä³ö×î´óÖµ
-    fp32 fpEMin;     //»ý·ÖÏÂÏÞ
-    fp32 fpEMax;     //»ý·ÖÉÏÏÞ
-    fp32 fpSumEMax;  //»ý·ÖÏîsumE×î´óÖµ
+    fp32 fpEpMax;   // æ¯”ä¾‹é¡¹è¾“å‡ºæœ€å¤§å€¼
+    fp32 fpEiMax;   // ç§¯åˆ†é¡¹è¾“å‡ºæœ€å¤§å€¼
+    fp32 fpEdMax;   // å¾®åˆ†é¡¹è¾“å‡ºæœ€å¤§å€¼
+    fp32 fpEMin;    // ç§¯åˆ†ä¸‹é™
+    fp32 fpEMax;    // ç§¯åˆ†ä¸Šé™
+    fp32 fpSumEMax; // ç§¯åˆ†é¡¹sumEæœ€å¤§å€¼
 
-    fp32 fpUp;  //±ÈÀýÊä³ö
-    fp32 fpUi;  //»ý·ÖÊä³ö
-    fp32 fpUd;  //Î¢·ÖÊä³ö
-    fp32 fpU;   //±¾´ÎPIDÔËËã½á¹û
+    fp32 fpUp; // æ¯”ä¾‹è¾“å‡º
+    fp32 fpUi; // ç§¯åˆ†è¾“å‡º
+    fp32 fpUd; // å¾®åˆ†è¾“å‡º
+    fp32 fpU;  // æœ¬æ¬¡PIDè¿ç®—ç»“æžœ
     fp32 fpUpre;
-    fp32 fpUMax;  // PIDÔËËãºóÊä³ö×î´óÖµ¼°×öÓöÏÞÏ÷ÈõÊ±µÄÉÏÏÞÖµ
-    fp32 fpTs;    // PID¿ØÖÆÖÜÆÚ£¬µ¥Î»£ºs
+    fp32 fpUMax; // PIDè¿ç®—åŽè¾“å‡ºæœ€å¤§å€¼åŠåšé‡é™å‰Šå¼±æ—¶çš„ä¸Šé™å€¼
+    fp32 fpTs;   // PIDæŽ§åˆ¶å‘¨æœŸï¼Œå•ä½ï¼šs
 
     C_PID() {}
     C_PID(fp32 Kp, fp32 Ki, fp32 Kd, fp32 UMax, fp32 UiMax, fp32 UdMax, fp32 ts)
@@ -49,7 +50,7 @@ class C_PID {
           fpEpMax(UMax),
           fpEiMax(UiMax),
           fpEdMax(UdMax),
-          fpTs(ts) {}  // initialize PID
+          fpTs(ts) {} // initialize PID
     ~C_PID() {}
 
     void CalPID(void);
@@ -60,8 +61,9 @@ class C_PID {
     void CalComprehensivePID(void);
 };
 
-class C_Tr {
-   public:
+class C_Tr
+{
+public:
     fp32 fpInput1;
     fp32 fpInput2;
     fp32 fpInput3;
@@ -77,7 +79,7 @@ class C_Tr {
     fp32 fpTs;
 
     C_Tr() {}
-    C_Tr(fp32 Ts) : fpTs(Ts) {}  //²ÉÑùÖÜÆÚ
+    C_Tr(fp32 Ts) : fpTs(Ts) {} // é‡‡æ ·å‘¨æœŸ
     ~C_Tr() {}
 
     void TrF1(fp32 t1, fp32 t2);
@@ -86,9 +88,10 @@ class C_Tr {
     void LagCompensator(fp32 gain, fp32 t1, fp32 t2);
 };
 
-//»¬Ä£Ïà¹Ø
-class C_TD {
-   public:
+// æ»‘æ¨¡ç›¸å…³
+class C_TD
+{
+public:
     float m_x1;
     float m_x2;
     float m_x3;
@@ -103,7 +106,7 @@ class C_TD {
 
     void TD_Function(void);
 
-   private:
+private:
     s32 Sign_Judge(float fp_Judge_Number) { return fp_Judge_Number >= 0 ? 1 : -1; }
 };
 

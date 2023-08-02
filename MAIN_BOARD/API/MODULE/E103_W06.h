@@ -11,7 +11,7 @@
 extern union float2char uart6_tx_buf[40];
 extern union float2char uart3_tx_buf[40];
 
-void wifi_printf(char* fmt,...);
+void wifi_printf(char *fmt, ...);
 void wifi_init(void);
 
 #endif

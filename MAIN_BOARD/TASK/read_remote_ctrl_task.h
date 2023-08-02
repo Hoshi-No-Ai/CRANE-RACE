@@ -9,7 +9,7 @@
 #include "stm32f4xx.h"
 #include "usart_protocol.h"
 
-/*ÊÖ±ú ¼ä¶Ï°´¼ü ºê¶¨Òå*/
+/*æ‰‹æŸ„ é—´æ–­æŒ‰é”® å®å®šä¹‰*/
 #define PRESS_LEFT (JsKey.aucKeyPress[15] == 1)
 #define PRESS_RIGHT (JsKey.aucKeyPress[13] == 1)
 #define PRESS_UP (JsKey.aucKeyPress[12] == 1)
@@ -25,7 +25,7 @@
 #define PRESS_START (JsKey.aucKeyPress[11] == 1)
 #define PRESS_SELECT (JsKey.aucKeyPress[8] == 1)
 
-/*ÊÖ±ú Á¬Ğø°´¼ü ºê¶¨Òå*/
+/*æ‰‹æŸ„ è¿ç»­æŒ‰é”® å®å®šä¹‰*/
 #define PRESS_LEFT_CONTINUED ((Wlan_JOYSTICK_RESERVED & (1 << 15)) == 0)
 #define PRESS_RIGHT_CONTINUED ((Wlan_JOYSTICK_RESERVED & (1 << 13)) == 0)
 #define PRESS_UP_CONTINUED ((Wlan_JOYSTICK_RESERVED & (1 << 12)) == 0)
@@ -50,7 +50,7 @@
 #define PRESS_START_CONTINUED ((Wlan_JOYSTICK_RESERVED & (1 << 11)) == 0)
 #define PRESS_SELECT_CONTINUED ((Wlan_JOYSTICK_RESERVED & (1 << 8)) == 0)
 
-/*ÀÏ¼üÅÌ ºê¶¨Òå*/
+/*è€é”®ç›˜ å®å®šä¹‰*/
 #define PRESS_KEY_NUMLOCK (JsKey.usKeyValue == 0xFF77)
 #define PRESS_KEY_0 (JsKey.usKeyValue == 0xFF70)
 #define PRESS_KEY_1 (JsKey.usKeyValue == 0xFF69)
@@ -71,13 +71,13 @@
 #define PRESS_KEY_DIV (JsKey.usKeyValue == 0xFF4A)
 // #define PRESS_KEY_NULL (JsKey.usKeyValue == 0xFFFF)
 
-/*ĞÂ¼üÅÌ ºê¶¨Òå*/
+/*æ–°é”®ç›˜ å®å®šä¹‰*/
 #define PRESS_KEY_0_1 (JsKey.usKeyValue == 0x19)
 #define PRESS_KEY_0_2 (JsKey.usKeyValue == 0x1A)
 #define PRESS_KEY_1_1 (JsKey.usKeyValue == 0x01)
 #define PRESS_KEY_1_2 (JsKey.usKeyValue == 0x04)
 #define PRESS_KEY_1_3 (JsKey.usKeyValue == 0x05)
-#define PRESS_KEY_1_4 (JsKey.usKeyValue == 0x02)  // ºìµÆ
+#define PRESS_KEY_1_4 (JsKey.usKeyValue == 0x02) // çº¢ç¯
 #define PRESS_KEY_1_5 (JsKey.usKeyValue == 0x06)
 #define PRESS_KEY_1_6 (JsKey.usKeyValue == 0x03)
 #define PRESS_KEY_2_1 (JsKey.usKeyValue == 0x07)
@@ -100,7 +100,7 @@
 #define PRESS_KEY_4_6 (JsKey.usKeyValue == 0x15)
 #define PRESS_KEY_NULL (JsKey.usKeyValue == 0x00)
 
-/*ÀÏÆô¶¯¼üÅÌ ºê¶¨Òå*/
+/*è€å¯åŠ¨é”®ç›˜ å®å®šä¹‰*/
 #define PRESS_STARTKEY_NUMLOCK (g_usstartKeyValue == 0xFF77)
 #define PRESS_STARTKEY_0 (g_usstartKeyValue == 0xFF70)
 #define PRESS_STARTKEY_1 (g_usstartKeyValue == 0xFF69)
@@ -121,7 +121,8 @@
 #define PRESS_STARTKEY_DIV (g_usstartKeyValue == 0xFF4A)
 // #define PRESS_STARTKEY_NULL (g_usstartKeyValue == 0xFFFF)
 
-enum keyboard_mode_e {
+enum keyboard_mode_e
+{
     DEBUG,
     CALIBRATION,
     PATH,
@@ -129,8 +130,8 @@ enum keyboard_mode_e {
     PATHPLANNING,
 };
 
-void Js_Deal(void);   // ÊÖ±ú´¦Àíº¯Êı
-void Key_Deal(void);  // ¼üÅÌ´¦Àíº¯Êı
+void Js_Deal(void);  // æ‰‹æŸ„å¤„ç†å‡½æ•°
+void Key_Deal(void); // é”®ç›˜å¤„ç†å‡½æ•°
 
 extern keyboard_mode_e keyboard_mode;
 

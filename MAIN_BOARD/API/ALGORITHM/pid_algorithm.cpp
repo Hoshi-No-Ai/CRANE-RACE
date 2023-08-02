@@ -1,79 +1,82 @@
 /**********************************************************************************************************************************************************
-°æÈ¨ÉùÃ÷£ºHITCRT(¹þ¹¤´ó¾º¼¼»úÆ÷ÈËÐ­»á)
-ÎÄ¼þÃû£ºPID_Algorithm.c
-×î½üÐÞ¸ÄÈÕÆÚ£º2016.10.13
-°æ±¾£º1.0
+ç‰ˆæƒå£°æ˜Žï¼šHITCRT(å“ˆå·¥å¤§ç«žæŠ€æœºå™¨äººåä¼š)
+æ–‡ä»¶åï¼šPID_Algorithm.c
+æœ€è¿‘ä¿®æ”¹æ—¥æœŸï¼š2016.10.13
+ç‰ˆæœ¬ï¼š1.0
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
-Ä£¿éÃèÊö£º
-º¯ÊýÁÐ±í£º
+æ¨¡å—æè¿°ï¼š
+å‡½æ•°åˆ—è¡¨ï¼š
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
-ÐÞ¶©¼ÇÂ¼£º
-     ×÷Õß        	Ê±¼ä            °æ±¾     	ËµÃ÷
-  JIN    2022.10.13      	2.0      »®·Ö½¨Á¢´ËÄ£¿é
+ä¿®è®¢è®°å½•ï¼š
+     ä½œè€…        	æ—¶é—´            ç‰ˆæœ¬     	è¯´æ˜Ž
+  JIN    2022.10.13      	2.0      åˆ’åˆ†å»ºç«‹æ­¤æ¨¡å—
 **********************************************************************************************************************************************************/
 
 #include "pid_algorithm.h"
 
-/*ÒÔÏÂÎªÎ»ÖÃÐÍPID*/
+/*ä»¥ä¸‹ä¸ºä½ç½®åž‹PID*/
 /*******************************************************************
-º¯ÊýÃû³Æ£ºCalPID(ST_PID *this)
-º¯Êý¹¦ÄÜ£ºÆÕÍ¨µÄPIDËã·¨¼ÆËãPIDÁ¿
-±¸    ×¢£º
+å‡½æ•°åç§°ï¼šCalPID(ST_PID *this)
+å‡½æ•°åŠŸèƒ½ï¼šæ™®é€šçš„PIDç®—æ³•è®¡ç®—PIDé‡
+å¤‡    æ³¨ï¼š
 ********************************************************************/
-void C_PID::CalPID(void) {
-    fpE = fpDes - fpFB;       //¼ÆËãµ±Ç°Æ«²î
-    if (fabs(fpE) <= fpEMin)  //Æ«²îËÀÇøÏÞÖÆ
+void C_PID::CalPID(void)
+{
+    fpE = fpDes - fpFB;      // è®¡ç®—å½“å‰åå·®
+    if (fabs(fpE) <= fpEMin) // åå·®æ­»åŒºé™åˆ¶
     {
         fpE = 0;
         fpSumE = 0;
     }
     fpSumE += fpE;
-    /*Î»ÖÃÊ½PID¼ÆËã¹«Ê½*/
-		fpUp = fpKp * fpE;
-		fpUi = fpKi * fpSumE ;
-		fpUd =  fpKd * (fpE - fpPreE) / 0.001f;
-    fpU =fpUp+ fpUi + fpUd;
-    fpPreE = fpE;  //±£´æ±¾´ÎÆ«²î
-    /*PIDÔËËãÊä³öÏÞ·ù*/
+    /*ä½ç½®å¼PIDè®¡ç®—å…¬å¼*/
+    fpUp = fpKp * fpE;
+    fpUi = fpKi * fpSumE;
+    fpUd = fpKd * (fpE - fpPreE) / 0.001f;
+    fpU = fpUp + fpUi + fpUd;
+    fpPreE = fpE; // ä¿å­˜æœ¬æ¬¡åå·®
+    /*PIDè¿ç®—è¾“å‡ºé™å¹…*/
     fpU = ClipFloat(fpU, -fpUMax, fpUMax);
 }
 
 /*******************************************************************
-º¯ÊýÃû³Æ£ºCalISeparatedPID(ST_PID *this)
-º¯Êý¹¦ÄÜ£º»ý·Ö·ÖÀëÊ½PIDËã·¨¼ÆËãPIDÁ¿
-±¸    ×¢£º»ý·Ö·ÖÀëÊ½PID¸Ä½øËã·¨¿É¼õÐ¡Æô¶¯¡¢Í£Ö¹»ò´ó·ù¶ÈÔö¼õÊ±½Ï´óÆ«²î
-          ¶Ô»ý·ÖÏîµÄ»ýÀÛ£¬´Ó¶ø±ÜÃâ³öÏÖ½Ï´óµÄ³¬µ÷¼°Õñµ´ÏÖÏó¡£
+å‡½æ•°åç§°ï¼šCalISeparatedPID(ST_PID *this)
+å‡½æ•°åŠŸèƒ½ï¼šç§¯åˆ†åˆ†ç¦»å¼PIDç®—æ³•è®¡ç®—PIDé‡
+å¤‡    æ³¨ï¼šç§¯åˆ†åˆ†ç¦»å¼PIDæ”¹è¿›ç®—æ³•å¯å‡å°å¯åŠ¨ã€åœæ­¢æˆ–å¤§å¹…åº¦å¢žå‡æ—¶è¾ƒå¤§åå·®
+          å¯¹ç§¯åˆ†é¡¹çš„ç§¯ç´¯ï¼Œä»Žè€Œé¿å…å‡ºçŽ°è¾ƒå¤§çš„è¶…è°ƒåŠæŒ¯è¡çŽ°è±¡ã€‚
 ********************************************************************/
-void C_PID::CalISeparatedPID(void) {
+void C_PID::CalISeparatedPID(void)
+{
     uint8_t uck = 1;
 
-    fpE = fpDes - fpFB;       //¼ÆËãµ±Ç°Æ«²î
-    if (fabs(fpE) <= fpEMin)  //Æ«²îËÀÇøÏÞÖÆ
+    fpE = fpDes - fpFB;      // è®¡ç®—å½“å‰åå·®
+    if (fabs(fpE) <= fpEMin) // åå·®æ­»åŒºé™åˆ¶
     {
         fpE = 0;
     }
-    fpSumE += fpE;  //¼ÆËãÆ«²îÀÛ»ý
-    /*ÈôÆ«²î¹ý´ó£¬Ôò»ý·ÖÏî²»ÀÛ»ýÆ«²î*/
-    if (fabs(fpE) > fpEMax)  //ÅÐ¶ÏÊÇ·ñÂú×ã»ý·Ö·ÖÀë
+    fpSumE += fpE; // è®¡ç®—åå·®ç´¯ç§¯
+    /*è‹¥åå·®è¿‡å¤§ï¼Œåˆ™ç§¯åˆ†é¡¹ä¸ç´¯ç§¯åå·®*/
+    if (fabs(fpE) > fpEMax) // åˆ¤æ–­æ˜¯å¦æ»¡è¶³ç§¯åˆ†åˆ†ç¦»
     {
         fpSumE = 0;
         uck = 0;
     }
-    /*Î»ÖÃÊ½PID¼ÆËã¹«Ê½*/
+    /*ä½ç½®å¼PIDè®¡ç®—å…¬å¼*/
     fpU = fpKp * fpE + fpKi * fpSumE * uck + fpKd * (fpE - fpPreE);
-    fpPreE = fpE;  //±£´æ±¾´ÎÆ«²î
-    /*PIDÔËËãÊä³öÏÞ·ù*/
+    fpPreE = fpE; // ä¿å­˜æœ¬æ¬¡åå·®
+    /*PIDè¿ç®—è¾“å‡ºé™å¹…*/
     fpU = ClipFloat(fpU, -fpUMax, fpUMax);
 }
 
 /*******************************************************************
-º¯ÊýÃû³Æ£ºCalIResistedPID(ST_PID *this)
-º¯Êý¹¦ÄÜ£º¿¹»ý·Ö±¥ºÍPIDËã·¨
-±¸    ×¢£ºÏµÍ³ÍùÒ»¸ö·½ÏòÔË¶¯»á²úÉú½Ï´ó»ý·ÖÎó²î£¬»áÔÚ¼¸¸öÖÜÆÚÄÚ²úÉúÕñµ´»ò³¬µ÷
+å‡½æ•°åç§°ï¼šCalIResistedPID(ST_PID *this)
+å‡½æ•°åŠŸèƒ½ï¼šæŠ—ç§¯åˆ†é¥±å’ŒPIDç®—æ³•
+å¤‡    æ³¨ï¼šç³»ç»Ÿå¾€ä¸€ä¸ªæ–¹å‘è¿åŠ¨ä¼šäº§ç”Ÿè¾ƒå¤§ç§¯åˆ†è¯¯å·®ï¼Œä¼šåœ¨å‡ ä¸ªå‘¨æœŸå†…äº§ç”ŸæŒ¯è¡æˆ–è¶…è°ƒ
 ********************************************************************/
-void C_PID::CalIResistedPID(void) {
-    fpE = fpDes - fpFB;  //¼ÆËãµ±Ç°Æ«²î
-    fpSumE += fpE;       //¼ÆËãÆ«²îÀÛ»ý
+void C_PID::CalIResistedPID(void)
+{
+    fpE = fpDes - fpFB; // è®¡ç®—å½“å‰åå·®
+    fpSumE += fpE;      // è®¡ç®—åå·®ç´¯ç§¯
 
     fpSumE = ClipFloat(fpSumE, -fpEiMax, fpEiMax);
     fpUi = fpKi * fpSumE;
@@ -81,28 +84,30 @@ void C_PID::CalIResistedPID(void) {
     fpUp = ClipFloat(fpKp * fpE, -fpEpMax, fpEpMax);
     fpUd = ClipFloat(fpKd * (fpE - fpPreE), -fpEdMax, fpEdMax);
 
-    /*ÈôÆ«²îÔÚËÀÇøÖ®ÄÚ£¬ÔòÇåÁã»ý·ÖÀÛ¼ÆÏî*/
-    if (fabs(fpE) < fpEMin)  //ÅÐ¶ÏÊÇ·ñÂú×ã»ý·Ö±¥ºÍÌõ¼þ
+    /*è‹¥åå·®åœ¨æ­»åŒºä¹‹å†…ï¼Œåˆ™æ¸…é›¶ç§¯åˆ†ç´¯è®¡é¡¹*/
+    if (fabs(fpE) < fpEMin) // åˆ¤æ–­æ˜¯å¦æ»¡è¶³ç§¯åˆ†é¥±å’Œæ¡ä»¶
     {
-        fpSumE = 0;  //Çå³ýÆ«²îÀÛ»ý
+        fpSumE = 0; // æ¸…é™¤åå·®ç´¯ç§¯
     }
-    /*Î»ÖÃÊ½PID¼ÆËã¹«Ê½*/
+    /*ä½ç½®å¼PIDè®¡ç®—å…¬å¼*/
     fpU = fpUp + fpUi + fpUd;
 
-    fpPreE = fpE;  //±£´æ±¾´ÎÆ«²î
-                   /*PIDÔËËãÊä³öÏÞ·ù*/
+    fpPreE = fpE; // ä¿å­˜æœ¬æ¬¡åå·®
+    /*PIDè¿ç®—è¾“å‡ºé™å¹…*/
     fpU = ClipFloat(fpU, -fpUMax, fpUMax);
 }
 /*******************************************************************
-º¯ÊýÃû³Æ£ºCalIWeakenPID(ST_PID *this)
-º¯Êý¹¦ÄÜ£ºÓöÏÞÏ÷Èõ»ý·ÖPID¸Ä½øËã·¨¼ÆËãPIDÁ¿
-±¸    ×¢£º
+å‡½æ•°åç§°ï¼šCalIWeakenPID(ST_PID *this)
+å‡½æ•°åŠŸèƒ½ï¼šé‡é™å‰Šå¼±ç§¯åˆ†PIDæ”¹è¿›ç®—æ³•è®¡ç®—PIDé‡
+å¤‡    æ³¨ï¼š
 ********************************************************************/
-void C_PID::CalIWeakenPID(void) {
-    fpE = fpDes - fpFB;  //¼ÆËãµ±Ç°Æ«²î
+void C_PID::CalIWeakenPID(void)
+{
+    fpE = fpDes - fpFB; // è®¡ç®—å½“å‰åå·®
 
-    if (((fpU <= fpUMax && fpE > 0) || (fpU >= -fpUMax && fpE < 0)) && fabs(fpE) < fpEMin) {
-        fpSumE += fpE;  //¼ÆËãÆ«²îÀÛ»ý
+    if (((fpU <= fpUMax && fpE > 0) || (fpU >= -fpUMax && fpE < 0)) && fabs(fpE) < fpEMin)
+    {
+        fpSumE += fpE; // è®¡ç®—åå·®ç´¯ç§¯
     }
 
     fpSumE = ClipFloat(fpSumE, -fpEiMax, fpEiMax);
@@ -111,84 +116,93 @@ void C_PID::CalIWeakenPID(void) {
     fpUp = ClipFloat(fpKp * fpE, -fpEpMax, fpEpMax);
     fpUd = ClipFloat(fpKd * (fpE - fpPreE), -fpEdMax, fpEdMax);
 
-    /*Î»ÖÃÊ½PID¼ÆËã¹«Ê½*/
+    /*ä½ç½®å¼PIDè®¡ç®—å…¬å¼*/
     fpU = fpUp + fpUi + fpUd;
 
-    fpPreE = fpE;  //±£´æ±¾´ÎÆ«²î
+    fpPreE = fpE; // ä¿å­˜æœ¬æ¬¡åå·®
 
-    /*PIDÔËËãÊä³öÏÞ·ù*/
+    /*PIDè¿ç®—è¾“å‡ºé™å¹…*/
     fpU = ClipFloat(fpU, -fpUMax, fpUMax);
 }
 
 /*******************************************************************
-º¯ÊýÃû³Æ£ºCalFilterPID(ST_PID *this)
-º¯Êý¹¦ÄÜ£ºÎ¢·ÖÏîPIDÊä³ö
-±¸    ×¢£º
+å‡½æ•°åç§°ï¼šCalFilterPID(ST_PID *this)
+å‡½æ•°åŠŸèƒ½ï¼šå¾®åˆ†é¡¹PIDè¾“å‡º
+å¤‡    æ³¨ï¼š
 ********************************************************************/
-void C_PID::CalFilterPID(void) {
-    //=======¼ÆËãµ±Ç°Æ«²î===========
+void C_PID::CalFilterPID(void)
+{
+    //=======è®¡ç®—å½“å‰åå·®===========
     fpE = fpDes - fpFB;
-    //=======Æ«²îËÀÇøÏÞÖÆ========
-    if (fabs(fpE) <= fpEMin) {
+    //=======åå·®æ­»åŒºé™åˆ¶========
+    if (fabs(fpE) <= fpEMin)
+    {
         fpE = 0.0f;
         fpUi = 0;
     }
-    /*======Î»ÖÃÊ½PID¼ÆËã¹«Ê½======*/
-    fpUp = fpKp * fpE;          //±ÈÀýÏîÊä³ö
-    fpUi += fpKi * fpE * fpTs;  //»ý·ÖÏîÊä³ö
-    //Î¢·ÖÏîÊä³ö¼°Î¢·ÖÂË²¨
+    /*======ä½ç½®å¼PIDè®¡ç®—å…¬å¼======*/
+    fpUp = fpKp * fpE;         // æ¯”ä¾‹é¡¹è¾“å‡º
+    fpUi += fpKi * fpE * fpTs; // ç§¯åˆ†é¡¹è¾“å‡º
+    // å¾®åˆ†é¡¹è¾“å‡ºåŠå¾®åˆ†æ»¤æ³¢
     fpUd = fpKd * (fpE - fpPreE) / fpTs;
 
-    //===========¸üÐÂÉÏ´ÎÆ«²î===========
+    //===========æ›´æ–°ä¸Šæ¬¡åå·®===========
     fpPreE = fpE;
-    //===========PID×ÜÊä³ö===============
+    //===========PIDæ€»è¾“å‡º===============
     fpU = fpUp + fpUi + fpUd;
-    /*=========Êä³öÏÞ·ù============*/
+    /*=========è¾“å‡ºé™å¹…============*/
     fpU = ClipFloat(fpU, -fpUMax, fpUMax);
 }
 
 ///*******************************************************************
-//º¯ÊýÃû³Æ£ºCalComprehensivePID(ST_PID *this)
-//º¯Êý¹¦ÄÜ£º×ÛºÏPIDÊä³ö
-//±¸    ×¢£ºÎªµ÷ÊÔËùÓÃ£¬¿É²ÎÕÕÒÔÉÏPID½øÐÐ×ÛºÏ£¬¹¦ÄÜÈ«Ãæ
+// å‡½æ•°åç§°ï¼šCalComprehensivePID(ST_PID *this)
+// å‡½æ•°åŠŸèƒ½ï¼šç»¼åˆPIDè¾“å‡º
+// å¤‡    æ³¨ï¼šä¸ºè°ƒè¯•æ‰€ç”¨ï¼Œå¯å‚ç…§ä»¥ä¸ŠPIDè¿›è¡Œç»¼åˆï¼ŒåŠŸèƒ½å…¨é¢
 //********************************************************************/
-void C_PID::CalComprehensivePID(void) {
+void C_PID::CalComprehensivePID(void)
+{
     uint8_t uck = 0;
     static u8 kkk = 2;
 
-    fpE = fpDes - fpFB;  //¼ÆËãµ±Ç°Æ«²î
+    fpE = fpDes - fpFB; // è®¡ç®—å½“å‰åå·®
     fpSumE += fpE;
-    /*»ý·Ö¿¹±¥ºÍ*/
+    /*ç§¯åˆ†æŠ—é¥±å’Œ*/
     fpSumE = ClipFloat(fpSumE, -fpSumEMax, fpSumEMax);
-    /*Èý¸öÊä³öÏîÏÞ·ù*/
+    /*ä¸‰ä¸ªè¾“å‡ºé¡¹é™å¹…*/
     fpUp = ClipFloat(fpKp * fpE, -fpEpMax, fpEpMax);
     fpUi = ClipFloat(fpKi * fpSumE, -fpEiMax, fpEiMax);
     fpUd = ClipFloat(fpKd * (fpE - fpPreE), -fpEdMax, fpEdMax);
-    /*»ý·Ö·ÖÀë*/
-    if (fabs(fpE) >= fpEMax)  //ÅÐ¶ÏÊÇ·ñÂú×ã»ý·Ö·ÖÀë
+    /*ç§¯åˆ†åˆ†ç¦»*/
+    if (fabs(fpE) >= fpEMax) // åˆ¤æ–­æ˜¯å¦æ»¡è¶³ç§¯åˆ†åˆ†ç¦»
     {
         uck = 0;
-    } else
+    }
+    else
         uck = 1;
-    /*Î»ÖÃÊ½PID¼ÆËã¹«Ê½*/
-    if (fpUd > 0.1f) {
+    /*ä½ç½®å¼PIDè®¡ç®—å…¬å¼*/
+    if (fpUd > 0.1f)
+    {
         lpf_PID.m_in = fpUd;
     }
 
     lpf_PID.LpFilter();
 
-    if (fabs(fpE) <= fpEMin) {
+    if (fabs(fpE) <= fpEMin)
+    {
         fpU = fpUp + kkk * fpUi * uck + lpf_PID.m_out;
-    } else {
+    }
+    else
+    {
         fpU = fpUp + fpUi * uck + lpf_PID.m_out;
     }
 
-    fpPreE = fpE;  //±£´æ±¾´ÎÆ«²î
-    /*PIDÔËËãÊä³öÏÞ·ù*/
+    fpPreE = fpE; // ä¿å­˜æœ¬æ¬¡åå·®
+    /*PIDè¿ç®—è¾“å‡ºé™å¹…*/
     fpU = ClipFloat(fpU, -fpUMax, fpUMax);
 }
 
-void C_Tr::TrF1(fp32 t1, fp32 t2) {
+void C_Tr::TrF1(fp32 t1, fp32 t2)
+{
     fpOutput1 =
         ((2 * t1 + fpTs) * fpInput1 + (fpTs - 2 * t1) * fpInputpre1 - (fpTs - 2 * t2) * fpOutputpre1) /
         (2 * t2 + fpTs);
@@ -196,19 +210,21 @@ void C_Tr::TrF1(fp32 t1, fp32 t2) {
     fpOutputpre1 = fpOutput1;
 }
 
-void C_Tr::TrF2(fp32 t) {
+void C_Tr::TrF2(fp32 t)
+{
     fpOutput2 = 2 * fpInput2 - 2 * fpInputpre2 - (fpTs - 2 * t) * fpOutputpre2;
     fpInputpre2 = fpInput2;
     fpOutputpre2 = fpOutput2;
 }
 
-void C_Tr::TrF3(fp32 t) {
+void C_Tr::TrF3(fp32 t)
+{
     fpOutput3 = fpInput3 - fpInputpre3 - (fpTs - 2 * t) * fpOutputpre3;
     fpInputpre3 = fpInput3;
     fpOutputpre3 = fpOutput3;
 }
 
-void C_Tr::LagCompensator(fp32 gain, fp32 t1, fp32 t2)  //ÖÍºóÐ£Õý£¬t2Îª¿ØÖÆÖÜÆÚÈ¡
+void C_Tr::LagCompensator(fp32 gain, fp32 t1, fp32 t2) // æ»žåŽæ ¡æ­£ï¼Œt2ä¸ºæŽ§åˆ¶å‘¨æœŸå–
 {
     fpOutput1 =
         ((2 * t1 + t2) * fpInput1 + (t2 - 2 * t1) * fpInputpre1 + (2 * gain * t1 - t2) * fpOutputpre1) /
@@ -217,7 +233,8 @@ void C_Tr::LagCompensator(fp32 gain, fp32 t1, fp32 t2)  //ÖÍºóÐ£Õý£¬t2Îª¿ØÖÆÖÜÆÚ
     fpOutputpre1 = fpOutput1;
 }
 
-void C_TD::TD_Function(void) {
+void C_TD::TD_Function(void)
+{
     float d, d0, y, a0, a = 0;
     m_x = m_x1 - m_aim;
     d = m_r * m_h;

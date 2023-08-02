@@ -3,42 +3,42 @@
 void bsp_init(void)
 {
 	SystemInit();
-	RCC_Configuration();//³õÊ¼»¯ÏµÍ³Ê±ÖÓ
-	ARM_LED_Configuration();//³õÊ¼»¯ARMÔËĞĞÖ¸Ê¾µÆ
-	FSMC_Configuration();//³õÊ¼»¯FSMC×ÜÏß
+	RCC_Configuration();	 // åˆå§‹åŒ–ç³»ç»Ÿæ—¶é’Ÿ
+	ARM_LED_Configuration(); // åˆå§‹åŒ–ARMè¿è¡ŒæŒ‡ç¤ºç¯
+	FSMC_Configuration();	 // åˆå§‹åŒ–FSMCæ€»çº¿
 	CAN_Configuration();
 	NVIC_Configuration();
-BUZZER_Init();
-	TIM3_PWM_Configuration(19999,83);
-	TIM5_PWM_Configuration(19999,83);
+	BUZZER_Init();
+	TIM3_PWM_Configuration(19999, 83);
+	TIM5_PWM_Configuration(19999, 83);
 
 	TIM2_Configuration();
-//	TIM7_Configuration(9, 167);
-//	TIM2_Init();
-//	Tim2IOInit();
-//	TIM4_Init();
-//	Tim4IOInit();
+	//	TIM7_Configuration(9, 167);
+	//	TIM2_Init();
+	//	Tim2IOInit();
+	//	TIM4_Init();
+	//	Tim4IOInit();
 
-//	TIM2_Configuration(999,83);
-//	SPI2_Configuration();
+	//	TIM2_Configuration(999,83);
+	//	SPI2_Configuration();
 
 	USART1_Configuration();
 	USART2_Configuration();
-//	UART4_Configuration();
+	//	UART4_Configuration();
 	USART3_Configuration();
 	USART6_Configuration();
-//	NRF24L01_Init();
-//	NRF24L01_RX_Mode();
-//	while(NRF24L01_Check())
-//	{
-//		
-//	}
+	//	NRF24L01_Init();
+	//	NRF24L01_RX_Mode();
+	//	while(NRF24L01_Check())
+	//	{
+	//
+	//	}
 
-//	 while(imu_init())            //µÈ´ı³õÊ¼»¯Íê±Ï
-//    {
-//        delay_ms(1);
-//    }
-//	WriteReg(FILT_CTRL, 0x06); 
+	//	 while(imu_init())            //ç­‰å¾…åˆå§‹åŒ–å®Œæ¯•
+	//    {
+	//        delay_ms(1);
+	//    }
+	//	WriteReg(FILT_CTRL, 0x06);
 
-	//easyflash_init();
+	// easyflash_init();
 }

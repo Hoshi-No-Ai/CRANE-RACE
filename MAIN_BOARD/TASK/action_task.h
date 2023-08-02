@@ -46,7 +46,7 @@ enum BOX_STATE
     lose_state0,
     lose_state1,
     lose_state2,
-		zhengli,
+    zhengli,
 
 };
 
@@ -54,14 +54,14 @@ struct GET_NUM
 {
     uint8_t box;
     uint8_t cola;
-	
-		GET_NUM()
-		{
-			box=1;
-			cola=1;
-		}
-		
-		~GET_NUM(){}
+
+    GET_NUM()
+    {
+        box = 1;
+        cola = 1;
+    }
+
+    ~GET_NUM() {}
 };
 
 extern action_pattern_e action_pattern;

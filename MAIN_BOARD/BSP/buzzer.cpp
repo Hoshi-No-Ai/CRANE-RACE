@@ -1,37 +1,32 @@
 #include "buzzer.h"
 
 void BUZZER_Init(void)
-{   
-  GPIO_InitTypeDef  GPIO_InitStructure;
+{
+  GPIO_InitTypeDef GPIO_InitStructure;
 
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOG, ENABLE);//Ê¹ÄÜGPIOGÊ±ÖÓ
-  
-  //³õÊ¼»¯·äÃùÆ÷¶ÔÓ¦Òı½ÅGPIOG7
+  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOG, ENABLE); // ä½¿èƒ½GPIOGæ—¶é’Ÿ
+
+  // åˆå§‹åŒ–èœ‚é¸£å™¨å¯¹åº”å¼•è„šGPIOG7
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;//ÆÕÍ¨Êä³öÄ£Ê½
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;//ÍÆÍìÊä³ö
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;//100MHz
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;//ÏÂÀ­
-  GPIO_Init(GPIOG, &GPIO_InitStructure);//³õÊ¼»¯GPIO
-	
-  GPIO_ResetBits(GPIOG,GPIO_Pin_7);  //·äÃùÆ÷¶ÔÓ¦Òı½ÅGPIOG7À­µÍ£¬ 
-	
-	
-	
-	GPIO_InitTypeDef  GPIO_InitStructure1;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;      // æ™®é€šè¾“å‡ºæ¨¡å¼
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;     // æ¨æŒ½è¾“å‡º
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz; // 100MHz
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;     // ä¸‹æ‹‰
+  GPIO_Init(GPIOG, &GPIO_InitStructure);             // åˆå§‹åŒ–GPIO
 
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOF, ENABLE);//Ê¹ÄÜGPIOGÊ±ÖÓ
-  
-  //³õÊ¼»¯·äÃùÆ÷¶ÔÓ¦Òı½ÅGPIOG7
+  GPIO_ResetBits(GPIOG, GPIO_Pin_7); // èœ‚é¸£å™¨å¯¹åº”å¼•è„šGPIOG7æ‹‰ä½ï¼Œ
+
+  GPIO_InitTypeDef GPIO_InitStructure1;
+
+  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOF, ENABLE); // ä½¿èƒ½GPIOGæ—¶é’Ÿ
+
+  // åˆå§‹åŒ–èœ‚é¸£å™¨å¯¹åº”å¼•è„šGPIOG7
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;//ÆÕÍ¨Êä³öÄ£Ê½
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;//ÍÆÍìÊä³ö
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;//100MHz
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;//ÏÂÀ­
-  GPIO_Init(GPIOF, &GPIO_InitStructure);//³õÊ¼»¯GPIO
-	
-  GPIO_ResetBits(GPIOF,GPIO_Pin_8);  //·äÃùÆ÷¶ÔÓ¦Òı½ÅGPIOG7À­µÍ£¬ 
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;      // æ™®é€šè¾“å‡ºæ¨¡å¼
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;     // æ¨æŒ½è¾“å‡º
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz; // 100MHz
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;     // ä¸‹æ‹‰
+  GPIO_Init(GPIOF, &GPIO_InitStructure);             // åˆå§‹åŒ–GPIO
+
+  GPIO_ResetBits(GPIOF, GPIO_Pin_8); // èœ‚é¸£å™¨å¯¹åº”å¼•è„šGPIOG7æ‹‰ä½ï¼Œ
 }
-
-
-

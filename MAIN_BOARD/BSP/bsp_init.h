@@ -8,11 +8,10 @@
 #include "rcc.h"
 #include "tim.h"
 #include "uart.h"
-#include "spi.h" 
+#include "spi.h"
 #include "easyflash.h"
 #include "nrf.h"
 #include "buzzer.h"
 void bsp_init(void);
-
 
 #endif

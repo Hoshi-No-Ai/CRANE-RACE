@@ -14,18 +14,18 @@
 
 struct ST_CAMERA
 {
-    fp32 fpQx;   
-    fp32 fpQy;   
-    fp32 fpQz;    
-    fp32 fpPosX0; 
+    fp32 fpQx;
+    fp32 fpQy;
+    fp32 fpQz;
+    fp32 fpPosX0;
     fp32 fpPosY0;
-    fp32 fpPosZ0; 
-    fp32 fpPosX1; 
-    fp32 fpPosY1; 
-    fp32 fpPosZ1; 
-    fp32 fpPosX2; 
+    fp32 fpPosZ0;
+    fp32 fpPosX1;
+    fp32 fpPosY1;
+    fp32 fpPosZ1;
+    fp32 fpPosX2;
     fp32 fpPosY2;
-    fp32 fpPosZ2; 
+    fp32 fpPosZ2;
 };
 struct SE2
 {

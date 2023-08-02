@@ -9,7 +9,7 @@
 #include "table.h"
 
 #define SAFE_CURRENT_MAX 20000.0f
-#define RUN_VELT_MAX 500.0f * PI / 30.0f  // 转化为弧度制
+#define RUN_VELT_MAX 500.0f * PI / 30.0f
 
 void omni_chassis_control(void);
 void disable_all_motor(void);

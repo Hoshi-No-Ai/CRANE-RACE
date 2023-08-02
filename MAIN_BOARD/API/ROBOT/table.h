@@ -5,7 +5,7 @@
 #include "pid_algorithm.h"
 
 #define ENCODER_NUMBER 8191
-#define SLIDE_GEAR_RATIO (36.f * 24) // 3508¼õËÙ±È3591/187£¬Ğ¡ÂÖ´óÂÖ³İ±È38:21
+#define SLIDE_GEAR_RATIO (36.f * 24) // 3508å‡é€Ÿæ¯”3591/187ï¼Œå°è½®å¤§è½®é½¿æ¯”38:21
 
 // slide_3508
 #define SLIDE_VELT_KP 200.0f
@@ -122,7 +122,6 @@ public:
 	void slide_to_aim(void);
 	void lift_to_aim(void);
 };
-
 
 extern cTable table;
 #endif

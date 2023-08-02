@@ -2,8 +2,8 @@
 #ifndef __TIM_H__
 #define __TIM_H__
 
-/*TIM2¼ÆÒ»Î»ÊıµÄÊ±¼ä*/          // 1us
-#define TIM2_BASE_TIME 0.000001 //µ¥Î»s
+/*TIM2è®¡ä¸€ä½æ•°çš„æ—¶é—´*/          // 1us
+#define TIM2_BASE_TIME 0.000001 // å•ä½s
 
 void TIM2_Configuration(void);
 void TIM3_PWM_Configuration(u16 arr, u16 psc);
