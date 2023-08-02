@@ -8,7 +8,7 @@ using _navigation_::vision_enable;
 using _navigation_::vision_true;
 using _remote_ctrl_::auto_enable;
 
-#define servo_degree(x) ((2000) / 180 * x + 500)
+#define servo_degree(x) ((2000) / 180.f * x + 500)
 
 /*每编译前，需要在编译器的【宏定义选项】中管理下列宏！*/
 // #define ENABLE_DEBUG
@@ -23,6 +23,8 @@ u8 udp_demo_sendbuf[ARM_DEBUG_SIZE * 4 + 4] = "Explorer STM32F407 NETCONN UDP de
 u8 udp_flag; // UDP数据发送标
 
 int main(void)
+
+
 {
     OS_ERR err;
     CPU_SR_ALLOC(); // 临界区代码初始化
@@ -245,9 +247,9 @@ void action_task(void *p)
 }
 extern DesSet DES;
 
-float sucker_slide_r = 50;
+float sucker_slide_r = 75;
 float sucker_lift_r = 1000;
-
+extern uint8_t omtor_mode1;
 void transmit_task(void *p)
 {
     OS_ERR err;
@@ -261,6 +263,7 @@ void transmit_task(void *p)
 
         memcpy(&uart3_eft.num[8], &sucker_slide_r, 4);
         memcpy(&uart3_eft.num[12], &sucker_lift_r, 4);
+		uart3_eft.num[13]=	omtor_mode1;
         USART3_DMA_Tx(); 
 
         OSTimeDly_ms(1);

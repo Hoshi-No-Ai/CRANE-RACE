@@ -27,7 +27,7 @@
 #define UART1_TX_DATA_LEN 10
 
 #define UART3_RX_DATA_LEN 16
-#define UART3_TX_DATA_LEN 16
+#define UART3_TX_DATA_LEN 20
 
 #define COM_LENGTH 7
 

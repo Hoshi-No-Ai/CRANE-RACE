@@ -294,6 +294,7 @@ void Key_Deal(void)
         if (keyboard_mode == ACTION)
         {
             action_pattern = ACTION_INIT;
+						auto_enable = 1;
         }
     }
     else if (PRESS_KEY_3_3)

@@ -72,7 +72,7 @@ int compare_string(char * a,char* b,int len)
 	return 1;
 	
 }
-
+//float sb_weite;
 void Comm1Rx_IRQ(void) // 串口1电流DMA接收函数
 {
 	u8 i = 0;
@@ -154,6 +154,15 @@ void Comm1Rx_IRQ(void) // 串口1电流DMA接收函数
 		{
 				distance_uart1 = (UA1RxMailbox[26]-0x30)*1000+ ((int)UA1RxMailbox[27]-0x30)*100+ ( (int)UA1RxMailbox[28]-0x30)*10+  ((int)UA1RxMailbox[29]-0x30)*1;
 
+		}
+		
+		if(!distance_uart1)
+		{
+		//	sb_weite =1;
+			if((int)UA1RxMailbox[24]>0x30)	distance_uart1 +=	((int)UA1RxMailbox[24]-0x30)*1000;
+			if((int)UA1RxMailbox[25]>0x30)distance_uart1 +=	((int)UA1RxMailbox[25]-0x30)*100;
+			if((int)UA1RxMailbox[26]>0x30)distance_uart1 +=	((int)UA1RxMailbox[26]-0x30)*10;
+			if((int)UA1RxMailbox[27]>0x30)distance_uart1 +=	(int)UA1RxMailbox[27]-0x30;
 		}
 		
 		distance_uart1 -=120;
@@ -271,6 +280,14 @@ void Comm3Rx_IRQ(void) // 串口1电流DMA接收函数
 		{
 				distance_uart3 = (UA3RxMailbox[29]-0x30)*1000+ ((int)UA3RxMailbox[30]-0x30)*100+ ( (int)UA3RxMailbox[31]-0x30)*10+  ((int)UA3RxMailbox[32]-0x30)*1;
 
+		}
+		if(!distance_uart3)
+		{
+							distance_uart3 =0;
+			if((int)UA3RxMailbox[29]>0x30)	distance_uart3 +=	((int)UA3RxMailbox[29]-0x30)*1000;
+			if((int)UA3RxMailbox[30]>0x30)distance_uart3 +=	((int)UA3RxMailbox[30]-0x30)*100;
+			if((int)UA3RxMailbox[31]>0x30)distance_uart3 +=	((int)UA3RxMailbox[31]-0x30)*10;
+			if((int)UA3RxMailbox[32]>0x30)distance_uart3 +=	(int)UA3RxMailbox[32]-0x30;
 		}
 	//	distance_uart1 = atol(string_dis1);
 			if (ucPit < efr1.usart1_rx_datanum) // 如果没够数，存

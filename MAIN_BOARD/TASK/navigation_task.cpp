@@ -160,6 +160,11 @@ void navigation(void)
         nav.auto_path.pos_pid.x.fpKp = 5.0f;
         nav.auto_path.pos_pid.y.fpKp = 5.0f;
         nav.auto_path.pos_pid.w.fpKp = 5.0f;
+				
+				if(target_num.cola==3)
+				{
+					nav.auto_path.pos_pid.w.fpKp = 4.0f;
+				}
 
         nav.auto_path.basic_velt.fpW *= RADIAN;
         nav.auto_path.pos_pid.w.fpFB *= RADIAN;
