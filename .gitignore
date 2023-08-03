@@ -18,6 +18,7 @@
 .mxproject
 *.hex
 *.axf
+RC2022_MAIN.axf
 JLinkLog.txt
 *.hex
 RTE/
