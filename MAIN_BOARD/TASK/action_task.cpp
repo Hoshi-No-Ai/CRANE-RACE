@@ -1,5 +1,11 @@
 #include "action_task.h"
 #include "hitcrt_os.h"
+#define ssfdb  sucker.slide_motor.pos_pid.fpFB
+#define slfdb  sucker.lift_motor.pos_pid.fpFB
+
+#define tsfdb  table.slide_motor.pos_pid.fpFB
+#define tslfdb  table.lift_motor.pos_pid.fpFB
+
 
 using _action_::figure_out_object;
 using _action_::flag_fetch_cola;
@@ -246,6 +252,7 @@ void position_check(void)
 
 GET_NUM target_num;
 BOX_STATE box_state, pre_box_state;
+
 float height_box = 220;
 
 float sucker_lift_box_await = 1100, sucker_slide_await = 0;
@@ -272,7 +279,13 @@ float velt_sucker;
 uint8_t final_target;
 extern float sucker_lift_r;
 extern float sucker_slide_r;
+extern float handle_time;
+			  float s_time_down;
 
+float cal_time(float x_des,float x_fdb,float a)
+{
+    return sqrt(fabs(x_des - x_fdb)/a);
+}
 void handle_box(void)
 {
     OS_ERR err;
@@ -296,6 +309,7 @@ void handle_box(void)
                 init_motor = 0;
             }
         }
+        pre_box_state = none;
         break;
 
     case await:
@@ -310,14 +324,6 @@ void handle_box(void)
             if (fabs(sucker.slide_motor.pos_pid.fpFB - DES.sucker_slide) < 5)
             {
                 DES.sucker_lift = 400;
-                //            if (box_finish * cola_finish)
-                //            {
-                //                DES.sucker_lift = sucker_out;
-                //							if (fabs(sucker.lift_motor.pos_pid.fpFB - DES.sucker_lift) < 5)
-                //							{
-                //								box_state = zhengli;
-                //							}
-                //            }
             }
             else
             {
@@ -333,8 +339,8 @@ void handle_box(void)
         }
         if (box_finish * cola_finish)
         {
-            sucker_lift_r = 2000;
-            sucker_slide_r = 100;
+            sucker_lift_r = 3000;
+            sucker_slide_r = 200;
             if (box_finish * cola_finish && sucker.lift_motor.pos_pid.fpFB < 700 && !final_target)
             { // the last target is cola
                 final_target = 2;
@@ -389,20 +395,22 @@ void handle_box(void)
             // TODO：调节衔接时间
             fetch_pattern = FETCH_AWAIT;
         }
+        pre_box_state = await;
         break;
 
     case get_state1:
         sucker.Toggle_sucker = 0;
         // DES.table_lift = table_lift_up;
         DES.table_slide = table_slide_in;
-
+    if(box_state!=pre_box_state)
+    {
         if (this_target == 1) // box
         {
-            if (sucker.lift_motor.pos_pid.fpFB > 200)
+            if (sucker.lift_motor.pos_pid.fpFB > 300)
             {
                 DES.sucker_slide = cal_distance_by_sensor;
-                ;
-                cal_sssssssss = cal_distance_by_sensor;
+                
+              //  cal_sssssssss = cal_distance_by_sensor;
             }
             DES.sucker_lift = sucker_lift_box_get_state1;
         }
@@ -411,8 +419,12 @@ void handle_box(void)
             DES.sucker_slide = 0;
             DES.sucker_lift = -5;
         }
+         s_time_down = cal_time( DES.sucker_lift ,slfdb,sucker.td_lift.m_r);
+        handle_time = 0;
+    }
+        
 
-        if (fabs(DES.sucker_lift - sucker.lift_motor.pos_pid.fpFB) < 5)
+        if (handle_time>s_time_down)
         {
             if (this_target == 1)
             {
@@ -424,13 +436,16 @@ void handle_box(void)
                 fetch_pattern = FETCH_GET_PRE;
             }
         }
+        pre_box_state = get_state1;
         break;
     case get_state2:
-        DES.sucker_lift = sucker_lift_box_await;
+        DES.sucker_lift = sucker_lift_box_get_state2 + (target_num.box - 1) * height_box+200;
         if (fabs(DES.sucker_lift - sucker.lift_motor.pos_pid.fpFB) < 5)
         {
             box_state = get_state3;
         }
+        pre_box_state = get_state2;
+
         break;
 
     case get_state3:
@@ -457,6 +472,7 @@ void handle_box(void)
                 //                }
             }
         }
+        pre_box_state = get_state3;
         break;
     case zhengli:
         DES.sucker_slide = sucker_slide_get_state2;
@@ -464,6 +480,7 @@ void handle_box(void)
         {
             DES.sucker_lift = sucker_yajin;
         }
+        pre_box_state = zhengli;
 
         break;
     case lose_state0:
@@ -474,6 +491,8 @@ void handle_box(void)
         {
             box_state = lose_state1;
         }
+
+        pre_box_state = lose_state0;
         break;
 
     case lose_state1:
@@ -503,7 +522,7 @@ void handle_box(void)
                             }
                             _servo_degree = 40;
 
-                            if (task_time > 1.5)
+                            if (task_time > 1.0)
                             {
                                 box_state = lose_state2;
                             }
@@ -512,19 +531,24 @@ void handle_box(void)
                 }
             }
         }
+
+    pre_box_state = lose_state1;
+
         break;
 
     case lose_state2:
         omtor_mode1 = 0;
         DES.table_lift = table_lift_down;
         DES.sucker_lift = 1300;
-        table.td_slide.m_r = 100;
+        table.td_slide.m_r = 200;
 
         if (fabs(DES.table_lift - table.td_lift.m_x1) < 5)
         {
             DES.table_slide = table_slide_in;
         }
-        break;
+    pre_box_state = lose_state2;
+
+    break;
 
     default:
         break;
