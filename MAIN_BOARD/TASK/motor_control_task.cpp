@@ -52,7 +52,7 @@ void omni_chassis_control(void)
 
     C_Motor::can_send_data(CAN1, 0x200, (int16_t)run_current[RIGHTUP], (int16_t)run_current[LEFTUP], (int16_t)run_current[LEFTDOWN], (int16_t)run_current[RIGHTDOWN]);
 
-    C_Motor::can_send_data(CAN2, 0x200, table.slide_motor1.pid_current, table.slide_motor2.pid_current, table.lift_motor1.pid_current, table.lift_motor2.pid_current);
+  //  C_Motor::can_send_data(CAN2, 0x200, table.slide_motor1.pid_current, table.slide_motor2.pid_current, table.lift_motor1.pid_current, table.lift_motor2.pid_current);
 
     pre_run_pid_state = Omni_chassis[RIGHTUP].m_run_motor.motor_pid_state;
 }

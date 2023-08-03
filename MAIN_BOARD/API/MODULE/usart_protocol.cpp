@@ -216,6 +216,7 @@ int temp_target_detect;
 extern float pre_motor_sucker;
 extern float velt_sucker;
 extern float cal_distance_by_sensor;
+int temp_fps;
 void Comm3Rx_IRQ(void) // 串口2电流DMA接收函数
 {
     static unsigned char Comm3_Rx_Status = RX_FREE; // 初始状态
@@ -272,7 +273,7 @@ void Comm3Rx_IRQ(void) // 串口2电流DMA接收函数
                     pre_motor_sucker = sucker.lift_motor.pos_pid.fpFB;
                     memcpy(&sucker.slide_motor.pos_pid.fpFB, uart3_efr.num, 4);
                     memcpy(&sucker.lift_motor.pos_pid.fpFB, &uart3_efr.num[4], 4);
-                    velt_sucker = (sucker.lift_motor.pos_pid.fpFB - pre_motor_sucker) / 0.001;
+                    velt_sucker = (sucker.lift_motor.pos_pid.fpFB - pre_motor_sucker) / 0.0001;
 
                     memcpy(&dist_1, &uart3_efr.num[8], 4);
 
@@ -286,6 +287,7 @@ void Comm3Rx_IRQ(void) // 串口2电流DMA接收函数
                     }
                     else
                     {
+											temp_fps++;
                         temp_target_detect = 1;
                         cal_distance_by_sensor = 0.1047 * (dist_1 + dist_2) / 2 - 20.33;
                         if (cal_distance_by_sensor > 0)

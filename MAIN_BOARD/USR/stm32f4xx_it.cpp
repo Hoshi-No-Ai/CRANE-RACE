@@ -22,6 +22,8 @@ using _navigation_::calibration_current;
 float task_time;
 float handle_time;
 /*系统滴答时钟中断*/
+extern int  temp_fps;
+int fps_minor;
 void SysTick_Handler(void)
 {
     // static uint8_t div_cnt = 0;
@@ -39,6 +41,8 @@ void SysTick_Handler(void)
     }
     else
     {
+			fps_minor = temp_fps;
+			temp_fps = 0;
         memcpy(Sys_Monitor.rate_monitor.real_rate, Sys_Monitor.rate_monitor.temp_rate,
                sizeof(Sys_Monitor.rate_monitor.temp_rate));
         memset(Sys_Monitor.rate_monitor.temp_rate, 0, sizeof(Sys_Monitor.rate_monitor.temp_rate));

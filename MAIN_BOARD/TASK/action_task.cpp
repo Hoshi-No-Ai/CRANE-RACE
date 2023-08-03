@@ -254,7 +254,7 @@ GET_NUM target_num;
 BOX_STATE box_state, pre_box_state;
 
 float height_box = 220;
-
+float move_lift = 220;
 float sucker_lift_box_await = 1100, sucker_slide_await = 0;
 float sucker_lift_box_get_state1 = 220, sucker_slide_get_state1 = -7;
 float sucker_lift_box_get_state2 = 500, sucker_slide_get_state2 = -50;
@@ -367,7 +367,7 @@ void handle_box(void)
             }
         }
 
-        if (fetch_pattern == FETCH_GET_PRE && sucker.lift_motor.pos_pid.fpFB > height_box && this_target == 2)
+        if (fetch_pattern == FETCH_GET_PRE && sucker.lift_motor.pos_pid.fpFB > move_lift && this_target == 2)
         {
             fetch_pattern = FETCH_GET;
             this_target = 0;
@@ -522,7 +522,7 @@ void handle_box(void)
                             }
                             _servo_degree = 40;
 
-                            if (task_time > 1.0)
+                            if (task_time > 1.5)
                             {
                                 box_state = lose_state2;
                             }

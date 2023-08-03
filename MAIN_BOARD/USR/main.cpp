@@ -115,7 +115,7 @@ void motor_control_task(void *p)
 {
     OS_ERR err;
     p = p;
-
+sucker.Toggle_sucker = 1;
     while (1)
     {
         TIM_SetCompare3(TIM3, servo_degree(_servo_degree));

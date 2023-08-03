@@ -112,7 +112,8 @@ void Key_Deal(void)
         {
             nav.auto_path.run_time = 0;
             cRobot.cFollowoerWheel.stPot.fpPosX = 0;
-            cRobot.cFollowoerWheel.stPot.fpPosX1 = 0;
+
+					cRobot.cFollowoerWheel.stPot.fpPosX1 = 0;
             cRobot.cFollowoerWheel.stPot.fpPosY = 0;
             cRobot.cFollowoerWheel.stPot.fpPosY1 = 0;
             cRobot.stPot.fpPosX = fpStartX;
