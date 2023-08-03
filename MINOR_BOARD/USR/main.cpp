@@ -104,6 +104,6 @@ void transmit_task(void *p)
 		rate_monitor.temp_rate[6]++;
 		Communication_with_chassis();
 		// Communication_with_vision();
-		OSTimeDly_ms(10); // 1
+		OSTimeDly_ms(1); // 1
 	}
 }
