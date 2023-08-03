@@ -5,6 +5,7 @@ using _action_::figure_out_object;
 using _navigation_::calibration_current;
 using _remote_ctrl_::auto_enable;
 using _remote_ctrl_::manual_enable;
+using _navigation_::vision_enable;
 
 keyboard_mode_e keyboard_mode = DEBUG;
 
@@ -101,6 +102,7 @@ void Key_Deal(void)
     if (PRESS_KEY_0_1)
     {
         // manual_enable=!manual_enable;
+			vision_enable=1;
     }
     else if (PRESS_KEY_0_2)
     {

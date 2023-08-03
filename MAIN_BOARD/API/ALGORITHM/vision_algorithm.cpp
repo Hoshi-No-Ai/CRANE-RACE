@@ -32,18 +32,20 @@ Delta_2D Coord_transformation(float theta, Delta_2D Delta_r)
     return Delta_w;
 }
 
+static Delta_2D delta_fb_aruco_w;
+static Delta_2D delta_aruco_des_w;
 bool des_base_aruco(aruco &aruco_ref)
 {
     // TODO: 可能视觉参数的正负方向得调一下
-    float fpQ = 0.1 * cRobot.stPot.fpPosQ;
-    float theta_w_r = -fpQ;
-    float theta_w_a = -(fpQ + aruco_ref.thetaz);
+		float fpQ = 0.1f * cRobot.stPot.fpPosQ;
+    float theta_w_r = fpQ * RADIAN;
+//    float theta_w_a = (fpQ + aruco_ref.thetaz)* RADIAN;
 
     delta_fb_aruco_r.delta_x = aruco_ref.x;
     delta_fb_aruco_r.delta_y = aruco_ref.y;
 
-    Delta_2D delta_fb_aruco_w = Coord_transformation(theta_w_r, delta_fb_aruco_r);
-    Delta_2D delta_aruco_des_w = Coord_transformation(theta_w_a, delta_aruco_des_a);
+    delta_fb_aruco_w = Coord_transformation(theta_w_r, delta_fb_aruco_r);
+//    delta_aruco_des_w = Coord_transformation(theta_w_a, delta_aruco_des_a);
 
     delta_fb_des.delta_x = delta_fb_aruco_w.delta_x + delta_aruco_des_w.delta_x;
     delta_fb_des.delta_y = delta_fb_aruco_w.delta_y + delta_aruco_des_w.delta_y;

@@ -179,7 +179,7 @@ void navigation_task(void *p)
 #endif
         cRobot.Cal_RobotVelt();
 
-        if (nav.state == NAV_STOPX && vision_enable && vision_time > 20)
+        if (/*nav.state == NAV_STOPX &&*/ vision_enable && vision_time > 20)
         {
             delta_des_cola(target_num.cola);
             vision_true = des_base_aruco(aruco_fdb);
