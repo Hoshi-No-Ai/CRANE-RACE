@@ -39,7 +39,7 @@ C_VECTOR::C_VECTOR(fp32 x, fp32 y, COORDINATE coor_type) : type(coor_type)
     {
         fpVx = x;
         fpVy = y;
-				CalLength();
+        CalLength();
         CalAngle();
     }
     else if (type == POLAR)

@@ -181,6 +181,7 @@ void navigation_task(void *p)
 
         if (nav.state == NAV_STOPX && vision_enable && vision_time > 20)
         {
+            delta_des_cola(target_num.cola);
             vision_true = des_base_aruco(aruco_fdb);
             vision_time = 0;
         }
