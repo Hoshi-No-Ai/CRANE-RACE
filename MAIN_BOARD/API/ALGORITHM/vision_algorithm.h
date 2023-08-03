@@ -12,6 +12,10 @@
 
 #define DELTA_COLA 84.0f
 
+// //世界坐标中，码到机器人目标点的距离.
+// #define DELTA_ARUCO_DES_X 0.0f
+// #define DELTA_ARUCO_DES_Y 0.0f
+
 struct ST_CAMERA
 {
     fp32 fpQx;
