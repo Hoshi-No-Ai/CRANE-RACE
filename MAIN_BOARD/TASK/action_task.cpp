@@ -10,6 +10,7 @@ using _action_::figure_out_object;
 using _action_::flag_fetch_cola;
 using _action_::flag_stop_wait;
 using _navigation_::vision_enable;
+using _navigation_::vision_true;
 
 action_pattern_e action_pattern = ACTION_NONE;
 fetch_pattern_e fetch_pattern = FETCH_INIT;
@@ -78,9 +79,16 @@ void robot_movement(void)
             break;
         case ACTION_POS_CHANGE:
             // 取可乐后改变坐标
-            nav.auto_path.m_point_end.m_x = nav.auto_path.m_point_end.m_x + delta_des_cola_w.delta_x;
-            nav.auto_path.m_point_end.m_y = nav.auto_path.m_point_end.m_y + delta_des_cola_w.delta_y;
-            nav.auto_path.m_point_end.m_q = nav.auto_path.m_point_end.m_q;
+            nav.auto_path.m_point_end.m_x = nav.auto_path.pos_pid.x.fpFB + delta_fb_des.delta_x;
+            nav.auto_path.m_point_end.m_q = nav.auto_path.pos_pid.y.fpFB + delta_fb_des.delta_y;
+            nav.auto_path.m_point_end.m_q = nav.auto_path.pos_pid.w.fpFB - aruco_fdb.thetaz;
+            if (this_target == 2)
+            {
+                delta_des_cola(target_num.cola);
+                nav.auto_path.m_point_end.m_x = nav.auto_path.m_point_end.m_x + delta_des_cola_w.delta_x;
+                nav.auto_path.m_point_end.m_y = nav.auto_path.m_point_end.m_y + delta_des_cola_w.delta_y;
+                nav.auto_path.m_point_end.m_q = nav.auto_path.m_point_end.m_q;
+            }
             nav.auto_path.m_velt_acc.Velt_Acc_Set(500, 60, 500, 500);
             SET_NAV_PATH_AUTO(1);
             flag_fetch_cola = 1;
@@ -171,29 +179,31 @@ void movement_check(bool if_auto)
             if (stable_time > 100)
             {
                 figure_out_object = Identify_box_cola(this_target);
-                if (figure_out_object && !flag_stop_wait)
+                vision_true = des_base_aruco(aruco_fdb);
+                if (figure_out_object && vision_true)
                 {
                     test_enable = 0;
                     if (this_target == 1)
                     {
-                        action_pattern = ACTION_FETCH;
+                        action_pattern = ACTION_POS_CHANGE;
                         figure_out_object = 0;
+                        vision_true=0;
                     }
                     else if (this_target == 2)
                     {
-                        delta_des_cola(target_num.cola);
                         action_pattern = ACTION_POS_CHANGE;
                         figure_out_object = 0;
+                        vision_true=0;
                     }
-                }
-                stable_time = 0;
+                    stable_time = 0;
+                }     
             }
             break;
         case ACTION_POS_CHANGE:
             if (fabs(nav.auto_path.pos_pid.x.fpDes - nav.auto_path.pos_pid.x.fpFB) < LIMIT_DELTA_X && fabs(nav.auto_path.pos_pid.y.fpDes - nav.auto_path.pos_pid.y.fpFB) < LIMIT_DELTA_Y && fabs(nav.auto_path.pos_pid.w.fpDes - nav.auto_path.pos_pid.w.fpFB) < LIMIT_DELTA_Q)
             {
                 change_time++;
-                if (change_time > 50)
+                if (change_time > 10)
                 {
                     action_pattern = ACTION_FETCH;
                     change_time = 0;
@@ -464,11 +474,6 @@ void handle_box(void)
                 OSTimeDly_ms(1000);
                 fetch_pattern = FETCH_GET_PRE;
                 box_state = await;
-                //                if (this_target == 1)
-                //                {
-                //                    fetch_pattern = FETCH_GET;
-                //                    this_target = 0;
-                //                }
             }
         }
         pre_box_state = get_state3;

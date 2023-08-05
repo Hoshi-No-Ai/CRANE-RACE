@@ -7,7 +7,7 @@
 
 #define LIMIT_DELTA_X 10.0f
 #define LIMIT_DELTA_Y 10.0f
-#define LIMIT_DELTA_Q 0.5f
+#define LIMIT_DELTA_Q (0.5f/180.0f*PI)
 
 enum action_pattern_e
 {
