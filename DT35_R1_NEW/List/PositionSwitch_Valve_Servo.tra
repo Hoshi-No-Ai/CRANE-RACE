@@ -1,0 +1,53 @@
+*** Creating Trace Output File '..\List\PositionSwitch_Valve_Servo.tra' Ok.
+### Preparing for ADS-LD.
+### Creating ADS-LD Command Line
+### List of Objects: adding '"..\list\main.o"'
+### List of Objects: adding '"..\list\gpio.o"'
+### List of Objects: adding '"..\list\hal.o"'
+### List of Objects: adding '"..\list\rcc.o"'
+### List of Objects: adding '"..\list\stm32f10x_it.o"'
+### List of Objects: adding '"..\list\timer.o"'
+### List of Objects: adding '"..\list\positionswitch.o"'
+### List of Objects: adding '"..\list\can.o"'
+### List of Objects: adding '"..\list\nvic.o"'
+### List of Objects: adding '"..\list\valve.o"'
+### List of Objects: adding '"..\list\core_cm3.o"'
+### List of Objects: adding '"..\list\misc.o"'
+### List of Objects: adding '"..\list\stm32f10x_adc.o"'
+### List of Objects: adding '"..\list\stm32f10x_bkp.o"'
+### List of Objects: adding '"..\list\stm32f10x_can.o"'
+### List of Objects: adding '"..\list\stm32f10x_crc.o"'
+### List of Objects: adding '"..\list\stm32f10x_dac.o"'
+### List of Objects: adding '"..\list\stm32f10x_dbgmcu.o"'
+### List of Objects: adding '"..\list\stm32f10x_dma.o"'
+### List of Objects: adding '"..\list\stm32f10x_exti.o"'
+### List of Objects: adding '"..\list\stm32f10x_flash.o"'
+### List of Objects: adding '"..\list\stm32f10x_fsmc.o"'
+### List of Objects: adding '"..\list\stm32f10x_gpio.o"'
+### List of Objects: adding '"..\list\stm32f10x_i2c.o"'
+### List of Objects: adding '"..\list\stm32f10x_iwdg.o"'
+### List of Objects: adding '"..\list\stm32f10x_pwr.o"'
+### List of Objects: adding '"..\list\stm32f10x_rcc.o"'
+### List of Objects: adding '"..\list\stm32f10x_rtc.o"'
+### List of Objects: adding '"..\list\stm32f10x_sdio.o"'
+### List of Objects: adding '"..\list\stm32f10x_spi.o"'
+### List of Objects: adding '"..\list\stm32f10x_tim.o"'
+### List of Objects: adding '"..\list\stm32f10x_usart.o"'
+### List of Objects: adding '"..\list\stm32f10x_wwdg.o"'
+### List of Objects: adding '"..\list\system_stm32f10x.o"'
+### List of Objects: adding '"..\list\startup_stm32f10x_md.o"'
+### ADS-LD Command completed:
+--cpu Cortex-M3 "..\list\main.o" "..\list\gpio.o" "..\list\hal.o" "..\list\rcc.o" "..\list\stm32f10x_it.o" "..\list\timer.o" "..\list\positionswitch.o" "..\list\can.o" "..\list\nvic.o" "..\list\valve.o" "..\list\core_cm3.o" "..\list\misc.o" "..\list\stm32f10x_adc.o" "..\list\stm32f10x_bkp.o" "..\list\stm32f10x_can.o" "..\list\stm32f10x_crc.o" "..\list\stm32f10x_dac.o" "..\list\stm32f10x_dbgmcu.o" "..\list\stm32f10x_dma.o" "..\list\stm32f10x_exti.o" "..\list\stm32f10x_flash.o" "..\list\stm32f10x_fsmc.o" "..\list\stm32f10x_gpio.o" "..\list\stm32f10x_i2c.o" "..\list\stm32f10x_iwdg.o" "..\list\stm32f10x_pwr.o" "..\list\stm32f10x_rcc.o" "..\list\stm32f10x_rtc.o" "..\list\stm32f10x_sdio.o" "..\list\stm32f10x_spi.o" "..\list\stm32f10x_tim.o" "..\list\stm32f10x_usart.o" "..\list\stm32f10x_wwdg.o" "..\list\system_stm32f10x.o" "..\list\startup_stm32f10x_md.o" --library_type=microlib --strict --scatter "..\List\PositionSwitch_Valve_Servo.sct" 
+--summary_stderr --info summarysizes --map --xref --callgraph --symbols 
+--info sizes --info totals --info unused --info veneers 
+ --list "..\List\PositionSwitch_Valve_Servo.map" -o "..\List\PositionSwitch_Valve_Servo.axf"### Preparing Environment (PrepEnvAds)
+### ADS-LD Output File: '..\List\PositionSwitch_Valve_Servo.axf'
+### ADS-LD Command File: '..\List\PositionSwitch_Valve_Servo.lnp'
+### Checking for dirty Components...
+### Creating CmdFile '..\List\PositionSwitch_Valve_Servo.lnp', Handle=0x00000330
+### Writing '.lnp' file
+### ADS-LD Command file '..\List\PositionSwitch_Valve_Servo.lnp' is ready.
+### ADS-LD: About to start ADS-LD Thread.
+### ADS-LD: executed with 0 errors
+### Updating obj list
+### LDADS_file() completed.
