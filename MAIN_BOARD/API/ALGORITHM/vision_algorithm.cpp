@@ -10,7 +10,7 @@ Delta_2D delta_fb_des;
 static Delta_2D delta_fb_aruco_r;
 // TODO: aruco码坐标系下目标位置的坐标表示，x,y信息在宏定义里修改
 //  aruco码到机器人目标位置的距离（aruco码坐标系）
-static Delta_2D delta_aruco_des_a = {DES_ARUCO_CENTER, DES_CENTER_DES};
+static Delta_2D delta_aruco_des_a = {ARUCO_2_DES_X, ARUCO_2_DES_Y};
 
 // 取可乐时目标点的位置变化
 Delta_2D delta_des_cola_w;
@@ -32,8 +32,8 @@ Delta_2D Coord_transformation(float theta, Delta_2D Delta_r)
     return Delta_w;
 }
 
-static Delta_2D delta_fb_aruco_w;
-static Delta_2D delta_aruco_des_w;
+Delta_2D delta_fb_aruco_w;
+Delta_2D delta_aruco_des_w;
 bool des_base_aruco(aruco &aruco_ref)
 {
     // TODO: 可能视觉参数的正负方向得调一下
@@ -41,8 +41,8 @@ bool des_base_aruco(aruco &aruco_ref)
     float theta_w_r = fpQ * RADIAN;
     float theta_w_a = (fpQ + aruco_ref.thetaz)* RADIAN;
 
-    delta_fb_aruco_r.delta_x = aruco_ref.x;
-    delta_fb_aruco_r.delta_y = aruco_ref.y;
+    delta_fb_aruco_r.delta_x = 1000.0f*aruco_ref.x;
+    delta_fb_aruco_r.delta_y = 1000.0f*aruco_ref.y;
 
     delta_fb_aruco_w = Coord_transformation(theta_w_r, delta_fb_aruco_r);
     delta_aruco_des_w = Coord_transformation(theta_w_a, delta_aruco_des_a);

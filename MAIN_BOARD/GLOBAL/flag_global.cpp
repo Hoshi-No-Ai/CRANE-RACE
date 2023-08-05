@@ -23,3 +23,4 @@ bool _navigation_::vision_true = 0;
 bool _action_::figure_out_object = 0;
 bool _action_::flag_stop_wait = 0;
 bool _action_::flag_fetch_cola = 0;
+bool _action_::flag_stop_vision=0;

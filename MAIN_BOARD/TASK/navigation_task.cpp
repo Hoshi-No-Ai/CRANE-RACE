@@ -1,5 +1,6 @@
 #include "navigation_task.h"
 
+using _action_::flag_stop_vision;
 using _action_::flag_stop_wait;
 using _api_module_::flag_tuoluo;
 using _navigation_::calibration_current;
@@ -8,7 +9,7 @@ using _navigation_::vision_true;
 using _remote_ctrl_::manual_enable;
 
 int stop_wait_time;
-
+int stop_vision_time;
 static bool path_with_pos_pid = 1;
 
 void navigation(void)
@@ -61,18 +62,39 @@ void navigation(void)
             }
         }
 
+        if (flag_stop_vision)
+        {
+            stop_vision_time++;
+            if (stop_vision_time > 500)
+            {
+                flag_stop_vision = 0;
+                stop_vision_time = 0;
+                vision_enable = 1;
+            }
+        }
+
         if (vision_true)
         {
-            nav.auto_path.pos_pid.x.fpDes = nav.auto_path.pos_pid.x.fpFB + delta_fb_des.delta_x;
-            nav.auto_path.pos_pid.y.fpDes = nav.auto_path.pos_pid.y.fpFB + delta_fb_des.delta_y;
-            // TODO:视觉信号加减不要写反了
-            nav.auto_path.pos_pid.w.fpDes = nav.auto_path.pos_pid.w.fpFB + aruco_fdb.thetaz;
+            //            nav.auto_path.pos_pid.x.fpDes = nav.auto_path.pos_pid.x.fpFB + delta_fb_des.delta_x;
+            //            nav.auto_path.pos_pid.y.fpDes = nav.auto_path.pos_pid.y.fpFB + delta_fb_des.delta_y;
+            //            // TODO:视觉信号加减不要写反了
+            //            nav.auto_path.pos_pid.w.fpDes = nav.auto_path.pos_pid.w.fpFB - aruco_fdb.thetaz;
+            //            if (this_target == 1)
+            //            {
+            //                nav.auto_path.pos_pid.x.fpDes = nav.auto_path.pos_pid.x.fpDes + delta_des_cola_w.delta_x;
+            //                nav.auto_path.pos_pid.y.fpDes = nav.auto_path.pos_pid.y.fpDes + delta_des_cola_w.delta_y;
+            //                nav.auto_path.pos_pid.w.fpDes = nav.auto_path.pos_pid.w.fpDes;
+            //            }
+            nav.auto_path.m_point_end.m_x = nav.auto_path.pos_pid.x.fpFB + delta_fb_des.delta_x;
+            nav.auto_path.m_point_end.m_q = nav.auto_path.pos_pid.y.fpFB + delta_fb_des.delta_y;
+            nav.auto_path.m_point_end.m_q = nav.auto_path.pos_pid.w.fpFB - aruco_fdb.thetaz;
             if (this_target == 1)
             {
-                nav.auto_path.pos_pid.x.fpDes = nav.auto_path.pos_pid.x.fpDes + delta_des_cola_w.delta_x;
-                nav.auto_path.pos_pid.y.fpDes = nav.auto_path.pos_pid.y.fpDes + delta_des_cola_w.delta_y;
-                nav.auto_path.pos_pid.w.fpDes = nav.auto_path.pos_pid.w.fpDes;
+                nav.auto_path.m_point_end.m_x = nav.auto_path.m_point_end.m_x + delta_des_cola_w.delta_x;
+                nav.auto_path.m_point_end.m_y = nav.auto_path.m_point_end.m_y + delta_des_cola_w.delta_y;
+                nav.auto_path.m_point_end.m_q = nav.auto_path.m_point_end.m_q;
             }
+            vision_true = 0;
         }
         else
         {

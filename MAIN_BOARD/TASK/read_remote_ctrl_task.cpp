@@ -2,6 +2,7 @@
 #include "action_task.h"
 
 using _action_::figure_out_object;
+using _action_::flag_stop_vision;
 using _navigation_::calibration_current;
 using _remote_ctrl_::auto_enable;
 using _remote_ctrl_::manual_enable;
@@ -228,6 +229,7 @@ void Key_Deal(void)
         }
         else if (keyboard_mode == ACTION)
         {
+            flag_stop_vision=1;
             action_pattern = ACTION_POS_1;
         }
     }
@@ -249,13 +251,15 @@ void Key_Deal(void)
         }
         else if (keyboard_mode == ACTION)
         {
-            action_pattern = ACTION_POS_2;
+          flag_stop_vision=1;  
+					action_pattern = ACTION_POS_2;
         }
     }
     else if (PRESS_KEY_2_3)
     {
         if (keyboard_mode == ACTION)
         {
+						flag_stop_vision=1;
             action_pattern = ACTION_POS_3;
         }
     }
@@ -263,6 +267,7 @@ void Key_Deal(void)
     {
         if (keyboard_mode == ACTION)
         {
+					flag_stop_vision=1;
             action_pattern = ACTION_POS_4;
         }
     }
@@ -270,6 +275,7 @@ void Key_Deal(void)
     {
         if (keyboard_mode == ACTION)
         {
+					flag_stop_vision=1;
             action_pattern = ACTION_POS_5;
         }
     }
@@ -277,6 +283,7 @@ void Key_Deal(void)
     {
         if (keyboard_mode == ACTION)
         {
+					flag_stop_vision=1;
             action_pattern = ACTION_POS_6;
         }
     }

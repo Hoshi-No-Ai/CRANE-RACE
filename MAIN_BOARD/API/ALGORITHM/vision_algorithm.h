@@ -7,8 +7,8 @@
 #include "locate_algorithm.h"
 #include "navigation_algorithm.h"
 
-#define DES_ARUCO_CENTER 0.0f
-#define DES_CENTER_DES 0.0f
+#define ARUCO_2_DES_X -2.558597183305251e+02f
+#define ARUCO_2_DES_Y 5.707471836009902e+02f
 
 #define DELTA_COLA 84.0f
 
@@ -51,5 +51,7 @@ bool Identify_box_cola(int &target);
 
 extern Delta_2D delta_fb_des;
 extern Delta_2D delta_des_cola_w;
+extern  Delta_2D delta_fb_aruco_w;
+extern  Delta_2D delta_aruco_des_w;
 
 #endif

@@ -23,7 +23,6 @@ u8 udp_demo_sendbuf[ARM_DEBUG_SIZE * 4 + 4] = "Explorer STM32F407 NETCONN UDP de
 u8 udp_flag; // UDP数据发送标
 
 int main(void)
-
 {
     OS_ERR err;
     CPU_SR_ALLOC(); // 临界区代码初始化
@@ -179,16 +178,17 @@ void navigation_task(void *p)
 #endif
         cRobot.Cal_RobotVelt();
 
-        if (/*nav.state == NAV_STOPX &&*/ vision_enable && vision_time > 20)
+        if (/*nav.state == NAV_STOPX&&*/ vision_enable /*&& vision_time > 100*/)
         {
             delta_des_cola(target_num.cola);
             vision_true = des_base_aruco(aruco_fdb);
-            vision_time = 0;
+            //            vision_time = 0;
+            vision_enable = 0;
         }
 
         navigation();
 
-        vision_time++;
+//        vision_time++;
 #ifdef DT35_PATH
         dt35_time++;
 #endif

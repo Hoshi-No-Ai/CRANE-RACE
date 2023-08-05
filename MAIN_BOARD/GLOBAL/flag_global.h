@@ -37,6 +37,7 @@ namespace _action_
     extern bool figure_out_object;
     extern bool flag_stop_wait;
     extern bool flag_fetch_cola;
+    extern bool flag_stop_vision;
 }
 
 #endif

@@ -1,15 +1,15 @@
 #include "action_task.h"
 #include "hitcrt_os.h"
-#define ssfdb  sucker.slide_motor.pos_pid.fpFB
-#define slfdb  sucker.lift_motor.pos_pid.fpFB
+#define ssfdb sucker.slide_motor.pos_pid.fpFB
+#define slfdb sucker.lift_motor.pos_pid.fpFB
 
-#define tsfdb  table.slide_motor.pos_pid.fpFB
-#define tslfdb  table.lift_motor.pos_pid.fpFB
-
+#define tsfdb table.slide_motor.pos_pid.fpFB
+#define tslfdb table.lift_motor.pos_pid.fpFB
 
 using _action_::figure_out_object;
 using _action_::flag_fetch_cola;
 using _action_::flag_stop_wait;
+using _navigation_::vision_enable;
 
 action_pattern_e action_pattern = ACTION_NONE;
 fetch_pattern_e fetch_pattern = FETCH_INIT;
@@ -168,7 +168,7 @@ void movement_check(bool if_auto)
         case ACTION_POS_CHECK:
             // TODO:激光传感器给出识别到的信号
             stable_time++;
-            if (stable_time > 200)
+            if (stable_time > 100)
             {
                 figure_out_object = Identify_box_cola(this_target);
                 if (figure_out_object && !flag_stop_wait)
@@ -280,11 +280,11 @@ uint8_t final_target;
 extern float sucker_lift_r;
 extern float sucker_slide_r;
 extern float handle_time;
-			  float s_time_down;
+float s_time_down;
 
-float cal_time(float x_des,float x_fdb,float a)
+float cal_time(float x_des, float x_fdb, float a)
 {
-    return sqrt(fabs(x_des - x_fdb)/a);
+    return sqrt(fabs(x_des - x_fdb) / a);
 }
 void handle_box(void)
 {
@@ -402,29 +402,28 @@ void handle_box(void)
         sucker.Toggle_sucker = 0;
         // DES.table_lift = table_lift_up;
         DES.table_slide = table_slide_in;
-    if(box_state!=pre_box_state)
-    {
-        if (this_target == 1) // box
+        if (box_state != pre_box_state)
         {
-            if (sucker.lift_motor.pos_pid.fpFB > 300)
+            if (this_target == 1) // box
             {
-                DES.sucker_slide = cal_distance_by_sensor;
-                
-              //  cal_sssssssss = cal_distance_by_sensor;
-            }
-            DES.sucker_lift = sucker_lift_box_get_state1;
-        }
-        else if (this_target == 2)
-        {
-            DES.sucker_slide = 0;
-            DES.sucker_lift = -5;
-        }
-         s_time_down = cal_time( DES.sucker_lift ,slfdb,sucker.td_lift.m_r);
-        handle_time = 0;
-    }
-        
+                if (sucker.lift_motor.pos_pid.fpFB > 300)
+                {
+                    DES.sucker_slide = cal_distance_by_sensor;
 
-        if (handle_time>s_time_down)
+                    //  cal_sssssssss = cal_distance_by_sensor;
+                }
+                DES.sucker_lift = sucker_lift_box_get_state1;
+            }
+            else if (this_target == 2)
+            {
+                DES.sucker_slide = 0;
+                DES.sucker_lift = -5;
+            }
+            s_time_down = cal_time(DES.sucker_lift, slfdb, sucker.td_lift.m_r);
+            handle_time = 0;
+        }
+
+        if (handle_time > s_time_down)
         {
             if (this_target == 1)
             {
@@ -439,7 +438,7 @@ void handle_box(void)
         pre_box_state = get_state1;
         break;
     case get_state2:
-        DES.sucker_lift = sucker_lift_box_get_state2 + (target_num.box - 1) * height_box+200;
+        DES.sucker_lift = sucker_lift_box_get_state2 + (target_num.box - 1) * height_box + 200;
         if (fabs(DES.sucker_lift - sucker.lift_motor.pos_pid.fpFB) < 5)
         {
             box_state = get_state3;
@@ -532,7 +531,7 @@ void handle_box(void)
             }
         }
 
-    pre_box_state = lose_state1;
+        pre_box_state = lose_state1;
 
         break;
 
@@ -546,9 +545,9 @@ void handle_box(void)
         {
             DES.table_slide = table_slide_in;
         }
-    pre_box_state = lose_state2;
+        pre_box_state = lose_state2;
 
-    break;
+        break;
 
     default:
         break;
