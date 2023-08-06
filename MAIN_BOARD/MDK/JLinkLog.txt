@@ -1,4 +1,3 @@
-
 T3DC4 000:450 SEGGER J-Link V4.80g Log File (0000ms, 0258ms total)
 T3DC4 000:450 DLL Compiled: Feb 13 2014 20:50:02 (0000ms, 0258ms total)
 T3DC4 000:450 Logging started @ 2023-08-05 21:12 (0000ms, 0258ms total)
@@ -9,7 +8,7 @@ Hardware: V7.00
 S/N: 20090928
 Feature(s): RDI,FlashDL,FlashBP,JFlash,GDBFull  returns O.K. (0262ms, 0520ms total)
 T3DC4 000:712 JLINK_SetErrorOutHandler(...) (0000ms, 0520ms total)
-T3DC4 000:712 JLINK_ExecCommand("ProjectFile = "D:\Users\JIN.CH\Competition\ÆðÖØ»ú´óÈü\CRANE-RACE\MAIN_BOARD\MDK\JLinkSettings.ini"", ...)Device "UNSPECIFIED" selected (0 KB flash, 0 KB RAM).  returns 0x00 (0005ms, 0525ms total)
+T3DC4 000:712 JLINK_ExecCommand("ProjectFile = "D:\Users\JIN.CH\Competition\ï¿½ï¿½ï¿½Ø»ï¿½ï¿½ï¿½ï¿½ï¿½\CRANE-RACE\MAIN_BOARD\MDK\JLinkSettings.ini"", ...)Device "UNSPECIFIED" selected (0 KB flash, 0 KB RAM).  returns 0x00 (0005ms, 0525ms total)
 T3DC4 000:720 JLINK_ExecCommand("Device = STM32F407ZGTx", ...)Device "UNSPECIFIED" selected (0 KB flash, 0 KB RAM).  returns 0x00 (0001ms, 0526ms total)
 T3DC4 000:721 JLINK_ExecCommand("DisableConnectionTimeout", ...)  returns 0x01 (0000ms, 0526ms total)
 T3DC4 000:721 JLINK_GetHardwareVersion()  returns 0x11170 (0000ms, 0526ms total)
