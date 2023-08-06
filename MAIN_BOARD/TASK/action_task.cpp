@@ -81,7 +81,7 @@ void robot_movement(void)
             // 取可乐后改变坐标
             nav.auto_path.m_point_end.m_x = nav.auto_path.pos_pid.x.fpFB + delta_fb_des.delta_x;
             nav.auto_path.m_point_end.m_q = nav.auto_path.pos_pid.y.fpFB + delta_fb_des.delta_y;
-            nav.auto_path.m_point_end.m_q = nav.auto_path.pos_pid.w.fpFB - aruco_fdb.thetaz;
+            nav.auto_path.m_point_end.m_q = 0.1f * cRobot.stPot.fpPosQ + aruco_fdb.thetaz;
             if (this_target == 2)
             {
                 delta_des_cola(target_num.cola);
@@ -203,7 +203,7 @@ void movement_check(bool if_auto)
             if (fabs(nav.auto_path.pos_pid.x.fpDes - nav.auto_path.pos_pid.x.fpFB) < LIMIT_DELTA_X && fabs(nav.auto_path.pos_pid.y.fpDes - nav.auto_path.pos_pid.y.fpFB) < LIMIT_DELTA_Y && fabs(nav.auto_path.pos_pid.w.fpDes - nav.auto_path.pos_pid.w.fpFB) < LIMIT_DELTA_Q)
             {
                 change_time++;
-                if (change_time > 10)
+                if (change_time > 50)
                 {
                     action_pattern = ACTION_FETCH;
                     change_time = 0;
