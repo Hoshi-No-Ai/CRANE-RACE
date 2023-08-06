@@ -285,7 +285,7 @@ float sucker_out2 = 700; // 1050
 float sucker_yajin = 930;
 int init_motor;
 int this_target = 0; // box 1,cola 2
-int target_global[6];
+int target_global[6] = {2,1,1,2,1,2};
 
 int cola_finish = 0, box_finish = 0;
 float cal_distance_by_sensor;
