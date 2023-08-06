@@ -35,7 +35,7 @@ void SysTick_Handler(void)
     {
         Sys_Monitor.rate_monitor.time_base++;
         task_time += 0.001;
-			handle_time += 0.001;
+        handle_time += 0.001;
     }
     else
     {
@@ -75,7 +75,7 @@ static CanRxMsg RxMessage1;
 static uint16_t dt35_distance[5];
 
 static u8 absolute_U_flag, absolute_LD_flag, absolute_RD_flag;
-int16_t dt35_1,dt35_2;
+int16_t dt35_1, dt35_2;
 void CAN1_RX0_IRQHandler(void)
 {
     int16_t temp_current;
@@ -157,12 +157,12 @@ void CAN1_RX0_IRQHandler(void)
         break;
 
     case 0x210:
-			memcpy(&dt35_1,&RxMessage1.Data[4],2);
-			memcpy(&dt35_2,&RxMessage1.Data[6],2);
-//		dt35_1+=10;
-//		dt35_2+=30;
-dt35_1 = 1.78*dt35_1-76.564;
-dt35_2 = 1.81*dt35_2-	46.60;
+        memcpy(&dt35_1, &RxMessage1.Data[4], 2);
+        memcpy(&dt35_2, &RxMessage1.Data[6], 2);
+        //		dt35_1+=10;
+        //		dt35_2+=30;
+        dt35_1 = 1.78 * dt35_1 - 76.564;
+        dt35_2 = 1.81 * dt35_2 - 46.60;
         break;
 
     case 0x356:
@@ -313,6 +313,12 @@ void CAN2_RX0_IRQHandler(void)
         break;
 
     case 0x210:
+        memcpy(&dt35_1, &RxMessage1.Data[4], 2);
+        memcpy(&dt35_2, &RxMessage1.Data[6], 2);
+        //		dt35_1+=10;
+        //		dt35_2+=30;
+        dt35_1 = 1.78 * dt35_1 - 76.564;
+        dt35_2 = 1.81 * dt35_2 - 46.60;
         break;
 
     default:
