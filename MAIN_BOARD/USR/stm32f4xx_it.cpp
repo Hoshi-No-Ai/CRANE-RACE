@@ -159,10 +159,10 @@ void CAN1_RX0_IRQHandler(void)
     case 0x210:
         memcpy(&dt35_1, &RxMessage1.Data[4], 2);
         memcpy(&dt35_2, &RxMessage1.Data[6], 2);
-        //		dt35_1+=10;
-        //		dt35_2+=30;
-        dt35_1 = 1.78 * dt35_1 - 76.564;
-        dt35_2 = 1.81 * dt35_2 - 46.60;
+        	dt35_1-=297;
+       		dt35_2-=250;
+//        dt35_1 = 1.78 * dt35_1 - 76.564;
+//        dt35_2 = 1.81 * dt35_2 - 46.60;
         break;
 
     case 0x356:
