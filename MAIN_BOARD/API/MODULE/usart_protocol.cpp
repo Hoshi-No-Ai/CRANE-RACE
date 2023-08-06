@@ -484,7 +484,7 @@ uart2_tx_protocol_t uart2_eft = {0x55,
                                  0x00,
                                  0xAA};
 
-u8 data_len_float = COM_LENGTH;
+u8 data_len_float = 7;
 uart2_rx_protocol_t uart2_efr = {0x55, 0x00, 0x04, data_len_float, UART2_RX_DATA_LEN, {0}, 0x00, 0xAA};
 
 // uart2_rx_protocol_t uart2_efr_1 = {0x55, 0x00, 0x11, data_len_float, UART2_RX_DATA_LEN, {0}, 0x00, 0xAA};
