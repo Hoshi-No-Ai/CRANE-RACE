@@ -70,6 +70,7 @@ extern BOX_STATE box_state;
 extern int init_motor;
 extern int this_target;
 extern GET_NUM target_num;
+extern int target_global[6];
 
 extern float task_time;
 extern int _servo_degree;

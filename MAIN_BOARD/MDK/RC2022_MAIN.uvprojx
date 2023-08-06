@@ -16,8 +16,8 @@
         <TargetCommonOption>
           <Device>STM32F407ZGTx</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F4xx_DFP.2.14.0</PackID>
-          <PackURL>http://www.keil.com/pack/</PackURL>
+          <PackID>Keil.STM32F4xx_DFP.2.13.0</PackID>
+          <PackURL>http://www.keil.com/pack</PackURL>
           <Cpu>IROM(0x08000000,0x00100000) IRAM(0x20000000,0x00020000) IRAM2(0x10000000,0x00010000) CPUTYPE("Cortex-M4") FPU2 CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
@@ -489,11 +489,6 @@
               <FilePath>..\API\ROBOT\movement_info.cpp</FilePath>
             </File>
             <File>
-              <FileName>vision_algorithm.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\API\ALGORITHM\vision_algorithm.cpp</FilePath>
-            </File>
-            <File>
               <FileName>chassis.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\API\ROBOT\chassis.cpp</FilePath>
@@ -557,6 +552,11 @@
               <FileName>path_discarded.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\API\ALGORITHM\path_discarded.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>vision_algorithm.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\API\ALGORITHM\vision_algorithm.cpp</FilePath>
             </File>
           </Files>
         </Group>

@@ -38,33 +38,80 @@ void robot_movement(void)
             break;
         case ACTION_POS_1:
             // 跑到点位
+            this_target = target_global[0];
             nav.auto_path.m_point_end.point_set(POS_1_X, POS_1_Y, POS_1_Q);
+            if (this_target == 2)
+            {
+                delta_des_cola(target_num.cola);
+                nav.auto_path.m_point_end.m_x = nav.auto_path.m_point_end.m_x + delta_des_cola_w.delta_x;
+                nav.auto_path.m_point_end.m_y = nav.auto_path.m_point_end.m_y + delta_des_cola_w.delta_y;
+                nav.auto_path.m_point_end.m_q = nav.auto_path.m_point_end.m_q;
+            }
             nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 60, 1500, 1500);
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_2:
+            this_target = target_global[1];
             nav.auto_path.m_point_end.point_set(POS_2_X, POS_2_Y, POS_2_Q);
-
+            if (this_target == 2)
+            {
+                delta_des_cola(target_num.cola);
+                nav.auto_path.m_point_end.m_x = nav.auto_path.m_point_end.m_x + delta_des_cola_w.delta_x;
+                nav.auto_path.m_point_end.m_y = nav.auto_path.m_point_end.m_y + delta_des_cola_w.delta_y;
+                nav.auto_path.m_point_end.m_q = nav.auto_path.m_point_end.m_q;
+            }
             nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 60, 1500, 1500);
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_3:
+            this_target = target_global[2];
             nav.auto_path.m_point_end.point_set(POS_3_X, POS_3_Y, POS_3_Q);
+            if (this_target == 2)
+            {
+                delta_des_cola(target_num.cola);
+                nav.auto_path.m_point_end.m_x = nav.auto_path.m_point_end.m_x + delta_des_cola_w.delta_x;
+                nav.auto_path.m_point_end.m_y = nav.auto_path.m_point_end.m_y + delta_des_cola_w.delta_y;
+                nav.auto_path.m_point_end.m_q = nav.auto_path.m_point_end.m_q;
+            }
             nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 60, 1500, 1500);
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_4:
+            this_target = target_global[3];
             nav.auto_path.m_point_end.point_set(POS_4_X, POS_4_Y, POS_4_Q);
+            if (this_target == 2)
+            {
+                delta_des_cola(target_num.cola);
+                nav.auto_path.m_point_end.m_x = nav.auto_path.m_point_end.m_x + delta_des_cola_w.delta_x;
+                nav.auto_path.m_point_end.m_y = nav.auto_path.m_point_end.m_y + delta_des_cola_w.delta_y;
+                nav.auto_path.m_point_end.m_q = nav.auto_path.m_point_end.m_q;
+            }
             nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 60, 1500, 1500);
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_5:
+            this_target = target_global[4];
             nav.auto_path.m_point_end.point_set(POS_5_X, POS_5_Y, POS_5_Q);
+            if (this_target == 2)
+            {
+                delta_des_cola(target_num.cola);
+                nav.auto_path.m_point_end.m_x = nav.auto_path.m_point_end.m_x + delta_des_cola_w.delta_x;
+                nav.auto_path.m_point_end.m_y = nav.auto_path.m_point_end.m_y + delta_des_cola_w.delta_y;
+                nav.auto_path.m_point_end.m_q = nav.auto_path.m_point_end.m_q;
+            }
             nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 60, 1500, 1500);
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_6:
+            this_target = target_global[5];
             nav.auto_path.m_point_end.point_set(POS_6_X, POS_6_Y, POS_6_Q);
+            if (this_target == 2)
+            {
+                delta_des_cola(target_num.cola);
+                nav.auto_path.m_point_end.m_x = nav.auto_path.m_point_end.m_x + delta_des_cola_w.delta_x;
+                nav.auto_path.m_point_end.m_y = nav.auto_path.m_point_end.m_y + delta_des_cola_w.delta_y;
+                nav.auto_path.m_point_end.m_q = nav.auto_path.m_point_end.m_q;
+            }
             nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 60, 1500, 1500);
             SET_NAV_PATH_AUTO(1);
             break;
@@ -74,16 +121,8 @@ void robot_movement(void)
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_CHECK:
-            flag_stop_wait = 1;
             break;
         case ACTION_POS_CHANGE:
-            // 取可乐后改变坐标
-            nav.auto_path.m_point_end.m_x = nav.auto_path.m_point_end.m_x + delta_des_cola_w.delta_x;
-            nav.auto_path.m_point_end.m_y = nav.auto_path.m_point_end.m_y + delta_des_cola_w.delta_y;
-            nav.auto_path.m_point_end.m_q = nav.auto_path.m_point_end.m_q;
-            nav.auto_path.m_velt_acc.Velt_Acc_Set(500, 60, 500, 500);
-            SET_NAV_PATH_AUTO(1);
-            flag_fetch_cola = 1;
             break;
         default:
             break;
@@ -117,44 +156,43 @@ void movement_check(bool if_auto)
             if (fetch_pattern == FETCH_GET && pos_i < 7 && pos_i > 0)
             {
                 action_pattern = (action_pattern_e)(pos_i + 1);
-                flag_fetch_cola = 0;
             }
             break;
         case ACTION_POS_1:
             // 判断底盘是否跑到点
             if (pos_i == ACTION_POS_1)
             {
-                action_pattern = ACTION_POS_CHECK;
+                action_pattern = ACTION_FETCH;
             }
             break;
         case ACTION_POS_2:
             if (pos_i == ACTION_POS_2)
             {
-                action_pattern = ACTION_POS_CHECK;
+                action_pattern = ACTION_FETCH;
             }
             break;
         case ACTION_POS_3:
             if (pos_i == ACTION_POS_3)
             {
-                action_pattern = ACTION_POS_CHECK;
+                action_pattern = ACTION_FETCH;
             }
             break;
         case ACTION_POS_4:
             if (pos_i == ACTION_POS_4)
             {
-                action_pattern = ACTION_POS_CHECK;
+                action_pattern = ACTION_FETCH;
             }
             break;
         case ACTION_POS_5:
             if (pos_i == ACTION_POS_5)
             {
-                action_pattern = ACTION_POS_CHECK;
+                action_pattern = ACTION_FETCH;
             }
             break;
         case ACTION_POS_6:
             if (pos_i == ACTION_POS_6)
             {
-                action_pattern = ACTION_POS_CHECK;
+                action_pattern = ACTION_FETCH;
             }
             break;
         case ACTION_POS_END:
@@ -166,39 +204,8 @@ void movement_check(bool if_auto)
         case ACTION_PUT:
             break;
         case ACTION_POS_CHECK:
-            // TODO:激光传感器给出识别到的信号
-            stable_time++;
-            if (stable_time > 100)
-            {
-                figure_out_object = Identify_box_cola(this_target);
-                if (figure_out_object && !flag_stop_wait)
-                {
-                    test_enable = 0;
-                    if (this_target == 1)
-                    {
-                        action_pattern = ACTION_FETCH;
-                        figure_out_object = 0;
-                    }
-                    else if (this_target == 2)
-                    {
-                        delta_des_cola(target_num.cola);
-                        action_pattern = ACTION_POS_CHANGE;
-                        figure_out_object = 0;
-                    }
-                }
-                stable_time = 0;
-            }
             break;
         case ACTION_POS_CHANGE:
-            if (fabs(nav.auto_path.pos_pid.x.fpDes - nav.auto_path.pos_pid.x.fpFB) < LIMIT_DELTA_X && fabs(nav.auto_path.pos_pid.y.fpDes - nav.auto_path.pos_pid.y.fpFB) < LIMIT_DELTA_Y && fabs(nav.auto_path.pos_pid.w.fpDes - nav.auto_path.pos_pid.w.fpFB) < LIMIT_DELTA_Q)
-            {
-                change_time++;
-                if (change_time > 50)
-                {
-                    action_pattern = ACTION_FETCH;
-                    change_time = 0;
-                }
-            }
             break;
         default:
             break;
@@ -209,33 +216,45 @@ void movement_check(bool if_auto)
 void position_check(void)
 {
     static C_POINT point_fb;
+    float dx, dy;
     point_fb.m_x = cRobot.stPot.fpPosX;
     point_fb.m_y = cRobot.stPot.fpPosY;
     point_fb.m_q = 0.1f * cRobot.stPot.fpPosQ;
 
-    if (nav.state == NAV_STOP || nav.state == NAV_STOPX || flag_fetch_cola)
+    if (nav.state == NAV_STOP || nav.state == NAV_STOPX)
     {
-        if (fabs(point_fb.m_x - POS_1_X) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_1_Y) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_1_Q) < LIMIT_DELTA_Q)
+        if (this_target == 1)
+        {
+            dx = 0;
+            dy = 0;
+        }
+        else if (this_target == 2)
+        {
+            dx = delta_des_cola_w.delta_x;
+            dy = delta_des_cola_w.delta_y;
+        }
+
+        if (fabs(point_fb.m_x - POS_1_X - dx) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_1_Y - dy) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_1_Q) < LIMIT_DELTA_Q)
         {
             pos_i = 1;
         }
-        else if (fabs(point_fb.m_x - POS_2_X) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_2_Y) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_2_Q) < LIMIT_DELTA_Q)
+        else if (fabs(point_fb.m_x - POS_2_X - dx) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_2_Y - dy) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_2_Q) < LIMIT_DELTA_Q)
         {
             pos_i = 2;
         }
-        else if (fabs(point_fb.m_x - POS_3_X) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_3_Y) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_3_Q) < LIMIT_DELTA_Q)
+        else if (fabs(point_fb.m_x - POS_3_X - dx) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_3_Y - dy) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_3_Q) < LIMIT_DELTA_Q)
         {
             pos_i = 3;
         }
-        else if (fabs(point_fb.m_x - POS_4_X) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_4_Y) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_4_Q) < LIMIT_DELTA_Q)
+        else if (fabs(point_fb.m_x - POS_4_X - dx) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_4_Y - dy) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_4_Q) < LIMIT_DELTA_Q)
         {
             pos_i = 4;
         }
-        else if (fabs(point_fb.m_x - POS_5_X) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_5_Y) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_5_Q) < LIMIT_DELTA_Q)
+        else if (fabs(point_fb.m_x - POS_5_X - dx) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_5_Y - dy) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_5_Q) < LIMIT_DELTA_Q)
         {
             pos_i = 5;
         }
-        else if (fabs(point_fb.m_x - POS_6_X) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_6_Y) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_6_Q) < LIMIT_DELTA_Q)
+        else if (fabs(point_fb.m_x - POS_6_X - dx) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_6_Y - dy) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_6_Q) < LIMIT_DELTA_Q)
         {
             pos_i = 6;
         }
@@ -266,6 +285,7 @@ float sucker_out2 = 700; // 1050
 float sucker_yajin = 930;
 int init_motor;
 int this_target = 0; // box 1,cola 2
+int target_global[6];
 
 int cola_finish = 0, box_finish = 0;
 float cal_distance_by_sensor;
