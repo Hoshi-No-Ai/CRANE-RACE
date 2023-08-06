@@ -589,7 +589,6 @@ void Comm2Rx_IRQ(void) // 串口6 DMA接收函数
                 memcpy(&aruco_fdb, uart2_efr.num, 4 * 7);
 								aruco_fdb.x=-aruco_fdb.x;
 								aruco_fdb.y=-aruco_fdb.y;
-								aruco_fdb.thetaz=-aruco_fdb.thetaz;
             }
             Comm2_Rx_Status = RX_FREE;
             break;

@@ -21,8 +21,8 @@ static void wifi_rxdata_update(void)
     uart6_tx_buf[16].float_num = cRobot.cFollowoerWheel.m_CoderBCur;
     //    uart6_tx_buf[17].float_num = cRobot.cGyro.fpQ;
 
-    uart6_tx_buf[18].float_num = delta_fb_des.delta_x/*dist_1*/;
-    uart6_tx_buf[19].float_num = delta_fb_des.delta_y/*dist_2*/;
+    uart6_tx_buf[18].float_num = delta_fb_des.delta_x;//delta_fb_aruco_w.delta_x/*delta_fb_des.delta_x/*dist_1*/;
+    uart6_tx_buf[19].float_num = delta_fb_des.delta_y;//delta_fb_aruco_w.delta_y/*delta_fb_des.delta_y/*dist_2*/;
     uart6_tx_buf[20].float_num = aruco_fdb.thetaz;
     uart6_tx_buf[21].float_num = 0;
 }

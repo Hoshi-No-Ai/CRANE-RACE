@@ -48,9 +48,9 @@ void navigation(void)
         nav.auto_path.velt_pid.w.fpFB = cRobot.stVelt.fpW;
 
         // 规划来自路径
-        nav.auto_path.pos_pid.x.fpKp = 10.0f;
-        nav.auto_path.pos_pid.y.fpKp = 10.0f;
-        nav.auto_path.pos_pid.w.fpKp = 20.0f;
+        nav.auto_path.pos_pid.x.fpKp = 5.0f;
+        nav.auto_path.pos_pid.y.fpKp = 5.0f;
+        nav.auto_path.pos_pid.w.fpKp = 10.0f;
 
         if (flag_stop_wait)
         {
@@ -65,7 +65,7 @@ void navigation(void)
         if (flag_stop_vision)
         {
             stop_vision_time++;
-            if (stop_vision_time > 500)
+            if (stop_vision_time > 1000)
             {
                 flag_stop_vision = 0;
                 stop_vision_time = 0;
@@ -78,7 +78,7 @@ void navigation(void)
             //            nav.auto_path.pos_pid.x.fpDes = nav.auto_path.pos_pid.x.fpFB + delta_fb_des.delta_x;
             //            nav.auto_path.pos_pid.y.fpDes = nav.auto_path.pos_pid.y.fpFB + delta_fb_des.delta_y;
             //            // TODO:视觉信号加减不要写反了
-            //            nav.auto_path.pos_pid.w.fpDes = nav.auto_path.pos_pid.w.fpFB - aruco_fdb.thetaz;
+            //            nav.auto_path.pos_pid.w.fpDes = nav.auto_path.pos_pid.w.fpFB + aruco_fdb.thetaz;
             //            if (this_target == 1)
             //            {
             //                nav.auto_path.pos_pid.x.fpDes = nav.auto_path.pos_pid.x.fpDes + delta_des_cola_w.delta_x;
@@ -87,13 +87,7 @@ void navigation(void)
             //            }
             nav.auto_path.m_point_end.m_x = nav.auto_path.pos_pid.x.fpFB + delta_fb_des.delta_x;
             nav.auto_path.m_point_end.m_q = nav.auto_path.pos_pid.y.fpFB + delta_fb_des.delta_y;
-            nav.auto_path.m_point_end.m_q = nav.auto_path.pos_pid.w.fpFB - aruco_fdb.thetaz;
-            if (this_target == 1)
-            {
-                nav.auto_path.m_point_end.m_x = nav.auto_path.m_point_end.m_x + delta_des_cola_w.delta_x;
-                nav.auto_path.m_point_end.m_y = nav.auto_path.m_point_end.m_y + delta_des_cola_w.delta_y;
-                nav.auto_path.m_point_end.m_q = nav.auto_path.m_point_end.m_q;
-            }
+            nav.auto_path.m_point_end.m_q = nav.auto_path.pos_pid.w.fpFB + aruco_fdb.thetaz;
             vision_true = 0;
         }
         else

@@ -53,3 +53,14 @@ end
 
 average_x=(sum_x-x_min-x_max)/4;
 average_y=(sum_y-y_min-y_max)/4;
+
+thetaa=-2.24;
+thetaQQ=-89.99;
+dxx=-422.55;
+dyy=-272.48;
+x00=zeros(1,1);
+y00=zeros(1,1);
+angle=(thetaa+thetaQQ)/180*pi;
+e1=dxx+x1*cos(angle)-y1*sin(angle);
+e2=dyy+x1*sin(angle)+y1*cos(angle);
+[x00(1,1),y00(1,1)] = solve(e1,e2,x1,y1);
