@@ -267,13 +267,13 @@ float height_box = 220;
 
 float sucker_lift_box_await = 1100, sucker_slide_await = 0;
 float sucker_lift_box_get_state1 = 220, sucker_slide_get_state1 = -7;
-float sucker_lift_box_get_state2 = 500, sucker_slide_get_state2 = -50;
-float table_lift_up = -1500, table_lift_down = -800, talbe_lift_await = -10;
+float sucker_lift_box_get_state2 = 550, sucker_slide_get_state2 = -45;
+float table_lift_up = -1500, table_lift_down = -800, talbe_lift_await = -700;
 float table_slide_out = -30, table_slide_in = 0;
 float table_slide_await = -10;
 float sucker_out = 1150;
 float sucker_out2 = 700; // 1050
-float sucker_yajin = 930;
+float sucker_yajin = 990;
 int init_motor;
 int this_target = 0; // box 1,cola 2
 
@@ -329,6 +329,8 @@ void handle_box(void)
         //   DES.sucker_lift = sucker_lift_box_await;
         if (!(box_finish * cola_finish))
         {
+					 sucker_lift_r = 3000;
+            sucker_slide_r = 50;
             DES.sucker_slide = 0;
 
             if (fabs(sucker.slide_motor.pos_pid.fpFB - DES.sucker_slide) < 5)
@@ -361,7 +363,7 @@ void handle_box(void)
             }
             if (final_target == 2)
             {
-                DES.sucker_lift = 1100;
+                DES.sucker_lift = 1180;
                 if (fabs(sucker.lift_motor.pos_pid.fpFB - DES.sucker_lift) < 5)
                 {
                     DES.sucker_slide = sucker_slide_get_state2;
@@ -402,6 +404,7 @@ void handle_box(void)
 
         if (fabs(DES.sucker_lift - sucker.lift_motor.pos_pid.fpFB) < 5)
         {
+					
             // TODO：调节衔接时间
             fetch_pattern = FETCH_AWAIT;
         }
@@ -409,6 +412,8 @@ void handle_box(void)
         break;
 
     case get_state1:
+			sucker_lift_r = 3000;
+            sucker_slide_r = 200;
         sucker.Toggle_sucker = 0;
         // DES.table_lift = table_lift_up;
         DES.table_slide = table_slide_in;

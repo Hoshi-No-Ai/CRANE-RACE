@@ -289,7 +289,7 @@ void Comm3Rx_IRQ(void) // 串口2电流DMA接收函数
                     else
                     {
                         temp_target_detect = 1;
-                        cal_distance_by_sensor = 0.1047 * (dist_1 + dist_2) / 2 - 20.33;
+                        cal_distance_by_sensor = 0.1047 * (dist_1 + dist_2) / 2 - 15.33;
                         if (cal_distance_by_sensor > 0)
                             cal_distance_by_sensor = 0;
                         if (cal_distance_by_sensor < -10)
