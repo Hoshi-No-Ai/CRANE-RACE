@@ -135,8 +135,8 @@ void robot_movement(void)
                 nav.auto_path.m_point_end.m_y = nav.auto_path.m_point_end.m_y + delta_des_cola_w.delta_y;
                 nav.auto_path.m_point_end.m_q = nav.auto_path.m_point_end.m_q;
             }
-//            nav.auto_path.m_velt_acc.Velt_Acc_Set(500, 60, 500, 500);
-//            SET_NAV_PATH_AUTO(1);
+            //            nav.auto_path.m_velt_acc.Velt_Acc_Set(500, 60, 500, 500);
+            //            SET_NAV_PATH_AUTO(1);
             flag_fetch_cola = 1;
             break;
         default:
@@ -160,12 +160,12 @@ void movement_check(bool if_auto)
     {
         switch (action_pattern)
         {
+        case ACTION_NONE:
+            Detect_Object(temp_data, target_global);
+            break;
         case ACTION_INIT:
             // 上层发送初始化成功flag标志
-            if (fetch_pattern == FETCH_AWAIT)
-            {
-                action_pattern = ACTION_POS_1;
-            }
+            action_pattern = ACTION_POS_1;
             break;
         case ACTION_FETCH:
             if (fetch_pattern == FETCH_GET && pos_i < 7 && pos_i > 0)
@@ -232,16 +232,16 @@ void movement_check(bool if_auto)
                     {
                         action_pattern = ACTION_POS_CHANGE;
                         figure_out_object = 0;
-                        vision_true=0;
+                        vision_true = 0;
                     }
                     else if (this_target == 2)
                     {
                         action_pattern = ACTION_POS_CHANGE;
                         figure_out_object = 0;
-                        vision_true=0;
+                        vision_true = 0;
                     }
                     stable_time = 0;
-                }     
+                }
             }
             break;
         case ACTION_POS_CHANGE:
@@ -324,16 +324,16 @@ float height_box = 220;
 
 float sucker_lift_box_await = 1100, sucker_slide_await = 0;
 float sucker_lift_box_get_state1 = 220, sucker_slide_get_state1 = -7;
-float sucker_lift_box_get_state2 = 500, sucker_slide_get_state2 = -50;
-float table_lift_up = -1500, table_lift_down = -800, talbe_lift_await = -10;
+float sucker_lift_box_get_state2 = 570, sucker_slide_get_state2 = -45;
+float table_lift_up = -1500, table_lift_down = -800, talbe_lift_await = -700;
 float table_slide_out = -30, table_slide_in = 0;
 float table_slide_await = -10;
 float sucker_out = 1150;
 float sucker_out2 = 700; // 1050
-float sucker_yajin = 930;
+float sucker_yajin = 990;
 int init_motor;
 int this_target = 0; // box 1,cola 2
-int target_global[6] = {2,1,1,2,1,2};
+int target_global[6] = {2, 1, 1, 2, 1, 2};
 
 int cola_finish = 0, box_finish = 0;
 float cal_distance_by_sensor;
@@ -364,6 +364,7 @@ void handle_box(void)
     switch (box_state)
     {
     case none:
+				sucker.Toggle_sucker=1;
         if (init_motor)
         {
             DES.table_lift = -2100;
@@ -387,6 +388,8 @@ void handle_box(void)
         //   DES.sucker_lift = sucker_lift_box_await;
         if (!(box_finish * cola_finish))
         {
+            sucker_lift_r = 3000;
+            sucker_slide_r = 50;
             DES.sucker_slide = 0;
 
             if (fabs(sucker.slide_motor.pos_pid.fpFB - DES.sucker_slide) < 5)
@@ -419,7 +422,7 @@ void handle_box(void)
             }
             if (final_target == 2)
             {
-                DES.sucker_lift = 1100;
+                DES.sucker_lift = 1180;
                 if (fabs(sucker.lift_motor.pos_pid.fpFB - DES.sucker_lift) < 5)
                 {
                     DES.sucker_slide = sucker_slide_get_state2;
@@ -458,15 +461,12 @@ void handle_box(void)
             }
         }
 
-        if (fabs(DES.sucker_lift - sucker.lift_motor.pos_pid.fpFB) < 5)
-        {
-            // TODO：调节衔接时间
-            fetch_pattern = FETCH_AWAIT;
-        }
         pre_box_state = await;
         break;
 
     case get_state1:
+        sucker_lift_r = 3000;
+        sucker_slide_r = 200;
         sucker.Toggle_sucker = 0;
         // DES.table_lift = table_lift_up;
         DES.table_slide = table_slide_in;

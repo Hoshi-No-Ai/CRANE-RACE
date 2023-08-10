@@ -10,7 +10,7 @@
 #define ARUCO_2_DES_X -2.887154954258607e+02f
 #define ARUCO_2_DES_Y 4.116275204611565e+02f
 
-#define DELTA_COLA 84.0f
+#define DELTA_COLA 90.0f
 
 // //世界坐标中，码到机器人目标点的距离.
 // #define DELTA_ARUCO_DES_X 0.0f
@@ -45,13 +45,13 @@ struct Delta_2D
 };
 
 bool des_base_aruco(aruco &aruco_ref);
-
 void delta_des_cola(int num);
 bool Identify_box_cola(int &target);
+bool Detect_Object(float *temp_result, int *final_result);
 
 extern Delta_2D delta_fb_des;
 extern Delta_2D delta_des_cola_w;
-extern  Delta_2D delta_fb_aruco_w;
-extern  Delta_2D delta_aruco_des_w;
+extern Delta_2D delta_fb_aruco_w;
+extern Delta_2D delta_aruco_des_w;
 
 #endif

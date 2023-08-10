@@ -39,10 +39,10 @@ bool des_base_aruco(aruco &aruco_ref)
     // TODO: 可能视觉参数的正负方向得调一下
     float fpQ = 0.1f * cRobot.stPot.fpPosQ;
     float theta_w_r = fpQ * RADIAN;
-    float theta_w_a = (fpQ + aruco_ref.thetaz)* RADIAN;
+    float theta_w_a = (fpQ + aruco_ref.thetaz) * RADIAN;
 
-    delta_fb_aruco_r.delta_x = 1000.0f*aruco_ref.x;
-    delta_fb_aruco_r.delta_y = 1000.0f*aruco_ref.y;
+    delta_fb_aruco_r.delta_x = 1000.0f * aruco_ref.x;
+    delta_fb_aruco_r.delta_y = 1000.0f * aruco_ref.y;
 
     delta_fb_aruco_w = Coord_transformation(theta_w_r, delta_fb_aruco_r);
     delta_aruco_des_w = Coord_transformation(theta_w_a, delta_aruco_des_a);
@@ -90,5 +90,28 @@ bool Identify_box_cola(int &target)
     else
     {
         return false;
+    }
+}
+
+bool Detect_Object(float *temp_result, int *final_result)
+{
+    if (temp_result[0] != 6)
+    {
+        return false;
+    }
+    else
+    {
+        for (int i = 0; i < 6; i++)
+        {
+					if((int)temp_result[i+1]==0)
+					{
+						final_result[i]=2;
+					}
+					else if((int)temp_result[i+1]==1)
+					{
+						final_result[i]=1;
+					}
+        } 
+        return true;
     }
 }

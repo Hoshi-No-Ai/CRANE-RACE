@@ -289,7 +289,7 @@ void Comm3Rx_IRQ(void) // 串口2电流DMA接收函数
                     else
                     {
                         temp_target_detect = 1;
-                        cal_distance_by_sensor = 0.1047 * (dist_1 + dist_2) / 2 - 20.33;
+                        cal_distance_by_sensor = 0.1047 * (dist_1 + dist_2) / 2 - 15.33;
                         if (cal_distance_by_sensor > 0)
                             cal_distance_by_sensor = 0;
                         if (cal_distance_by_sensor < -10)
@@ -512,8 +512,8 @@ void UART2_DMA_Tx(void)
     while (DMA_GetCurrDataCounter(USART2_TX_STREAM))
         ;
 }
+
 float temp_data[7];
-extern int target_global[6];
 
 void Comm2Rx_IRQ(void) // 串口6 DMA接收函数
 {
@@ -593,10 +593,6 @@ void Comm2Rx_IRQ(void) // 串口6 DMA接收函数
                 memcpy(&aruco_fdb, uart2_efr.num, 4 * 7);
 
                 memcpy(temp_data, &uart2_efr.num[4 * 7], 4 * 7);
-                for (int i = 0; i < 6; i++)
-                {
-                    //	target_global[i] = temp_data[i+1];
-                }
                 aruco_fdb.x = -aruco_fdb.x;
                 aruco_fdb.y = -aruco_fdb.y;
             }

@@ -276,6 +276,7 @@ extern aruco aruco_fdb;
 extern int temp_target_detect;
 extern cSucker sucker;
 extern int dist_1, dist_2;
+extern float temp_data[7];
 
 void USART3_DMA_Tx(void);
 void Comm3Rx_IRQ(void);

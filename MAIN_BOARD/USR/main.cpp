@@ -257,7 +257,6 @@ void transmit_task(void *p)
 
     while (1)
     {
-
         memcpy(uart3_eft.num, &DES.sucker_slide, 4);
         memcpy(&uart3_eft.num[4], &DES.sucker_lift, 4);
 
