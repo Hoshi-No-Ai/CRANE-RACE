@@ -48,9 +48,9 @@ void navigation(void)
         nav.auto_path.velt_pid.w.fpFB = cRobot.stVelt.fpW;
 
         // 规划来自路径
-        nav.auto_path.pos_pid.x.fpKp = 5.0f;
-        nav.auto_path.pos_pid.y.fpKp = 5.0f;
-        nav.auto_path.pos_pid.w.fpKp = 10.0f;
+        nav.auto_path.pos_pid.x.fpKp = 8.0f;
+        nav.auto_path.pos_pid.y.fpKp = 8.0f;
+        nav.auto_path.pos_pid.w.fpKp = 12.0f;
 
         // if (flag_stop_wait)
         // {
@@ -86,7 +86,7 @@ void navigation(void)
         //     //                nav.auto_path.pos_pid.w.fpDes = nav.auto_path.pos_pid.w.fpDes;
         //     //            }
         //     nav.auto_path.m_point_end.m_x = nav.auto_path.pos_pid.x.fpFB + delta_fb_des.delta_x;
-        //     nav.auto_path.m_point_end.m_q = nav.auto_path.pos_pid.y.fpFB + delta_fb_des.delta_y;
+        //     nav.auto_path.m_point_end.m_y = nav.auto_path.pos_pid.y.fpFB + delta_fb_des.delta_y;
         //     nav.auto_path.m_point_end.m_q = nav.auto_path.pos_pid.w.fpFB - aruco_fdb.thetaz;
         //     if (this_target == 2)
         //     {

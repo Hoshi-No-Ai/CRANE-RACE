@@ -484,8 +484,8 @@ uart2_tx_protocol_t uart2_eft = {0x55,
                                  0x00,
                                  0xAA};
 
-u8 data_len_float = 7;
-uart2_rx_protocol_t uart2_efr = {0x55, 0x00, 0x04, data_len_float, UART2_RX_DATA_LEN, {0}, 0x00, 0xAA};
+u8 data_len_float = COM_LENGTH;
+uart2_rx_protocol_t uart2_efr = {0x55, 0x00, 0x04, 7, UART2_RX_DATA_LEN, {0}, 0x00, 0xAA};
 
 // uart2_rx_protocol_t uart2_efr_1 = {0x55, 0x00, 0x11, data_len_float, UART2_RX_DATA_LEN, {0}, 0x00, 0xAA};
 
@@ -512,6 +512,8 @@ void UART2_DMA_Tx(void)
     while (DMA_GetCurrDataCounter(USART2_TX_STREAM))
         ;
 }
+float temp_data[7];
+extern int target_global[6];
 
 void Comm2Rx_IRQ(void) // 串口6 DMA接收函数
 {
@@ -589,6 +591,12 @@ void Comm2Rx_IRQ(void) // 串口6 DMA接收函数
             {
                 memcpy(uart2_efr.num, uart2_data_buf, UART2_RX_DATA_LEN);
                 memcpy(&aruco_fdb, uart2_efr.num, 4 * 7);
+
+                memcpy(temp_data, &uart2_efr.num[4 * 7], 4 * 7);
+                for (int i = 0; i < 6; i++)
+                {
+                    //	target_global[i] = temp_data[i+1];
+                }
                 aruco_fdb.x = -aruco_fdb.x;
                 aruco_fdb.y = -aruco_fdb.y;
             }
