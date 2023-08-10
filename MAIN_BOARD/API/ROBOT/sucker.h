@@ -56,6 +56,7 @@ struct DesSet
 
 	float table_slide;
 	float table_lift;
+	
 };
 
 extern float sucker_slide_r;
@@ -102,6 +103,7 @@ public:
 
 		lift_motor.velt_pid.fpEpMax = 16000;
 		lift_motor.velt_pid.fpUMax = 16000;
+				Toggle_sucker=1;
 
 		slide_motor.init__motor_PID(SLIDE_POS_KP, SLIDE_POS_KI, SLIDE_POS_KD, SLIDE_VELT_KP, SLIDE_VELT_KI, SLIDE_VELT_KD);
 		lift_motor.init__motor_PID(LIFT_POS_KP, LIFT_POS_KI, LIFT_POS_KD, LIFT_VELT_KP, LIFT_POS_KI, LIFT_POS_KD);

@@ -225,6 +225,7 @@ void remote_lcd_task(void *p) // esp8266发送任
     OSTimeDly_ms(100);
     while (1)
     {
+			sucker.drive_sucker();
         lcd_display();
         OSTimeDly_ms(25);
     }
@@ -240,7 +241,7 @@ void action_task(void *p)
         robot_movement();
         movement_check(auto_enable);
         position_check();
-        sucker.drive_sucker();
+        
         handle_box();
         OSTimeDly_ms(10);
     }
