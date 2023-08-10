@@ -366,7 +366,7 @@ float height_box = 220;
 
 float sucker_lift_box_await = 1100, sucker_slide_await = 0;
 float sucker_lift_box_get_state1 = 220, sucker_slide_get_state1 = -7;
-float sucker_lift_box_get_state2 = 570, sucker_slide_get_state2 = -45;
+float sucker_lift_box_get_state2 = 580, sucker_slide_get_state2 = -45;
 float table_lift_up = -1500, table_lift_down = -800, talbe_lift_await = -700;
 float table_slide_out = -30, table_slide_in = 0;
 float table_slide_await = -10;
@@ -406,7 +406,6 @@ void handle_box(void)
     switch (box_state)
     {
     case none:
-        sucker.Toggle_sucker = 1;
         if (init_motor)
         {
             DES.table_lift = -2100;
@@ -427,11 +426,12 @@ void handle_box(void)
         sucker.Toggle_sucker = 1;
         DES.table_slide = table_slide_in;
         DES.table_lift = talbe_lift_await;
+			
         //   DES.sucker_lift = sucker_lift_box_await;
         if (!(box_finish * cola_finish))
         {
             sucker_lift_r = 3000;
-            sucker_slide_r = 50;
+            sucker_slide_r = 250;
             DES.sucker_slide = 0;
 
             if (fabs(sucker.slide_motor.pos_pid.fpFB - DES.sucker_slide) < 5)
@@ -442,7 +442,12 @@ void handle_box(void)
             {
                 if (!box_finish)
                 {
-                    DES.sucker_lift = sucker_lift_box_get_state2 + (target_num.box - 1) * height_box + 200;
+                    DES.sucker_lift = sucker_lift_box_get_state2 + (target_num.box - 1) * height_box + 150;
+										if(sucker.lift_motor.pos_pid.fpFB>sucker_lift_box_get_state2 + (target_num.box - 1) * height_box)
+										{
+											 sucker_lift_r = 7000;
+										  	sucker_slide_r = 250;
+										}
                 }
                 else
                 {
@@ -548,6 +553,7 @@ void handle_box(void)
         pre_box_state = get_state1;
         break;
     case get_state2:
+			
         DES.sucker_lift = sucker_lift_box_get_state2 + (target_num.box - 1) * height_box + 200;
         if (fabs(DES.sucker_lift - sucker.lift_motor.pos_pid.fpFB) < 5)
         {
@@ -571,6 +577,7 @@ void handle_box(void)
             {
                 sucker.Toggle_sucker = 1;
                 // TODO：调节衔接时间
+                OSTimeDly_ms(200);
                 fetch_pattern = FETCH_GET_PRE;
                 box_state = await;
             }
