@@ -8,7 +8,7 @@
 #define LIMIT_DELTA_X 10.0f
 #define LIMIT_DELTA_Y 10.0f
 #define LIMIT_DELTA_Q 0.5f
-#define LIMIT_DELTA_Q_RAD (0.5f/180.0f*PI)
+#define LIMIT_DELTA_Q_RAD (0.5f / 180.0f * PI)
 
 enum action_pattern_e
 {
@@ -35,6 +35,18 @@ enum fetch_pattern_e
     FETCH_LOSE,
     FETCH_MOVE,
     FETCH_GET_PRE
+};
+
+enum global_pattern_e
+{
+    WITH_GLOBAL,
+    WITHOUT_GLOBAL
+};
+
+enum aruco_pattern_e
+{
+    WITH_ARUCO,
+    WITHOUT_ARUCO
 };
 
 enum BOX_STATE
@@ -67,7 +79,10 @@ struct GET_NUM
 
 extern action_pattern_e action_pattern;
 extern fetch_pattern_e fetch_pattern;
+extern global_pattern_e global_pattern;
+extern aruco_pattern_e aruco_pattern;
 extern BOX_STATE box_state;
+
 extern int init_motor;
 extern int this_target;
 extern GET_NUM target_num;

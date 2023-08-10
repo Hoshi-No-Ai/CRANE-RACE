@@ -14,6 +14,8 @@ using _navigation_::vision_true;
 
 action_pattern_e action_pattern = ACTION_NONE;
 fetch_pattern_e fetch_pattern = FETCH_INIT;
+global_pattern_e global_pattern = WITH_GLOBAL;
+aruco_pattern_e aruco_pattern = WITH_ARUCO;
 static int pos_i;
 
 void robot_movement(void)
@@ -52,7 +54,10 @@ void robot_movement(void)
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_2:
-            this_target = target_global[1];
+            if (global_pattern == WITH_GLOBAL)
+            {
+                this_target = target_global[1];
+            }
             nav.auto_path.m_point_end.point_set(POS_2_X, POS_2_Y, POS_2_Q);
             if (this_target == 2)
             {
@@ -65,7 +70,10 @@ void robot_movement(void)
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_3:
-            this_target = target_global[2];
+            if (global_pattern == WITH_GLOBAL)
+            {
+                this_target = target_global[2];
+            }
             nav.auto_path.m_point_end.point_set(POS_3_X, POS_3_Y, POS_3_Q);
             if (this_target == 2)
             {
@@ -78,7 +86,10 @@ void robot_movement(void)
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_4:
-            this_target = target_global[3];
+            if (global_pattern == WITH_GLOBAL)
+            {
+                this_target = target_global[3];
+            }
             nav.auto_path.m_point_end.point_set(POS_4_X, POS_4_Y, POS_4_Q);
             if (this_target == 2)
             {
@@ -91,7 +102,10 @@ void robot_movement(void)
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_5:
-            this_target = target_global[4];
+            if (global_pattern == WITH_GLOBAL)
+            {
+                this_target = target_global[4];
+            }
             nav.auto_path.m_point_end.point_set(POS_5_X, POS_5_Y, POS_5_Q);
             if (this_target == 2)
             {
@@ -104,7 +118,10 @@ void robot_movement(void)
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_6:
-            this_target = target_global[5];
+            if (global_pattern == WITH_GLOBAL)
+            {
+                this_target = target_global[5];
+            }
             nav.auto_path.m_point_end.point_set(POS_6_X, POS_6_Y, POS_6_Q);
             if (this_target == 2)
             {
@@ -118,7 +135,7 @@ void robot_movement(void)
             break;
         case ACTION_POS_END:
             nav.auto_path.m_point_end.point_set(POS_END_X, POS_END_Y, POS_END_Q);
-            nav.auto_path.m_velt_acc.Velt_Acc_Set(1000, 60, 1000, 1000);
+            nav.auto_path.m_velt_acc.Velt_Acc_Set(1500, 60, 1500, 1500);
             SET_NAV_PATH_AUTO(1);
             break;
         case ACTION_POS_CHECK:
@@ -161,7 +178,14 @@ void movement_check(bool if_auto)
         switch (action_pattern)
         {
         case ACTION_NONE:
-            Detect_Object(temp_data, target_global);
+            if (!Detect_Object(temp_data, target_global))
+            {
+                global_pattern = WITHOUT_GLOBAL;
+            }
+            else
+            {
+                global_pattern = WITH_GLOBAL;
+            }
             break;
         case ACTION_INIT:
             // 上层发送初始化成功flag标志
@@ -220,29 +244,47 @@ void movement_check(bool if_auto)
             break;
         case ACTION_POS_CHECK:
             // TODO:激光传感器给出识别到的信号
-            stable_time++;
-            if (stable_time > 100)
+            if (aruco_pattern == WITHOUT_ARUCO && global_pattern == WITH_GLOBAL)
             {
-                // figure_out_object = Identify_box_cola(this_target);
-                vision_true = des_base_aruco(aruco_fdb);
-                if (/*figure_out_object &&&*/ vision_true)
+                action_pattern = ACTION_FETCH;
+                stable_time = 0;
+            }
+            else
+            {
+                stable_time++;
+                if (stable_time > 100)
                 {
-                    test_enable = 0;
-                    if (this_target == 1)
+                    vision_true = 1;
+                    figure_out_object = 1;
+                    if (aruco_pattern == WITH_ARUCO)
                     {
-                        action_pattern = ACTION_POS_CHANGE;
-                        figure_out_object = 0;
-                        vision_true = 0;
+                        vision_true = des_base_aruco(aruco_fdb);
                     }
-                    else if (this_target == 2)
+                    if (global_pattern == WITHOUT_GLOBAL)
                     {
-                        action_pattern = ACTION_POS_CHANGE;
-                        figure_out_object = 0;
-                        vision_true = 0;
+                        figure_out_object = Identify_box_cola(this_target);
                     }
-                    stable_time = 0;
+
+                    if (figure_out_object && vision_true)
+                    {
+                        test_enable = 0;
+                        if (this_target == 1)
+                        {
+                            action_pattern = ACTION_POS_CHANGE;
+                            figure_out_object = 0;
+                            vision_true = 0;
+                        }
+                        else if (this_target == 2)
+                        {
+                            action_pattern = ACTION_POS_CHANGE;
+                            figure_out_object = 0;
+                            vision_true = 0;
+                        }
+                        stable_time = 0;
+                    }
                 }
             }
+
             break;
         case ACTION_POS_CHANGE:
             if (fabs(nav.auto_path.pos_pid.x.fpDes - nav.auto_path.pos_pid.x.fpFB) < LIMIT_DELTA_X && fabs(nav.auto_path.pos_pid.y.fpDes - nav.auto_path.pos_pid.y.fpFB) < LIMIT_DELTA_Y && fabs(nav.auto_path.pos_pid.w.fpDes - nav.auto_path.pos_pid.w.fpFB) < LIMIT_DELTA_Q_RAD)
@@ -364,7 +406,7 @@ void handle_box(void)
     switch (box_state)
     {
     case none:
-				sucker.Toggle_sucker=1;
+        sucker.Toggle_sucker = 1;
         if (init_motor)
         {
             DES.table_lift = -2100;
@@ -529,7 +571,6 @@ void handle_box(void)
             {
                 sucker.Toggle_sucker = 1;
                 // TODO：调节衔接时间
-                OSTimeDly_ms(1000);
                 fetch_pattern = FETCH_GET_PRE;
                 box_state = await;
             }
