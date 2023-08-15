@@ -15,7 +15,7 @@ using _navigation_::vision_true;
 action_pattern_e action_pattern = ACTION_NONE;
 fetch_pattern_e fetch_pattern = FETCH_INIT;
 global_pattern_e global_pattern = WITH_GLOBAL;
-aruco_pattern_e aruco_pattern = WITH_ARUCO;
+aruco_pattern_e aruco_pattern = WITHOUT_ARUCO;//WITH_ARUCO;
 static int pos_i;
 
 void robot_movement(void)
@@ -41,7 +41,10 @@ void robot_movement(void)
             break;
         case ACTION_POS_1:
             // 跑到点位
-            this_target = target_global[0];
+						if (global_pattern == WITH_GLOBAL)
+            {
+                this_target = target_global[0];
+            }
             nav.auto_path.m_point_end.point_set(POS_1_X, POS_1_Y, POS_1_Q);
             if (this_target == 2)
             {
@@ -244,7 +247,7 @@ void movement_check(bool if_auto)
             break;
         case ACTION_POS_CHECK:
             // TODO:激光传感器给出识别到的信号
-            if (aruco_pattern == WITHOUT_ARUCO && global_pattern == WITH_GLOBAL)
+            if ((aruco_pattern == WITHOUT_ARUCO) && (global_pattern == WITH_GLOBAL))
             {
                 action_pattern = ACTION_FETCH;
                 stable_time = 0;
@@ -252,13 +255,14 @@ void movement_check(bool if_auto)
             else
             {
                 stable_time++;
-                if (stable_time > 100)
+                if (stable_time > 30)
                 {
                     vision_true = 1;
                     figure_out_object = 1;
                     if (aruco_pattern == WITH_ARUCO)
                     {
                         vision_true = des_base_aruco(aruco_fdb);
+												aruco_fdb.if_detect=0;
                     }
                     if (global_pattern == WITHOUT_GLOBAL)
                     {
@@ -290,11 +294,16 @@ void movement_check(bool if_auto)
             if (fabs(nav.auto_path.pos_pid.x.fpDes - nav.auto_path.pos_pid.x.fpFB) < LIMIT_DELTA_X && fabs(nav.auto_path.pos_pid.y.fpDes - nav.auto_path.pos_pid.y.fpFB) < LIMIT_DELTA_Y && fabs(nav.auto_path.pos_pid.w.fpDes - nav.auto_path.pos_pid.w.fpFB) < LIMIT_DELTA_Q_RAD)
             {
                 change_time++;
-                if (change_time > 50)
+                if ((global_pattern == WITH_GLOBAL)&&(change_time > 30))
                 {
                     action_pattern = ACTION_FETCH;
                     change_time = 0;
                 }
+								else if((global_pattern == WITHOUT_GLOBAL)&&(change_time > 50))
+								{
+									action_pattern = ACTION_FETCH;
+                  change_time = 0;
+								}
             }
             break;
         default:
@@ -327,7 +336,7 @@ void position_check(void)
         if (fabs(point_fb.m_x - POS_1_X - dx) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_1_Y - dy) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_1_Q) < LIMIT_DELTA_Q)
         {
             pos_i = 1;
-        }
+        }  
         else if (fabs(point_fb.m_x - POS_2_X - dx) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_2_Y - dy) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_2_Q) < LIMIT_DELTA_Q)
         {
             pos_i = 2;
@@ -366,8 +375,8 @@ float height_box = 220;
 
 float sucker_lift_box_await = 1100, sucker_slide_await = 0;
 float sucker_lift_box_get_state1 = 220, sucker_slide_get_state1 = -7;
-float sucker_lift_box_get_state2 = 580, sucker_slide_get_state2 = -45;
-float table_lift_up = -1500, table_lift_down = -800, talbe_lift_await = -700;
+float sucker_lift_box_get_state2 = 575, sucker_slide_get_state2 = -45;
+float table_lift_up = -1500, table_lift_down = -800, talbe_lift_await = -650;
 float table_slide_out = -30, table_slide_in = 0;
 float table_slide_await = -10;
 float sucker_out = 1150;
@@ -375,7 +384,7 @@ float sucker_out2 = 700; // 1050
 float sucker_yajin = 990;
 int init_motor;
 int this_target = 0; // box 1,cola 2
-int target_global[6] = {2, 1, 1, 2, 1, 2};
+int target_global[6] = {0,0,0,0,0,0};
 
 int cola_finish = 0, box_finish = 0;
 float cal_distance_by_sensor;
@@ -431,7 +440,7 @@ void handle_box(void)
         if (!(box_finish * cola_finish))
         {
             sucker_lift_r = 3000;
-            sucker_slide_r = 250;
+            sucker_slide_r = 150;
             DES.sucker_slide = 0;
 
             if (fabs(sucker.slide_motor.pos_pid.fpFB - DES.sucker_slide) < 5)
@@ -446,7 +455,7 @@ void handle_box(void)
 										if(sucker.lift_motor.pos_pid.fpFB>sucker_lift_box_get_state2 + (target_num.box - 1) * height_box)
 										{
 											 sucker_lift_r = 7000;
-										  	sucker_slide_r = 250;
+										  	sucker_slide_r = 150;
 										}
                 }
                 else
@@ -564,7 +573,8 @@ void handle_box(void)
         break;
 
     case get_state3:
-
+				 sucker_lift_r = 1000;
+        sucker_slide_r = 200;
         DES.sucker_slide = sucker_slide_get_state2;
         if (fabs(DES.sucker_slide - sucker.slide_motor.pos_pid.fpFB) < 5)
         {
@@ -609,7 +619,7 @@ void handle_box(void)
 
         DES.table_slide = table_slide_out;
         //  DES.sucker_lift = 1300;
-        DES.sucker_slide = -5;
+        DES.sucker_slide = 0;
         if (fabs(DES.sucker_slide - sucker.slide_motor.pos_pid.fpFB) < 2)
         {
             if (fabs(DES.table_slide - table.td_slide.m_x1) < 5)

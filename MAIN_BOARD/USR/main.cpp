@@ -181,7 +181,7 @@ void navigation_task(void *p)
         // if (/*nav.state == NAV_STOPX&&*/ vision_enable /*&& vision_time > 100*/)
         // {
         //     delta_des_cola(target_num.cola);
-        //     vision_true = des_base_aruco(aruco_fdb);
+//           vision_true = des_base_aruco(aruco_fdb);
         //     //            vision_time = 0;
         //     vision_enable = 0;
         // }
@@ -225,7 +225,7 @@ void remote_lcd_task(void *p) // esp8266发送任
     OSTimeDly_ms(100);
     while (1)
     {
-			sucker.drive_sucker();
+        sucker.drive_sucker();
         lcd_display();
         OSTimeDly_ms(25);
     }
@@ -241,7 +241,7 @@ void action_task(void *p)
         robot_movement();
         movement_check(auto_enable);
         position_check();
-        
+
         handle_box();
         OSTimeDly_ms(10);
     }

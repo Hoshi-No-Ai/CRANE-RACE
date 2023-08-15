@@ -7,8 +7,8 @@
 #include "locate_algorithm.h"
 #include "navigation_algorithm.h"
 
-#define ARUCO_2_DES_X -2.887154954258607e+02f
-#define ARUCO_2_DES_Y 4.116275204611565e+02f
+#define ARUCO_2_DES_X -2.750164264970416e+02f//-2.887154954258607e+02f
+#define ARUCO_2_DES_Y 4.095191999176823e+02f//4.116275204611565e+02f
 
 #define DELTA_COLA 90.0f
 

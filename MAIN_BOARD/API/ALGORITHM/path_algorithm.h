@@ -9,33 +9,33 @@
 
 using _navigation_::flag_record;
 
-#define POS_1_X -570.81f
-#define POS_1_Y 749.69f
-#define POS_1_Q -89.89f
+#define POS_1_X -589.50f//-570.81f
+#define POS_1_Y 740.16f//749.69f
+#define POS_1_Q -89.68f//-89.89f
 
-#define POS_2_X -470.80f
-#define POS_2_Y 1093.09f
-#define POS_2_Q -126.02f
+#define POS_2_X -497.93f//-470.80f
+#define POS_2_Y 1090.47f//1093.09f
+#define POS_2_Q -124.59f//-126.02f
 
-#define POS_3_X -188.26f
-#define POS_3_Y 1300.14f
-#define POS_3_Q -161.35f
+#define POS_3_X -206.73f//-188.26f
+#define POS_3_Y 1304.45f//1300.14f
+#define POS_3_Q -160.73f//-161.35f
 
-#define POS_4_X 166.53f
-#define POS_4_Y 1327.13f
-#define POS_4_Q -197.28f
+#define POS_4_X 154.49f//166.53f
+#define POS_4_Y 1329.19f//1327.13f
+#define POS_4_Q -197.28f//-197.28f
 
-#define POS_5_X 462.530f
-#define POS_5_Y 1125.420f
-#define POS_5_Q -232.80f
+#define POS_5_X 470.13f//462.530f
+#define POS_5_Y 1116.34f//1125.420f
+#define POS_5_Q -232.70f//-232.80f
 
-#define POS_6_X 575.66f
-#define POS_6_Y 793.58f
-#define POS_6_Q -268.33f
+#define POS_6_X 592.51f//575.66f
+#define POS_6_Y 771.52f//793.58f
+#define POS_6_Q -268.23f//-268.33f
 
-#define POS_END_X 640.0f
-#define POS_END_Y -1794.4f
-#define POS_END_Q -359.0f
+#define POS_END_X 630.15f//640.0f
+#define POS_END_Y -1753.73f//-1794.4f
+#define POS_END_Q -357.19f//-359.0f
 
 class C_POINT
 {
