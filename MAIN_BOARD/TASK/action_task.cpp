@@ -15,7 +15,7 @@ using _navigation_::vision_true;
 action_pattern_e action_pattern = ACTION_NONE;
 fetch_pattern_e fetch_pattern = FETCH_INIT;
 global_pattern_e global_pattern = WITH_GLOBAL;
-aruco_pattern_e aruco_pattern = WITHOUT_ARUCO;//WITH_ARUCO;
+aruco_pattern_e aruco_pattern = WITHOUT_ARUCO; // WITH_ARUCO;
 static int pos_i;
 
 void robot_movement(void)
@@ -41,7 +41,7 @@ void robot_movement(void)
             break;
         case ACTION_POS_1:
             // 跑到点位
-						if (global_pattern == WITH_GLOBAL)
+            if (global_pattern == WITH_GLOBAL)
             {
                 this_target = target_global[0];
             }
@@ -262,7 +262,7 @@ void movement_check(bool if_auto)
                     if (aruco_pattern == WITH_ARUCO)
                     {
                         vision_true = des_base_aruco(aruco_fdb);
-												aruco_fdb.if_detect=0;
+                        aruco_fdb.if_detect = 0;
                     }
                     if (global_pattern == WITHOUT_GLOBAL)
                     {
@@ -287,6 +287,11 @@ void movement_check(bool if_auto)
                         stable_time = 0;
                     }
                 }
+                if (stable_time > 60)
+                {
+                    aruco_pattern = WITHOUT_ARUCO;
+                    stable_time = 0;
+                }
             }
 
             break;
@@ -294,16 +299,16 @@ void movement_check(bool if_auto)
             if (fabs(nav.auto_path.pos_pid.x.fpDes - nav.auto_path.pos_pid.x.fpFB) < LIMIT_DELTA_X && fabs(nav.auto_path.pos_pid.y.fpDes - nav.auto_path.pos_pid.y.fpFB) < LIMIT_DELTA_Y && fabs(nav.auto_path.pos_pid.w.fpDes - nav.auto_path.pos_pid.w.fpFB) < LIMIT_DELTA_Q_RAD)
             {
                 change_time++;
-                if ((global_pattern == WITH_GLOBAL)&&(change_time > 30))
+                if ((global_pattern == WITH_GLOBAL) && (change_time > 30))
                 {
                     action_pattern = ACTION_FETCH;
                     change_time = 0;
                 }
-								else if((global_pattern == WITHOUT_GLOBAL)&&(change_time > 50))
-								{
-									action_pattern = ACTION_FETCH;
-                  change_time = 0;
-								}
+                else if ((global_pattern == WITHOUT_GLOBAL) && (change_time > 50))
+                {
+                    action_pattern = ACTION_FETCH;
+                    change_time = 0;
+                }
             }
             break;
         default:
@@ -336,7 +341,7 @@ void position_check(void)
         if (fabs(point_fb.m_x - POS_1_X - dx) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_1_Y - dy) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_1_Q) < LIMIT_DELTA_Q)
         {
             pos_i = 1;
-        }  
+        }
         else if (fabs(point_fb.m_x - POS_2_X - dx) < LIMIT_DELTA_X && fabs(point_fb.m_y - POS_2_Y - dy) < LIMIT_DELTA_Y && fabs(point_fb.m_q - POS_2_Q) < LIMIT_DELTA_Q)
         {
             pos_i = 2;
@@ -384,7 +389,7 @@ float sucker_out2 = 700; // 1050
 float sucker_yajin = 990;
 int init_motor;
 int this_target = 0; // box 1,cola 2
-int target_global[6] = {0,0,0,0,0,0};
+int target_global[6] = {0, 0, 0, 0, 0, 0};
 
 int cola_finish = 0, box_finish = 0;
 float cal_distance_by_sensor;
@@ -435,7 +440,7 @@ void handle_box(void)
         sucker.Toggle_sucker = 1;
         DES.table_slide = table_slide_in;
         DES.table_lift = talbe_lift_await;
-			
+
         //   DES.sucker_lift = sucker_lift_box_await;
         if (!(box_finish * cola_finish))
         {
@@ -452,11 +457,11 @@ void handle_box(void)
                 if (!box_finish)
                 {
                     DES.sucker_lift = sucker_lift_box_get_state2 + (target_num.box - 1) * height_box + 150;
-										if(sucker.lift_motor.pos_pid.fpFB>sucker_lift_box_get_state2 + (target_num.box - 1) * height_box)
-										{
-											 sucker_lift_r = 7000;
-										  	sucker_slide_r = 150;
-										}
+                    if (sucker.lift_motor.pos_pid.fpFB > sucker_lift_box_get_state2 + (target_num.box - 1) * height_box)
+                    {
+                        sucker_lift_r = 7000;
+                        sucker_slide_r = 150;
+                    }
                 }
                 else
                 {
@@ -562,7 +567,7 @@ void handle_box(void)
         pre_box_state = get_state1;
         break;
     case get_state2:
-			
+
         DES.sucker_lift = sucker_lift_box_get_state2 + (target_num.box - 1) * height_box + 200;
         if (fabs(DES.sucker_lift - sucker.lift_motor.pos_pid.fpFB) < 5)
         {
@@ -573,7 +578,7 @@ void handle_box(void)
         break;
 
     case get_state3:
-				 sucker_lift_r = 1000;
+        sucker_lift_r = 1000;
         sucker_slide_r = 200;
         DES.sucker_slide = sucker_slide_get_state2;
         if (fabs(DES.sucker_slide - sucker.slide_motor.pos_pid.fpFB) < 5)
