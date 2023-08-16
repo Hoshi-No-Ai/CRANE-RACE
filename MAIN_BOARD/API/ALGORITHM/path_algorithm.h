@@ -34,7 +34,7 @@ using _navigation_::flag_record;
 #define POS_6_Y 771.77f//771.52f//793.58f
 #define POS_6_Q -268.74f//-268.23f//-268.33f
 
-#define POS_END_X 602.67f//630.15f//640.0f
+#define POS_END_X 652.67f//(2,3,4ºÅ³¡µØ)602.67f//630.15f//640.0f
 #define POS_END_Y -1766.52f//-1753.73f//-1794.4f
 #define POS_END_Q -358.32f//-357.19f//-359.0f
 

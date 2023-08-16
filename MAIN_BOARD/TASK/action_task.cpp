@@ -255,7 +255,7 @@ void movement_check(bool if_auto)
             else
             {
                 stable_time++;
-                if (stable_time > 30)
+                if (stable_time > 15)
                 {
                     vision_true = 1;
                     figure_out_object = 1;
@@ -299,12 +299,12 @@ void movement_check(bool if_auto)
             if (fabs(nav.auto_path.pos_pid.x.fpDes - nav.auto_path.pos_pid.x.fpFB) < LIMIT_DELTA_X && fabs(nav.auto_path.pos_pid.y.fpDes - nav.auto_path.pos_pid.y.fpFB) < LIMIT_DELTA_Y && fabs(nav.auto_path.pos_pid.w.fpDes - nav.auto_path.pos_pid.w.fpFB) < LIMIT_DELTA_Q_RAD)
             {
                 change_time++;
-                if ((global_pattern == WITH_GLOBAL) && (change_time > 30))
+                if ((global_pattern == WITH_GLOBAL) && (change_time > 20))
                 {
                     action_pattern = ACTION_FETCH;
                     change_time = 0;
                 }
-                else if ((global_pattern == WITHOUT_GLOBAL) && (change_time > 50))
+                else if ((global_pattern == WITHOUT_GLOBAL) && (change_time > 35))
                 {
                     action_pattern = ACTION_FETCH;
                     change_time = 0;
@@ -568,7 +568,7 @@ void handle_box(void)
         break;
     case get_state2:
 
-        DES.sucker_lift = sucker_lift_box_get_state2 + (target_num.box - 1) * height_box + 200;
+        DES.sucker_lift = sucker_lift_box_get_state2 + (target_num.box - 1) * height_box + 230;
         if (fabs(DES.sucker_lift - sucker.lift_motor.pos_pid.fpFB) < 5)
         {
             box_state = get_state3;
@@ -578,8 +578,12 @@ void handle_box(void)
         break;
 
     case get_state3:
-        sucker_lift_r = 1000;
+        sucker_lift_r = 2000;
         sucker_slide_r = 200;
+				if(target_num.box>1)
+				{
+					sucker_lift_r = 3000;
+				}
         DES.sucker_slide = sucker_slide_get_state2;
         if (fabs(DES.sucker_slide - sucker.slide_motor.pos_pid.fpFB) < 5)
         {
@@ -624,7 +628,7 @@ void handle_box(void)
 
         DES.table_slide = table_slide_out;
         //  DES.sucker_lift = 1300;
-        DES.sucker_slide = 0;
+        DES.sucker_slide = -5;
         if (fabs(DES.sucker_slide - sucker.slide_motor.pos_pid.fpFB) < 2)
         {
             if (fabs(DES.table_slide - table.td_slide.m_x1) < 5)
